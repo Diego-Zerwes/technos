@@ -4,8 +4,10 @@
  */
 package projeto.mensal.Telas;
 
+import br.com.parg.viacep.ViaCEP;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,7 +48,7 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jCep = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
-        jEndereco = new javax.swing.JTextField();
+        jLogradouro = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jEndNumero = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -110,8 +112,13 @@ public class Cadastro extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jCep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jCepKeyPressed(evt);
+            }
+        });
 
-        jLabel9.setText("Endereço");
+        jLabel9.setText("Logradouro");
 
         jLabel10.setText("Numero");
 
@@ -165,7 +172,7 @@ public class Cadastro extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
@@ -240,7 +247,7 @@ public class Cadastro extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(jEndNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(jEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -270,6 +277,22 @@ public class Cadastro extends javax.swing.JFrame {
     }  
 });        // TODO add your handling code here:
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void jCepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCepKeyPressed
+            // TODO add your handling code here:
+     if(evt.getExtendedKeyCode() == evt.VK_ENTER){
+         ViaCEP viaCep = new ViaCEP();
+         try {
+             viaCep.buscar(jCep.getText());
+             jLogradouro.setText(viaCep.getLogradouro());
+             jCidade.setText(viaCep.getLocalidade());
+             jUf.setSelectedItem(viaCep.getUf());
+         } catch (Exception e) {
+             JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado!!\n" + e.getMessage());
+         }
+  
+      }
+    }//GEN-LAST:event_jCepKeyPressed
 
     /**
      * @param args the command line arguments
@@ -314,7 +337,6 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jCpf;
     private javax.swing.JTextField jEmail;
     private javax.swing.JTextField jEndNumero;
-    private javax.swing.JTextField jEndereco;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JTextField jId;
     private javax.swing.JLabel jLabel1;
@@ -330,6 +352,7 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jLogradouro;
     private javax.swing.JTextField jNome;
     private javax.swing.JFormattedTextField jRg;
     private javax.swing.JComboBox<String> jSexo;
