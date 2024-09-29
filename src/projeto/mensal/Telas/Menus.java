@@ -29,8 +29,6 @@ public class Menus extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnCadastro = new javax.swing.JButton();
@@ -41,18 +39,18 @@ public class Menus extends javax.swing.JFrame {
         jCaixa = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
         jEstoque = new javax.swing.JButton();
+        desktop = new javax.swing.JDesktopPane();
 
-        jMenuItem1.setText("jMenuItem1");
-
-        jCheckBox1.setText("jCheckBox1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Autorizada-Technos-em-São-Paulo.png"))); // NOI18N
+        jLabel1.setMaximumSize(new java.awt.Dimension(200, 100));
 
+        btnCadastro.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         btnCadastro.setText("Cadastro");
         btnCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,6 +58,7 @@ public class Menus extends javax.swing.JFrame {
             }
         });
 
+        jCompras.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jCompras.setText("Compras");
         jCompras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,6 +66,7 @@ public class Menus extends javax.swing.JFrame {
             }
         });
 
+        jVendas.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jVendas.setText("Vendas");
         jVendas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,6 +74,7 @@ public class Menus extends javax.swing.JFrame {
             }
         });
 
+        jRelatorio.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jRelatorio.setText("Relatorio");
         jRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,12 +82,26 @@ public class Menus extends javax.swing.JFrame {
             }
         });
 
+        jFinanceiro.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jFinanceiro.setText("Financeiro");
+        jFinanceiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFinanceiroActionPerformed(evt);
+            }
+        });
 
+        jCaixa.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jCaixa.setText("Caixa");
 
+        jLogoff.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLogoff.setText("Logoff");
+        jLogoff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jLogoffActionPerformed(evt);
+            }
+        });
 
+        jEstoque.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jEstoque.setText("Estoque");
         jEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,46 +113,53 @@ public class Menus extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jRelatorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jFinanceiro, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLogoff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(271, 271, 271))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(180, 180, 180))))
+                .addGap(80, 80, 80)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jFinanceiro, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                    .addComponent(jEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jRelatorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLogoff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(btnCadastro)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(jFinanceiro)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jEstoque)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(jCompras)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jVendas)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addComponent(jCaixa)
-                .addGap(18, 18, 18)
+                .addGap(33, 33, 33)
                 .addComponent(jRelatorio)
-                .addGap(18, 18, 18)
+                .addGap(32, 32, 32)
                 .addComponent(jLogoff)
-                .addGap(59, 59, 59))
+                .addGap(83, 83, 83))
+        );
+
+        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
+        desktop.setLayout(desktopLayout);
+        desktopLayout.setHorizontalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1051, Short.MAX_VALUE)
+        );
+        desktopLayout.setVerticalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,55 +167,85 @@ public class Menus extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 473, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private Cadastros tela;
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
-      btnCadastro.addActionListener(new ActionListener() {  
-    public void actionPerformed(ActionEvent evt) {  
-       new Cadastro().setVisible(true);  
-       setVisible(false);  
-    }  
-});
+        
+        if (tela == null || !tela.isVisible()) {
+        tela = new Cadastros(); // Cria a tela se não existir ou não estiver visível
+        desktop.add(tela);
+        tela.setVisible(true);
+    } else {
+        tela.setVisible(false);
+        desktop.remove(desktop);
+        desktop.repaint();
+    }
     // TODO add your handling code here:
     
     }//GEN-LAST:event_btnCadastroActionPerformed
-
+    private Compras tela1;
     private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
-        // TODO add your handling code here:
-        jCompras.addActionListener(new ActionListener() {  
-    public void actionPerformed(ActionEvent evt) {  
-       new Compras().setVisible(true);  
-       setVisible(false);  
-    }  
-});
+        if (tela1 == null || !tela1.isVisible()) {
+        tela1 = new Compras(); // Cria a tela se não existir ou não estiver visível
+        desktop.add(tela1);
+        tela1.setVisible(true);
+    } else {
+        tela1.setVisible(false);
+        desktop.remove(desktop);
+        desktop.repaint();
+    }
+                // TODO add your handling code here:
+        
     }//GEN-LAST:event_jComprasActionPerformed
-
+    private Estoque tela2;
     private void jEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEstoqueActionPerformed
-        jEstoque.addActionListener(new ActionListener() {  
-    public void actionPerformed(ActionEvent evt) {  
-       new Estoque().setVisible(true);  
-       setVisible(false);  
-    }  
-});
+        if (tela2 == null || !tela2.isVisible()) {
+        tela2 = new Estoque(); // Cria a tela se não existir ou não estiver visível
+        desktop.add(tela2);
+        tela2.setVisible(true);
+    } else {
+        tela2.setVisible(false);
+        desktop.remove(desktop);
+        desktop.repaint();
+    }      
     }//GEN-LAST:event_jEstoqueActionPerformed
-
+    private Relatorio tela3;
     private void jRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRelatorioActionPerformed
-        // TODO add your handling code here:
+        if (tela3 == null || !tela3.isVisible()) {
+        tela3 = new Relatorio(); // Cria a tela se não existir ou não estiver visível
+        desktop.add(tela3);
+        tela3.setVisible(true);
+    } else {
+        tela3.setVisible(false);
+        desktop.remove(desktop);
+        desktop.repaint();
+    }        // TODO add your handling code here:
     }//GEN-LAST:event_jRelatorioActionPerformed
 
     private void jVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVendasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jVendasActionPerformed
+
+    private void jFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceiroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFinanceiroActionPerformed
+
+    private void jLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogoffActionPerformed
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jLogoffActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,14 +284,13 @@ public class Menus extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastro;
+    private javax.swing.JDesktopPane desktop;
     private javax.swing.JButton jCaixa;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JButton jCompras;
     private javax.swing.JButton jEstoque;
     private javax.swing.JButton jFinanceiro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton jLogoff;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jRelatorio;
     private javax.swing.JButton jVendas;
