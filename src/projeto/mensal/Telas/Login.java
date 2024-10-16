@@ -5,6 +5,7 @@
 package projeto.mensal.Telas;
 
 import dao.ConexaoBanco;
+import java.awt.HeadlessException;
 import java.awt.Menu;
 import java.sql.*;
 import java.awt.event.ActionEvent;
@@ -33,18 +34,23 @@ public class Login extends javax.swing.JFrame {
     }
     
     public void logar() {
-        String sql = "SELECT * FROM login WHERE idFuncionario=? and senha=?";
+        String sql = "SELECT funcionario.nome, login.senha, funcionario.tipoUsuario " +
+                      "FROM funcionario " +
+                      "INNER JOIN login ON funcionario.idFuncionario = login.idFuncionario " +
+                       "where funcionario.nome = ? and login.senha = ? and funcionario.tipoUsuario = ?";
         
         try {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, txtLogin1.getText());
             pst.setString(2, new String(txtSenha.getPassword()));
+            pst.setString(3, "funcionario");
             rs = pst.executeQuery();
 
             if (rs.next()) {
-                String tipoUsuario = rs.getString(5);
+                String tipoUsuario = rs.getString(3);
+                JOptionPane.showMessageDialog(null, tipoUsuario);
 
-                if (tipoUsuario.equals("candidato")) {
+                if (tipoUsuario.equals("funcionario")) {
                     Menus mn = new Menus();
                     mn.setVisible(true);
                     this.dispose();
@@ -52,7 +58,7 @@ public class Login extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário ou senha incorretos");
             }
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível conectar com o banco" + e.getMessage());
         }
     }
