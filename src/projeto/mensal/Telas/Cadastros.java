@@ -81,6 +81,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e + " aqui???");
+            //
         }
     }
 
