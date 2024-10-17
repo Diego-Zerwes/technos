@@ -26,16 +26,20 @@ public class Cadastros extends javax.swing.JInternalFrame {
     }
 
     public void cadastrarClientePf() {
-        String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente) VALUES (?, ? , ?, ?, ?)";
+        String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente, idEndereco) VALUES (?, ? , ?, ?, ?, ?)";
         String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
         String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idCliente) VALUES(?, ?, ?, ?, ?, ?)";
         try {
             pstCli = conexao.prepareStatement(sqlCli, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstCon = conexao.prepareStatement(sqlCon);
+            pstEnd = conexao.prepareStatement(sqlEnd, PreparedStatement.RETURN_GENERATED_KEYS);
+            
             pstCli.setString(1, txtNome.getText());
             pstCli.setString(2, txtCpf.getText());
             pstCli.setString(3, txtRg.getText());
             pstCli.setString(4, cboSex.getSelectedItem().toString());
             pstCli.setString(5, "pessoaFisica");
+            
 
             int cadastroCliente = pstCli.executeUpdate();
 
@@ -47,20 +51,28 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
 
             if (cadastroCliente > 0) {
-                pstCon = conexao.prepareStatement(sqlCon);
+                
+               
+                
                 pstCon.setString(1, txtTel.getText());
                 pstCon.setString(2, txtCel.getText());
                 pstCon.setString(3, txtEmail.getText());
                 pstCon.setInt(4, idCliente);
                 int cadastroContato = pstCon.executeUpdate();
 
-                pstEnd = conexao.prepareStatement(sqlEnd);
+               
                 pstEnd.setString(1, txtCep.getText());
                 pstEnd.setString(2, txtLograd.getText());
                 pstEnd.setString(3, txtNum.getText());
                 pstEnd.setString(4, txtCid.getText());
                 pstEnd.setString(5, txtEst.getSelectedItem().toString());
                 pstEnd.setInt(6, idCliente);
+                
+                ResultSet rsEnd = pstEnd.getGeneratedKeys();
+                int idEnd = rs.getInt(1);
+                
+                pstCli.setInt(6, idEnd);                 
+                 
                 int cadastroEndereco = pstEnd.executeUpdate();
 
                 if (cadastroContato > 0 && cadastroEndereco > 0) {
@@ -165,7 +177,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
     }
     
     public void cadastrarFuncionario() {
-        String sqlFunc = "INSERT INTO funcionarios (nome, rg, cpf) VALUES (?, ? , ?)";
+        String sqlFunc = "INSERT INTO funcionarios (nome, rg, cpf, senha) VALUES (?, ? , ?, ?)";
         String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFuncionario) VALUES (?, ?, ?, ?)";
         String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idFuncionario) VALUES(?, ?, ?, ?, ?, ?)";
         try {
@@ -173,6 +185,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             pstFunc.setString(1, txtNome.getText());
             pstFunc.setString(2, txtRg.getText());
             pstFunc.setString(3, txtCpf.getText());
+            pstFunc.setString(4, pswSenha.getText());
 
             int cadastroFuncionario = pstFunc.executeUpdate();
 
@@ -207,6 +220,27 @@ public class Cadastros extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e + " aqui???");
         }
+    }
+    
+    public void limparCampos() {
+        txtNome.setText("");
+        txtIE.setText("");
+        txtCnpj.setText("");
+        txtRg.setText("");
+        txtCpf.setText("");
+        txtCel.setText("");
+        txtEmail.setText("");
+        txtTel.setText("");
+        txtCep.setText("");
+        txtLograd.setText("");
+        txtEst.setSelectedItem(null);
+        txtCid.setText("");                
+    }
+    
+    public void voltarTelaLogin() {
+        Login l = new Login();
+        l.setVisible(true);
+        this.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -250,6 +284,9 @@ public class Cadastros extends javax.swing.JInternalFrame {
         rbtFun = new javax.swing.JRadioButton();
         rbtForn = new javax.swing.JRadioButton();
         rbtCliPj = new javax.swing.JRadioButton();
+        btnLimpCamp = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        pswSenha = new javax.swing.JPasswordField();
 
         setClosable(true);
         setIconifiable(true);
@@ -428,6 +465,17 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
+        btnLimpCamp.setText("Limpar Campos");
+        btnLimpCamp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpCampActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Senha");
+
+        pswSenha.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -437,13 +485,19 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLimpCamp)
+                                .addGap(37, 37, 37)
                                 .addComponent(btnCad)
                                 .addGap(32, 32, 32)
                                 .addComponent(btnCanc))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(114, 114, 114)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(111, 111, 111)
@@ -567,7 +621,10 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCad)
-                    .addComponent(btnCanc))
+                    .addComponent(btnCanc)
+                    .addComponent(btnLimpCamp)
+                    .addComponent(jLabel1)
+                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
         );
@@ -611,6 +668,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtCnpj.setEnabled(false);
         txtRg.setEnabled(true);
         txtCpf.setEnabled(true);
+        pswSenha.setEnabled(true);
     }//GEN-LAST:event_rbtFunMouseClicked
 
     private void rbtFornMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtFornMouseClicked
@@ -620,6 +678,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtCnpj.setEnabled(true);
         txtRg.setEnabled(false);
         txtCpf.setEnabled(false);
+        pswSenha.setEnabled(false);
     }//GEN-LAST:event_rbtFornMouseClicked
 
     private void rbtCliPfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtCliPfMouseClicked
@@ -629,18 +688,23 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtCnpj.setEnabled(false);
         txtRg.setEnabled(true);
         txtCpf.setEnabled(true);
+        pswSenha.setEnabled(false);
     }//GEN-LAST:event_rbtCliPfMouseClicked
 
     private void btnCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadActionPerformed
         // apertando o botão de cadastrar
         if (rbtCliPf.isSelected()) {
             cadastrarClientePf();
+            voltarTelaLogin();
         } else if (rbtCliPj.isSelected()) {
             cadastrarClientePj();
+            voltarTelaLogin();
         } else if(rbtForn.isSelected()) {
             cadastrarFornecedor();
+            voltarTelaLogin();
         } else {
             cadastrarFuncionario();
+            voltarTelaLogin();
         }
     }//GEN-LAST:event_btnCadActionPerformed
 
@@ -651,18 +715,26 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtCnpj.setEnabled(true);
         txtRg.setEnabled(false);
         txtCpf.setEnabled(false);
+        pswSenha.setEnabled(false);
     }//GEN-LAST:event_rbtCliPjMouseClicked
 
     private void rbtCliPfFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rbtCliPfFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtCliPfFocusGained
 
+    private void btnLimpCampActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpCampActionPerformed
+        // limpar todos os campos
+        limparCampos();
+    }//GEN-LAST:event_btnLimpCampActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCad;
     private javax.swing.JButton btnCanc;
+    private javax.swing.JButton btnLimpCamp;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboSex;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -679,6 +751,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPasswordField pswSenha;
     private javax.swing.JRadioButton rbtCliPf;
     private javax.swing.JRadioButton rbtCliPj;
     private javax.swing.JRadioButton rbtForn;

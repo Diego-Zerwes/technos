@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package projeto.mensal.Telas;
 
 import dao.ConexaoBanco;
@@ -18,6 +15,7 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 
 public class Login extends javax.swing.JFrame {
+    
     Connection conexao = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
