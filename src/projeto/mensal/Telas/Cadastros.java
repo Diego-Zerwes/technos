@@ -50,9 +50,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 idCliente = rsId.getInt(1);
             }
 
-            if (cadastroCliente > 0) {
-                
-               
+            if (cadastroCliente > 0) {              
                 
                 pstCon.setString(1, txtTel.getText());
                 pstCon.setString(2, txtCel.getText());
@@ -81,7 +79,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e + " aqui???");
-            //
+            
         }
     }
 
