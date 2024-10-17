@@ -13,7 +13,7 @@ public class ConexaoBanco {
 //Construtor
     public ConexaoBanco() {
         this.servidor = "200.195.171.124";
-        this.banco = "grupo07_mensal";
+        this.banco = "grupo07_vendasCelular";
         this.usuario = "grupo07";
         this.senha = "Vu9EIaowZuJ3mBsP";
     }
