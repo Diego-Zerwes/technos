@@ -9,6 +9,8 @@ public class Cadastros extends javax.swing.JInternalFrame {
 
     Connection conexao = null;
     PreparedStatement pstCli = null;
+    PreparedStatement pstForn = null;
+    PreparedStatement pstFunc = null;
     PreparedStatement pstCon = null;
     PreparedStatement pstEnd = null;
     ResultSet rs = null;
@@ -49,7 +51,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 pstCon.setString(1, txtTel.getText());
                 pstCon.setString(2, txtCel.getText());
                 pstCon.setString(3, txtEmail.getText());
-                pstCon.setInt(4, idCliente); // Adiciona o idCliente ao contato
+                pstCon.setInt(4, idCliente);
                 int cadastroContato = pstCon.executeUpdate();
 
                 pstEnd = conexao.prepareStatement(sqlEnd);
@@ -58,11 +60,103 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 pstEnd.setString(3, txtNum.getText());
                 pstEnd.setString(4, txtCid.getText());
                 pstEnd.setString(5, txtEst.getSelectedItem().toString());
-                pstEnd.setInt(6, idCliente); // Adiciona o idCliente ao endereço
+                pstEnd.setInt(6, idCliente);
                 int cadastroEndereco = pstEnd.executeUpdate();
 
                 if (cadastroContato > 0 && cadastroEndereco > 0) {
-                    JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+                    JOptionPane.showMessageDialog(null, "Cliente PF cadastrado com sucesso!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e + " aqui???");
+        }
+    }
+
+    public void cadastrarClientePj() {
+        String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente) VALUES (?, ? , ?, ?, ?)";
+        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
+        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idCliente) VALUES(?, ?, ?, ?, ?, ?)";
+        try {
+            pstCli = conexao.prepareStatement(sqlCli, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstCli.setString(1, txtNome.getText());
+            pstCli.setString(2, txtCpf.getText());
+            pstCli.setString(3, txtRg.getText());
+            pstCli.setString(4, cboSex.getSelectedItem().toString());
+            pstCli.setString(5, "pessoaJuridica");
+
+            int cadastroCliente = pstCli.executeUpdate();
+
+            ResultSet rsId = pstCli.getGeneratedKeys();
+            int idCliente = 0;
+
+            if (rsId.next()) {
+                idCliente = rsId.getInt(1);
+            }
+
+            if (cadastroCliente > 0) {
+                pstCon = conexao.prepareStatement(sqlCon);
+                pstCon.setString(1, txtTel.getText());
+                pstCon.setString(2, txtCel.getText());
+                pstCon.setString(3, txtEmail.getText());
+                pstCon.setInt(4, idCliente);
+                int cadastroContato = pstCon.executeUpdate();
+
+                pstEnd = conexao.prepareStatement(sqlEnd);
+                pstEnd.setString(1, txtCep.getText());
+                pstEnd.setString(2, txtLograd.getText());
+                pstEnd.setString(3, txtNum.getText());
+                pstEnd.setString(4, txtCid.getText());
+                pstEnd.setString(5, txtEst.getSelectedItem().toString());
+                pstEnd.setInt(6, idCliente);
+                int cadastroEndereco = pstEnd.executeUpdate();
+
+                if (cadastroContato > 0 && cadastroEndereco > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente PJ cadastrado com sucesso!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e + " aqui???");
+        }
+    }
+
+    public void cadastrarFornecedor() {
+        String sqlForn = "INSERT INTO fornecedores (razaoSocial, cnpj, ie) VALUES (?, ? , ?)";
+        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFornecedor) VALUES (?, ?, ?, ?)";
+        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idFornecedor) VALUES(?, ?, ?, ?, ?, ?)";
+        try {
+            pstForn = conexao.prepareStatement(sqlForn, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstForn.setString(1, txtNome.getText());
+            pstForn.setString(2, txtCnpj.getText());
+            pstForn.setString(3, txtIE.getText());
+
+            int cadastroFornecedor = pstForn.executeUpdate();
+
+            ResultSet rsId = pstForn.getGeneratedKeys();
+            int idFornecedor = 0;
+
+            if (rsId.next()) {
+                idFornecedor = rsId.getInt(1);
+            }
+
+            if (cadastroFornecedor > 0) {
+                pstCon = conexao.prepareStatement(sqlCon);
+                pstCon.setString(1, txtTel.getText());
+                pstCon.setString(2, txtCel.getText());
+                pstCon.setString(3, txtEmail.getText());
+                pstCon.setInt(4, idFornecedor);
+                int cadastroContato = pstCon.executeUpdate();
+
+                pstEnd = conexao.prepareStatement(sqlEnd);
+                pstEnd.setString(1, txtCep.getText());
+                pstEnd.setString(2, txtLograd.getText());
+                pstEnd.setString(3, txtNum.getText());
+                pstEnd.setString(4, txtCid.getText());
+                pstEnd.setString(5, txtEst.getSelectedItem().toString());
+                pstEnd.setInt(6, idFornecedor);
+                int cadastroEndereco = pstEnd.executeUpdate();
+
+                if (cadastroContato > 0 && cadastroEndereco > 0) {
+                    JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso!");
                 }
             }
         } catch (Exception e) {
@@ -496,6 +590,10 @@ public class Cadastros extends javax.swing.JInternalFrame {
         // apertando o botão de cadastrar
         if (rbtCliPf.isSelected()) {
             cadastrarClientePf();
+        } else if (rbtCliPj.isSelected()) {
+            cadastrarClientePj();
+        } else if(rbtForn.isSelected()) {
+            cadastrarFornecedor();
         }
     }//GEN-LAST:event_btnCadActionPerformed
 
