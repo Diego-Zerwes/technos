@@ -181,11 +181,11 @@ public class Menus extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private CadPF tela;
+    private Cadastros tela;
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
         
         if (tela == null || !tela.isVisible()) {
-        tela = new CadPF(); // Cria a tela se não existir ou não estiver visível
+        tela = new Cadastros(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela);
         tela.setVisible(true);
     } else {

@@ -11,12 +11,12 @@ import javax.swing.JOptionPane;
  *
  * @author diegozerwesfeitosa
  */
-public class CadPF extends javax.swing.JInternalFrame {
+public class Cadastros extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Cadastross
      */
-    public CadPF() {
+    public Cadastros() {
         initComponents();
     }
 
