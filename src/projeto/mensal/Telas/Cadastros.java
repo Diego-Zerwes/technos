@@ -163,6 +163,51 @@ public class Cadastros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, e + " aqui???");
         }
     }
+    
+    public void cadastrarFuncionario() {
+        String sqlFunc = "INSERT INTO funcionarios (nome, rg, cpf) VALUES (?, ? , ?)";
+        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFuncionario) VALUES (?, ?, ?, ?)";
+        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idFuncionario) VALUES(?, ?, ?, ?, ?, ?)";
+        try {
+            pstFunc = conexao.prepareStatement(sqlFunc, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstFunc.setString(1, txtNome.getText());
+            pstFunc.setString(2, txtRg.getText());
+            pstFunc.setString(3, txtCpf.getText());
+
+            int cadastroFuncionario = pstFunc.executeUpdate();
+
+            ResultSet rsId = pstFunc.getGeneratedKeys();
+            int idFuncionario = 0;
+
+            if (rsId.next()) {
+                idFuncionario = rsId.getInt(1);
+            }
+
+            if (cadastroFuncionario > 0) {
+                pstCon = conexao.prepareStatement(sqlCon);
+                pstCon.setString(1, txtTel.getText());
+                pstCon.setString(2, txtCel.getText());
+                pstCon.setString(3, txtEmail.getText());
+                pstCon.setInt(4, idFuncionario);
+                int cadastroContato = pstCon.executeUpdate();
+
+                pstEnd = conexao.prepareStatement(sqlEnd);
+                pstEnd.setString(1, txtCep.getText());
+                pstEnd.setString(2, txtLograd.getText());
+                pstEnd.setString(3, txtNum.getText());
+                pstEnd.setString(4, txtCid.getText());
+                pstEnd.setString(5, txtEst.getSelectedItem().toString());
+                pstEnd.setInt(6, idFuncionario);
+                int cadastroEndereco = pstEnd.executeUpdate();
+
+                if (cadastroContato > 0 && cadastroEndereco > 0) {
+                    JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e + " aqui???");
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -594,6 +639,8 @@ public class Cadastros extends javax.swing.JInternalFrame {
             cadastrarClientePj();
         } else if(rbtForn.isSelected()) {
             cadastrarFornecedor();
+        } else {
+            cadastrarFuncionario();
         }
     }//GEN-LAST:event_btnCadActionPerformed
 
