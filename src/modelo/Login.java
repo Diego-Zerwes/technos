@@ -40,7 +40,6 @@ public class Login {
     @Override
     public String toString() {
         return "Login{" + "senha=" + senha + ", idFuncionario=" + idFuncionario + ", idLogin=" + idLogin + '}';
-    }
-    
+    }    
     
 }

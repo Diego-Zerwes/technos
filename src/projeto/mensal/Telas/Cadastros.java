@@ -3,11 +3,13 @@ package projeto.mensal.Telas;
 import br.com.parg.viacep.ViaCEP;
 import dao.ClienteDao;
 import dao.ConexaoBanco;
+import dao.FornecedorDao;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import modelo.Cliente;
 import modelo.Contatos;
 import modelo.Endereco;
+import modelo.Fornecedor;
 
 public class Cadastros extends javax.swing.JInternalFrame {
 
@@ -28,237 +30,63 @@ public class Cadastros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco!");
         }
     }
-/*
-    public void cadastrarClientePf() {
-        String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente, idEndereco) VALUES (?, ? , ?, ?, ?, ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
-        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idCliente) VALUES(?, ?, ?, ?, ?, ?)";
-        try {
-            pstCli = conexao.prepareStatement(sqlCli, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstCon = conexao.prepareStatement(sqlCon);
-            pstEnd = conexao.prepareStatement(sqlEnd, PreparedStatement.RETURN_GENERATED_KEYS);
-            
-            pstCli.setString(1, txtNome.getText());
-            pstCli.setString(2, txtCpf.getText());
-            pstCli.setString(3, txtRg.getText());
-            pstCli.setString(4, cboSex.getSelectedItem().toString());
-            pstCli.setString(5, "pessoaFisica");
-            
-
-            int cadastroCliente = pstCli.executeUpdate();
-
-            ResultSet rsId = pstCli.getGeneratedKeys();
-            int idCliente = 0;
-
-            if (rsId.next()) {
-                idCliente = rsId.getInt(1);
-            }
-
-            if (cadastroCliente > 0) {              
-                
-                pstCon.setString(1, txtTel.getText());
-                pstCon.setString(2, txtCel.getText());
-                pstCon.setString(3, txtEmail.getText());
-                pstCon.setInt(4, idCliente);
-                int cadastroContato = pstCon.executeUpdate();
-
-               
-                pstEnd.setString(1, txtCep.getText());
-                pstEnd.setString(2, txtLograd.getText());
-                pstEnd.setString(3, txtNum.getText());
-                pstEnd.setString(4, txtCid.getText());
-                pstEnd.setString(5, txtEst.getSelectedItem().toString());
-                pstEnd.setInt(6, idCliente);
-                
-                ResultSet rsEnd = pstEnd.getGeneratedKeys();
-                int idEnd = rs.getInt(1);
-                
-                pstCli.setInt(6, idEnd);                 
-                 
-                int cadastroEndereco = pstEnd.executeUpdate();
-
-                if (cadastroContato > 0 && cadastroEndereco > 0) {
-                    JOptionPane.showMessageDialog(null, "Cliente PF cadastrado com sucesso!");
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e + " aqui???");
-            
-        }
-    }
-
-    public void cadastrarClientePj() {
-        String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente) VALUES (?, ? , ?, ?, ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
-        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idCliente) VALUES(?, ?, ?, ?, ?, ?)";
-        try {
-            pstCli = conexao.prepareStatement(sqlCli, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstCli.setString(1, txtNome.getText());
-            pstCli.setString(2, txtCpf.getText());
-            pstCli.setString(3, txtRg.getText());
-            pstCli.setString(4, cboSex.getSelectedItem().toString());
-            pstCli.setString(5, "pessoaJuridica");
-
-            int cadastroCliente = pstCli.executeUpdate();
-
-            ResultSet rsId = pstCli.getGeneratedKeys();
-            int idCliente = 0;
-
-            if (rsId.next()) {
-                idCliente = rsId.getInt(1);
-            }
-
-            if (cadastroCliente > 0) {
-                pstCon = conexao.prepareStatement(sqlCon);
-                pstCon.setString(1, txtTel.getText());
-                pstCon.setString(2, txtCel.getText());
-                pstCon.setString(3, txtEmail.getText());
-                pstCon.setInt(4, idCliente);
-                int cadastroContato = pstCon.executeUpdate();
-
-                pstEnd = conexao.prepareStatement(sqlEnd);
-                pstEnd.setString(1, txtCep.getText());
-                pstEnd.setString(2, txtLograd.getText());
-                pstEnd.setString(3, txtNum.getText());
-                pstEnd.setString(4, txtCid.getText());
-                pstEnd.setString(5, txtEst.getSelectedItem().toString());
-                pstEnd.setInt(6, idCliente);
-                int cadastroEndereco = pstEnd.executeUpdate();
-
-                if (cadastroContato > 0 && cadastroEndereco > 0) {
-                    JOptionPane.showMessageDialog(null, "Cliente PJ cadastrado com sucesso!");
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e + " aqui???");
-        }
-    }
-
-    public void cadastrarFornecedor() {
-        String sqlForn = "INSERT INTO fornecedores (razaoSocial, cnpj, ie) VALUES (?, ? , ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFornecedor) VALUES (?, ?, ?, ?)";
-        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idFornecedor) VALUES(?, ?, ?, ?, ?, ?)";
-        try {
-            pstForn = conexao.prepareStatement(sqlForn, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstForn.setString(1, txtNome.getText());
-            pstForn.setString(2, txtCnpj.getText());
-            pstForn.setString(3, txtIE.getText());
-
-            int cadastroFornecedor = pstForn.executeUpdate();
-
-            ResultSet rsId = pstForn.getGeneratedKeys();
-            int idFornecedor = 0;
-
-            if (rsId.next()) {
-                idFornecedor = rsId.getInt(1);
-            }
-
-            if (cadastroFornecedor > 0) {
-                pstCon = conexao.prepareStatement(sqlCon);
-                pstCon.setString(1, txtTel.getText());
-                pstCon.setString(2, txtCel.getText());
-                pstCon.setString(3, txtEmail.getText());
-                pstCon.setInt(4, idFornecedor);
-                int cadastroContato = pstCon.executeUpdate();
-
-                pstEnd = conexao.prepareStatement(sqlEnd);
-                pstEnd.setString(1, txtCep.getText());
-                pstEnd.setString(2, txtLograd.getText());
-                pstEnd.setString(3, txtNum.getText());
-                pstEnd.setString(4, txtCid.getText());
-                pstEnd.setString(5, txtEst.getSelectedItem().toString());
-                pstEnd.setInt(6, idFornecedor);
-                int cadastroEndereco = pstEnd.executeUpdate();
-
-                if (cadastroContato > 0 && cadastroEndereco > 0) {
-                    JOptionPane.showMessageDialog(null, "Fornecedor cadastrado com sucesso!");
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e + " aqui???");
-        }
-    }
-    
-    public void cadastrarFuncionario() {
-        String sqlFunc = "INSERT INTO funcionarios (nome, rg, cpf, senha) VALUES (?, ? , ?, ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFuncionario) VALUES (?, ?, ?, ?)";
-        String sqlEnd = "INSERT INTO endereco(CEP, logradouro, numero, cidade, estado, idFuncionario) VALUES(?, ?, ?, ?, ?, ?)";
-        try {
-            pstFunc = conexao.prepareStatement(sqlFunc, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstFunc.setString(1, txtNome.getText());
-            pstFunc.setString(2, txtRg.getText());
-            pstFunc.setString(3, txtCpf.getText());
-            pstFunc.setString(4, pswSenha.getText());
-
-            int cadastroFuncionario = pstFunc.executeUpdate();
-
-            ResultSet rsId = pstFunc.getGeneratedKeys();
-            int idFuncionario = 0;
-
-            if (rsId.next()) {
-                idFuncionario = rsId.getInt(1);
-            }
-
-            if (cadastroFuncionario > 0) {
-                pstCon = conexao.prepareStatement(sqlCon);
-                pstCon.setString(1, txtTel.getText());
-                pstCon.setString(2, txtCel.getText());
-                pstCon.setString(3, txtEmail.getText());
-                pstCon.setInt(4, idFuncionario);
-                int cadastroContato = pstCon.executeUpdate();
-
-                pstEnd = conexao.prepareStatement(sqlEnd);
-                pstEnd.setString(1, txtCep.getText());
-                pstEnd.setString(2, txtLograd.getText());
-                pstEnd.setString(3, txtNum.getText());
-                pstEnd.setString(4, txtCid.getText());
-                pstEnd.setString(5, txtEst.getSelectedItem().toString());
-                pstEnd.setInt(6, idFuncionario);
-                int cadastroEndereco = pstEnd.executeUpdate();
-
-                if (cadastroContato > 0 && cadastroEndereco > 0) {
-                    JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e + " aqui???");
-        }
-    }
-*/
-    
+   
     public void cadastrarCliente() {
         Cliente cli = new Cliente();
-        
-        if(rbtCliPf.isSelected()) {
+
+        if (rbtCliPf.isSelected()) {
             cli.setNomeRazaoSocial(txtNome.getText());
             cli.setCpfCnpj(txtCpf.getText());
             cli.setRgInscEst(txtRg.getText());
             cli.setSexo(cboSex.getSelectedItem().toString());
-            cli.setTipoCliente("pessoaFisica");            
-        } else if(rbtCliPj.isSelected()) {
+            cli.setTipoCliente("pessoaFisica");
+        } else if (rbtCliPj.isSelected()) {
             cli.setNomeRazaoSocial(txtNome.getText());
             cli.setCpfCnpj(txtCnpj.getText());
             cli.setRgInscEst(txtIE.getText());
             cli.setSexo(null);
-            cli.setTipoCliente("pessoaJuridica");    
+            cli.setTipoCliente("pessoaJuridica");
         }
-        
+
         Contatos cont = new Contatos();
         cont.setCelular(txtCel.getText());
         cont.setTelefone(txtTel.getText());
         cont.setEmail(txtEmail.getText());
-        
+
         Endereco end = new Endereco();
         end.setCep(txtCep.getText());
         end.setLogradouro(txtLograd.getText());
         end.setCidade(txtCid.getText());
         end.setEstado(txtEst.getSelectedItem().toString());
         end.setNumero(txtNum.getText());
-        
+
         ClienteDao cliDao = new ClienteDao();
         cliDao.cadastrarClientePf(cli, cont, end);
     }
-    
+
+    public void cadastrarFornecedor() {
+        Fornecedor forn = new Fornecedor();
+
+        forn.setRazaoSocial(txtNome.getText());
+        forn.setCnpj(txtCnpj.getText());
+        forn.setiE(txtIE.getText());
+
+        Contatos cont = new Contatos();
+        cont.setCelular(txtCel.getText());
+        cont.setTelefone(txtTel.getText());
+        cont.setEmail(txtEmail.getText());
+
+        Endereco end = new Endereco();
+        end.setCep(txtCep.getText());
+        end.setLogradouro(txtLograd.getText());
+        end.setCidade(txtCid.getText());
+        end.setEstado(txtEst.getSelectedItem().toString());
+        end.setNumero(txtNum.getText());
+
+        FornecedorDao fornDao = new FornecedorDao();
+        fornDao.cadastrarFornecedor(forn, cont, end);
+    }
+
     public void limparCampos() {
         txtNome.setText("");
         txtIE.setText("");
@@ -271,9 +99,25 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtCep.setText("");
         txtLograd.setText("");
         txtEst.setSelectedItem(null);
-        txtCid.setText("");                
+        txtCid.setText("");
+    }
+
+    public void habilitarCamposCliPjForn() {
+        cboSex.setEnabled(false);
+        txtIE.setEnabled(true);
+        txtCnpj.setEnabled(true);
+        txtRg.setEnabled(false);
+        txtCpf.setEnabled(false);
     }
     
+    public void habilitarCamposCliPf() {
+        cboSex.setEnabled(true);
+        txtIE.setEnabled(false);
+        txtCnpj.setEnabled(false);
+        txtRg.setEnabled(true);
+        txtCpf.setEnabled(true);
+    }
+
     public void voltarTelaLogin() {
         Login l = new Login();
         l.setVisible(true);
@@ -318,12 +162,9 @@ public class Cadastros extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         txtCnpj = new javax.swing.JFormattedTextField();
         rbtCliPf = new javax.swing.JRadioButton();
-        rbtFun = new javax.swing.JRadioButton();
         rbtForn = new javax.swing.JRadioButton();
         rbtCliPj = new javax.swing.JRadioButton();
         btnLimpCamp = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        pswSenha = new javax.swing.JPasswordField();
 
         setClosable(true);
         setIconifiable(true);
@@ -478,14 +319,6 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
-        buttonGroup1.add(rbtFun);
-        rbtFun.setText("Funcionário");
-        rbtFun.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rbtFunMouseClicked(evt);
-            }
-        });
-
         buttonGroup1.add(rbtForn);
         rbtForn.setText("Fornecedor");
         rbtForn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -509,10 +342,6 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Senha");
-
-        pswSenha.setEnabled(false);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -523,12 +352,8 @@ public class Cadastros extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(114, 114, 114)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnLimpCamp)
                                 .addGap(37, 37, 37)
                                 .addComponent(btnCad)
@@ -602,9 +427,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(rbtCliPj)
                                         .addGap(18, 18, 18)
-                                        .addComponent(rbtForn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbtFun)))
+                                        .addComponent(rbtForn)))
                                 .addGap(4, 4, 4)))
                         .addContainerGap(199, Short.MAX_VALUE))))
         );
@@ -652,16 +475,13 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbtCliPf)
-                    .addComponent(rbtFun)
                     .addComponent(rbtForn)
                     .addComponent(rbtCliPj))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCad)
                     .addComponent(btnCanc)
-                    .addComponent(btnLimpCamp)
-                    .addComponent(jLabel1)
-                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLimpCamp))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
         );
@@ -698,34 +518,14 @@ public class Cadastros extends javax.swing.JInternalFrame {
         rbtCliPf.setSelected(true);
     }//GEN-LAST:event_formInternalFrameOpened
 
-    private void rbtFunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtFunMouseClicked
-        // marcando o radio button como funcionário
-        cboSex.setEnabled(true);
-        txtIE.setEnabled(false);
-        txtCnpj.setEnabled(false);
-        txtRg.setEnabled(true);
-        txtCpf.setEnabled(true);
-        pswSenha.setEnabled(true);
-    }//GEN-LAST:event_rbtFunMouseClicked
-
     private void rbtFornMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtFornMouseClicked
         // marcando o radio button como Fornecedor
-        cboSex.setEnabled(false);
-        txtIE.setEnabled(true);
-        txtCnpj.setEnabled(true);
-        txtRg.setEnabled(false);
-        txtCpf.setEnabled(false);
-        pswSenha.setEnabled(false);
+        habilitarCamposCliPjForn();
     }//GEN-LAST:event_rbtFornMouseClicked
 
     private void rbtCliPfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtCliPfMouseClicked
-        // marcando o radio button como cliente pessoa jurídica
-        cboSex.setEnabled(true);
-        txtIE.setEnabled(false);
-        txtCnpj.setEnabled(false);
-        txtRg.setEnabled(true);
-        txtCpf.setEnabled(true);
-        pswSenha.setEnabled(false);
+        // marcando o radio button como cliente pessoa física
+        habilitarCamposCliPf();
     }//GEN-LAST:event_rbtCliPfMouseClicked
 
     private void btnCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadActionPerformed
@@ -736,20 +536,15 @@ public class Cadastros extends javax.swing.JInternalFrame {
         } else if (rbtCliPj.isSelected()) {
             cadastrarCliente();
             voltarTelaLogin();
-        } else if(rbtForn.isSelected()) {
-           // cadastrarFornecedor();
+        } else if (rbtForn.isSelected()) {
+            cadastrarFornecedor();
             voltarTelaLogin();
-        } 
+        }
     }//GEN-LAST:event_btnCadActionPerformed
 
     private void rbtCliPjMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtCliPjMouseClicked
         // marcando o radio button como cliente pessoa jurídica
-        cboSex.setEnabled(false);
-        txtIE.setEnabled(true);
-        txtCnpj.setEnabled(true);
-        txtRg.setEnabled(false);
-        txtCpf.setEnabled(false);
-        pswSenha.setEnabled(false);
+        habilitarCamposCliPjForn();
     }//GEN-LAST:event_rbtCliPjMouseClicked
 
     private void rbtCliPfFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rbtCliPfFocusGained
@@ -768,7 +563,6 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnLimpCamp;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboSex;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -785,11 +579,9 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JPasswordField pswSenha;
     private javax.swing.JRadioButton rbtCliPf;
     private javax.swing.JRadioButton rbtCliPj;
     private javax.swing.JRadioButton rbtForn;
-    private javax.swing.JRadioButton rbtFun;
     private javax.swing.JFormattedTextField txtCel;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCid;
