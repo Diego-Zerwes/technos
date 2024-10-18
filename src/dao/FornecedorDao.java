@@ -27,6 +27,7 @@ public class FornecedorDao {
             JOptionPane.showMessageDialog(null, "Erro ao conectar co m o banco!");
         }
     }
+    
 
     public void cadastrarFornecedor(Fornecedor fornecedor, Contatos contato, Endereco endereco) {
         String sqlEnd = "INSERT INTO endereco (cep, logradouro, cidade, estado, numero) VALUES (?, ?, ?, ?, ?)";
@@ -92,4 +93,5 @@ public class FornecedorDao {
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
         }
     }
+
 }

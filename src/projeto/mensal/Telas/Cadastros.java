@@ -536,7 +536,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         } else if (rbtCliPj.isSelected()) {
             cadastrarCliente();
             voltarTelaLogin();
-        } else if (rbtForn.isSelected()) {
+        } else if(rbtForn.isSelected()) {
             cadastrarFornecedor();
             voltarTelaLogin();
         }
