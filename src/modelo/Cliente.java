@@ -10,15 +10,19 @@ public class Cliente {
     private String nome;
     private String cpfCnpj;
     private String RgInscEst;
+    private String sexo;
+    private String tipoUsuario;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, String nome, String cpfCnpj, String RgInscEst) {
+    public Cliente(int idCliente, String nome, String cpfCnpj, String RgInscEst, String sexo, String tipoUsuario) {
         this.idCliente = idCliente;
         this.nome = nome;
         this.cpfCnpj = cpfCnpj;
         this.RgInscEst = RgInscEst;
+        this.sexo = sexo;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public int getIdCliente() {
@@ -51,7 +55,22 @@ public class Cliente {
 
     public void setRgInscEst(String RgInscEst) {
         this.RgInscEst = RgInscEst;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }    
-    
    
 }
