@@ -7,22 +7,22 @@ import java.sql.ResultSet;
 
 public class Cliente {
     private int idCliente;
-    private String nome;
+    private String nomeRazaoSocial;
     private String cpfCnpj;
     private String RgInscEst;
     private String sexo;
-    private String tipoUsuario;
+    private String tipoCliente;
 
     public Cliente() {
     }
 
-    public Cliente(int idCliente, String nome, String cpfCnpj, String RgInscEst, String sexo, String tipoUsuario) {
+    public Cliente(int idCliente, String nomeRazaoSocial, String cpfCnpj, String RgInscEst, String sexo, String tipoCliente) {
         this.idCliente = idCliente;
-        this.nome = nome;
+        this.nomeRazaoSocial = nomeRazaoSocial;
         this.cpfCnpj = cpfCnpj;
         this.RgInscEst = RgInscEst;
         this.sexo = sexo;
-        this.tipoUsuario = tipoUsuario;
+        this.tipoCliente = tipoCliente;
     }
 
     public int getIdCliente() {
@@ -33,12 +33,12 @@ public class Cliente {
         this.idCliente = idCliente;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeRazaoSocial() {
+        return nomeRazaoSocial;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeRazaoSocial(String nomeRazaoSocial) {
+        this.nomeRazaoSocial = nomeRazaoSocial;
     }
 
     public String getCpfCnpj() {
@@ -65,12 +65,16 @@ public class Cliente {
         this.sexo = sexo;
     }
 
-    public String getTipoUsuario() {
-        return tipoUsuario;
+    public String getTipoCliente() {
+        return tipoCliente;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }    
+    public void setTipoCliente(String tipoCliente) {
+        this.tipoCliente = tipoCliente;
+    }
+
+   
+
+    
    
 }

@@ -1,9 +1,13 @@
 package projeto.mensal.Telas;
 
 import br.com.parg.viacep.ViaCEP;
+import dao.ClienteDao;
 import dao.ConexaoBanco;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import modelo.Cliente;
+import modelo.Contatos;
+import modelo.Endereco;
 
 public class Cadastros extends javax.swing.JInternalFrame {
 
@@ -24,7 +28,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco!");
         }
     }
-
+/*
     public void cadastrarClientePf() {
         String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente, idEndereco) VALUES (?, ? , ?, ?, ?, ?)";
         String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
@@ -219,6 +223,40 @@ public class Cadastros extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e + " aqui???");
         }
+    }
+*/
+    
+    public void cadastrarCliente() {
+        Cliente cli = new Cliente();
+        
+        if(rbtCliPf.isSelected()) {
+            cli.setNomeRazaoSocial(txtNome.getText());
+            cli.setCpfCnpj(txtCpf.getText());
+            cli.setRgInscEst(txtRg.getText());
+            cli.setSexo(cboSex.getSelectedItem().toString());
+            cli.setTipoCliente("pessoaFisica");            
+        } else if(rbtCliPj.isSelected()) {
+            cli.setNomeRazaoSocial(txtNome.getText());
+            cli.setCpfCnpj(txtCnpj.getText());
+            cli.setRgInscEst(txtIE.getText());
+            cli.setSexo(null);
+            cli.setTipoCliente("pessoaJuridica");    
+        }
+        
+        Contatos cont = new Contatos();
+        cont.setCelular(txtCel.getText());
+        cont.setTelefone(txtTel.getText());
+        cont.setEmail(txtEmail.getText());
+        
+        Endereco end = new Endereco();
+        end.setCep(txtCep.getText());
+        end.setLogradouro(txtLograd.getText());
+        end.setCidade(txtCid.getText());
+        end.setEstado(txtEst.getSelectedItem().toString());
+        end.setNumero(txtNum.getText());
+        
+        ClienteDao cliDao = new ClienteDao();
+        cliDao.cadastrarClientePf(cli, cont, end);
     }
     
     public void limparCampos() {
@@ -693,18 +731,15 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private void btnCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadActionPerformed
         // apertando o botão de cadastrar
         if (rbtCliPf.isSelected()) {
-            cadastrarClientePf();
+            cadastrarCliente();
             voltarTelaLogin();
         } else if (rbtCliPj.isSelected()) {
-            cadastrarClientePj();
+            cadastrarCliente();
             voltarTelaLogin();
         } else if(rbtForn.isSelected()) {
-            cadastrarFornecedor();
+           // cadastrarFornecedor();
             voltarTelaLogin();
-        } else {
-            cadastrarFuncionario();
-            voltarTelaLogin();
-        }
+        } 
     }//GEN-LAST:event_btnCadActionPerformed
 
     private void rbtCliPjMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtCliPjMouseClicked
