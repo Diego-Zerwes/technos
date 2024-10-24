@@ -100,6 +100,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtLograd.setText("");
         txtEst.setSelectedItem(null);
         txtCid.setText("");
+        txtNum.setText("");
     }
 
     public void habilitarCamposCliPjForn() {
@@ -532,13 +533,16 @@ public class Cadastros extends javax.swing.JInternalFrame {
         // apertando o botão de cadastrar
         if (rbtCliPf.isSelected()) {
             cadastrarCliente();
-            voltarTelaLogin();
+            //voltarTelaLogin();
+            limparCampos();
         } else if (rbtCliPj.isSelected()) {
             cadastrarCliente();
-            voltarTelaLogin();
+            //voltarTelaLogin();
+            limparCampos();
         } else if(rbtForn.isSelected()) {
             cadastrarFornecedor();
-            voltarTelaLogin();
+            //voltarTelaLogin();
+            limparCampos();
         }
     }//GEN-LAST:event_btnCadActionPerformed
 

@@ -4,6 +4,7 @@ import dao.ConexaoBanco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Contatos;
 import modelo.Endereco;
@@ -93,5 +94,25 @@ public class FornecedorDao {
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
         }
     }
+    
+    public ArrayList<Fornecedor> consultar() {
+    String sql = "SELECT idFornecedor, razaoSocial FROM fornecedores"; // Verifique se o nome da tabela está correto
+    ArrayList<Fornecedor> listaFornecedores = new ArrayList<>();
 
+    try (PreparedStatement pst = conn.prepareStatement(sql);
+         ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+            Fornecedor fornecedor = new Fornecedor();
+            fornecedor.setIdFornecedor(rs.getInt("idFornecedor")); // Supondo que você tenha esse método na classe Fornecedor
+            fornecedor.setRazaoSocial(rs.getString("razaoSocial")); // Supondo que você tenha esse método na classe Fornecedor
+            
+            listaFornecedores.add(fornecedor);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao consultar fornecedores: " + e.getMessage());
+    }
+
+    return listaFornecedores;
+}
 }

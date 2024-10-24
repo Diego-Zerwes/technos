@@ -1,12 +1,18 @@
 
 package projeto.mensal.Telas;
 
+import dao.FornecedorDao;
+import dao.ProdutoDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Produto;
 
 
 public class Menus extends javax.swing.JFrame {
-
+private Compras telaCompras; 
    
     public Menus() {
         initComponents();
@@ -31,6 +37,11 @@ public class Menus extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -228,6 +239,60 @@ public class Menus extends javax.swing.JFrame {
     dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jLogoffActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        
+         ProdutoDao cadastroProdutos = new ProdutoDao();
+         atualizaTabela(cadastroProdutos);
+
+    }//GEN-LAST:event_formWindowOpened
+    
+    private void atualizaTabela(ProdutoDao cadastroPDao)
+    {
+        
+
+               try {
+        limparTabela();
+
+        ArrayList<Produto> listaCadastros = cadastroPDao.consultar();
+        System.out.println("Produtos consultados: " + listaCadastros.size()); // Log para depuração
+        
+        DefaultTableModel modeloTabela = (DefaultTableModel) this.telaCompras.TabelaCompras.getModel();
+
+        for (Produto cadastroP : listaCadastros) {
+            String razaoSocial = "Não Disponível"; // Valor padrão caso o fornecedor seja nulo
+
+            if (cadastroP.getFornecedor() != null) {
+                razaoSocial = cadastroP.getFornecedor().getRazaoSocial();
+            }
+
+            modeloTabela.addRow(new String[]{
+                Integer.toString(cadastroP.getIdProduto()),
+                cadastroP.getDescricao(),
+                cadastroP.getModelo(),
+                razaoSocial,
+                cadastroP.getCor(),
+                cadastroP.getMarca(),
+                String.valueOf(cadastroP.getEstoque().getQuantidade()),
+                String.valueOf(cadastroP.getPrecoCompra()),
+                String.valueOf(cadastroP.getPrecoVenda())
+            });
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+    }
+     
+    }
+        
+        private void limparTabela()
+    {
+        while(this.telaCompras.TabelaCompras.getRowCount() > 0) 
+        {
+            DefaultTableModel dm = (DefaultTableModel) this.telaCompras.TabelaCompras.getModel();
+            dm.getDataVector().removeAllElements();
+        }
+    }
     /**
      * @param args the command line arguments
      */
