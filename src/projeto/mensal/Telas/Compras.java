@@ -1,24 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package projeto.mensal.Telas;
 
+import dao.ComprasDao;
+import dao.FormaDePagamentoDao;
+import dao.FornecedorDao;
 import dao.ProdutoDao;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.table.DefaultTableModel;
+import modelo.Compra;
 import modelo.Produto;
 import modelo.Estoque;
-import dao.ConexaoBanco;
-import dao.FornecedorDao;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
+import modelo.FormaDePagamento;
 import modelo.Fornecedor;
+import java.sql.Timestamp;
 
 /**
  *
@@ -30,9 +29,9 @@ public class Compras extends javax.swing.JInternalFrame {
 
     public Compras() {
         initComponents();
-    }
 
-  
+    } 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -62,11 +61,40 @@ public class Compras extends javax.swing.JInternalFrame {
         jLabel11 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         jFornecedor = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        jFormaDePagamento = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                formComponentAdded(evt);
+            }
+        });
+        addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                formAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                formComponentHidden(evt);
+            }
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jLabel1.setText("ID");
 
@@ -183,6 +211,30 @@ public class Compras extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Buscar");
 
+        jFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jFornecedorMouseClicked(evt);
+            }
+        });
+        jFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFornecedorActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Forma de Pagamento");
+
+        jFormaDePagamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jFormaDePagamentoMouseClicked(evt);
+            }
+        });
+        jFormaDePagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormaDePagamentoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -209,18 +261,6 @@ public class Compras extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addComponent(jFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(111, 111, 111)
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel9)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(layout.createSequentialGroup()
@@ -232,7 +272,25 @@ public class Compras extends javax.swing.JInternalFrame {
                                                 .addComponent(txtBuscar)
                                                 .addGap(229, 229, 229)))
                                         .addComponent(btnCadastrar)
-                                        .addGap(29, 29, 29))))))
+                                        .addGap(29, 29, 29))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jFornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(111, 111, 111)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12)
+                                                .addGap(57, 57, 57)
+                                                .addComponent(jFormaDePagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtPrecoCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel9)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(173, Short.MAX_VALUE)
                         .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -285,14 +343,18 @@ public class Compras extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
                         .addComponent(txtPrecoVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancelar)
                             .addComponent(btnCadastrar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(jFormaDePagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
@@ -349,58 +411,130 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPrecoCompraKeyPressed
 
     private void btnCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarMouseClicked
-        if ((txtDescricao.getText().trim().isEmpty()) 
-    || (txtModelo.getText().trim().isEmpty()) 
-    || (txtQuantidade.getText().trim().isEmpty())
-    || (jCor.getSelectedIndex() < 0)
-    || (jMarca.getSelectedIndex() < 0)
-    || (jFornecedor.getSelectedIndex() < 0)
-    || (txtPrecoCompra.getText().trim().isEmpty())
-    || (txtPrecoVenda.getText().trim().isEmpty())) {
-        
-        JOptionPane.showMessageDialog(null, "Dados Inválidos");
-        txtDescricao.requestFocus();
-    } else {
-        Produto cadastroP = new Produto();
-        Estoque estoque = new Estoque();
-        estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+    if ((txtDescricao.getText().trim().isEmpty()) ||   
+    (txtModelo.getText().trim().isEmpty()) ||   
+    (txtQuantidade.getText().trim().isEmpty()) ||   
+    (jCor.getSelectedIndex() < 0) ||   
+    (jMarca.getSelectedIndex() < 0) ||      
+    (txtPrecoCompra.getText().trim().isEmpty()) ||   
+    (txtPrecoVenda.getText().trim().isEmpty())) {  
+    
+    JOptionPane.showMessageDialog(null, "Dados Inválidos");  
+    txtDescricao.requestFocus();  
+} else {  
+    // Criação do objeto Produto  
+    Produto cadastroP = new Produto();  
+    Estoque estoque = new Estoque(); // Corrigido o nome da variável  
+    estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));  
+    cadastroP.setDescricao(txtDescricao.getText());  
+    cadastroP.setModelo(txtModelo.getText());  
+    cadastroP.setMarca(jMarca.getSelectedItem().toString());  
+    cadastroP.setCor(jCor.getSelectedItem().toString());  
+    cadastroP.setEstoque(estoque);  
 
-        cadastroP.setDescricao(txtDescricao.getText());
-        cadastroP.setModelo(txtModelo.getText());
-        cadastroP.setMarca(jMarca.getSelectedItem().toString());
-        cadastroP.setCor(jCor.getSelectedItem().toString());
-        cadastroP.setEstoque(estoque); 
-        
-        // Supondo que você tenha um método para obter o fornecedor selecionado
-        Fornecedor fornecedorSelecionado = (Fornecedor) jFornecedor.getSelectedItem();
-        cadastroP.setFornecedor(fornecedorSelecionado); // Atribui o fornecedor selecionado ao produto
-        
-        try {
-            double precoCompra = Double.parseDouble(txtPrecoCompra.getText());
-            double precoVenda = Double.parseDouble(txtPrecoVenda.getText());
-            cadastroP.setPrecoCompra(precoCompra);
-            cadastroP.setPrecoVenda(precoVenda);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Por favor, insira um preço válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return; // Encerrar execução se a conversão falhar
-        }
+    // Criação da compra  
+    Compra comprasP = new Compra();  
+    //Fornecedor fornecedorSelecionado = (Fornecedor) jFornecedor.getSelectedItem();  
+    //if (fornecedorSelecionado != null) {  
+        // comprasP.setIdFornecedor(fornecedorSelecionado.getIdFornecedor());  
+        //  System.out.println("ID do Fornecedor: " + comprasP.getIdFornecedor());  
+    //} else {  
+        //JOptionPane.showMessageDialog(null, "Selecione um fornecedor válida.", "Erro", JOptionPane.ERROR_MESSAGE);  
+        //  return; // Interrompe a execução se não houver forma de pagamento  
+//}   
+      // FormaDePagamento formaPagamentoSelecionada = (FormaDePagamento) jFormaDePagamento.getSelectedItem();  
+      //  if (formaPagamentoSelecionada != null) {  
+        //   comprasP.setIdFormaPagamento(formaPagamentoSelecionada.getIdFormaPagamento());  
+        //} else {  
+           //JOptionPane.showMessageDialog(null, "Selecione uma forma de pagamento válida.", "Erro", JOptionPane.ERROR_MESSAGE);  
+            // return; // Interrompe a execução se não houver forma de pagamento  
+//}  
+        //  comprasP.setIdCaixa(1); // Defina o ID da caixa, se necessário  
+        // comprasP.setIdRelatorio(1); // Defina o ID do relatório, se necessário  
 
-        try {
-            ProdutoDao cadastroPDao = new ProdutoDao();
-            cadastroPDao.inserir(cadastroP); 
-            
-            // Atualiza a tabela após a inserção
-            atualizaTabela(cadastroPDao);
-            limparCampos();
-        } catch(Exception ex) {
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
-        }
-    }              
+    // Inserção dos dados atuais  
+   Timestamp timestampAtual = new Timestamp(System.currentTimeMillis()); 
+    
+    comprasP.setDataCompra(timestampAtual.toString());  
+
+    // Inserção da compra no banco de dados  
+    ComprasDao compraDao = new ComprasDao();  
+    try {  
+        compraDao.inserirCompra(comprasP);  
+       JOptionPane.showMessageDialog(null, "Compra registrada com sucesso!");  
+    } catch (SQLException ex) {  
+        JOptionPane.showMessageDialog(null, "Erro ao registrar a compra: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);  
+        Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);  
+    }  
+
+    // Tratamento dos preços  
+    try {  
+        double precoCompra = Double.parseDouble(txtPrecoCompra.getText());  
+        double precoVenda = Double.parseDouble(txtPrecoVenda.getText());  
+        cadastroP.setPrecoCompra(precoCompra);  
+        cadastroP.setPrecoVenda(precoVenda);  
+    } catch (NumberFormatException e) {  
+        JOptionPane.showMessageDialog(null, "Por favor, insira um preço válido.", "Erro", JOptionPane.ERROR_MESSAGE);  
+        return; // Encerrar execução se a conversão falhar  
+    }  
+
+    // Inserção do produto no banco de dados  
+    try {  
+        ProdutoDao cadastroPDao = new ProdutoDao();  
+        cadastroPDao.inserir(cadastroP);  
+        // Atualiza a tabela após a inserção  
+        atualizaTabela(cadastroPDao);
+        limparCampos();  
+    } catch(Exception ex) {  
+        JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);  
+    }  
+    }  
+    
     }//GEN-LAST:event_btnCadastrarMouseClicked
 
     private void TabelaComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaComprasMouseClicked
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_TabelaComprasMouseClicked
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+
+    }//GEN-LAST:event_formFocusGained
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentHidden
+
+    }//GEN-LAST:event_formComponentHidden
+
+    private void formComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_formComponentAdded
+
+    }//GEN-LAST:event_formComponentAdded
+
+    private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_formAncestorAdded
+
+    }//GEN-LAST:event_formAncestorAdded
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        FormaDePagamentoDao formadepagamentoDao = new FormaDePagamentoDao();
+         atualizaForma(formadepagamentoDao);
+         FornecedorDao fornecedorDao = new FornecedorDao();
+         atualizaFornecedor(fornecedorDao);
+    }//GEN-LAST:event_formComponentShown
+
+    private void jFormaDePagamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFormaDePagamentoMouseClicked
+       
+    }//GEN-LAST:event_jFormaDePagamentoMouseClicked
+
+    private void jFormaDePagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormaDePagamentoActionPerformed
+
+    }//GEN-LAST:event_jFormaDePagamentoActionPerformed
+
+    private void jFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFornecedorActionPerformed
+
+    }//GEN-LAST:event_jFornecedorActionPerformed
+
+    private void jFornecedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFornecedorMouseClicked
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_jFornecedorMouseClicked
 
     private void limparCampos()
     {
@@ -412,6 +546,7 @@ public class Compras extends javax.swing.JInternalFrame {
         this.jCor.setSelectedIndex(-1);
         this.jMarca.setSelectedIndex(-1);
         this.jFornecedor.setSelectedIndex(-1);
+        this.jFormaDePagamento.setSelectedIndex(-1);
         this.txtPrecoCompra.setText(null);
         this.txtPrecoVenda.setText(null);
     }
@@ -425,7 +560,7 @@ public class Compras extends javax.swing.JInternalFrame {
         }
     }
      
-     private void atualizaTabela(ProdutoDao cadastroPDao)
+     public void atualizaTabela(ProdutoDao cadastroPDao)
     {
         
 
@@ -464,7 +599,54 @@ public class Compras extends javax.swing.JInternalFrame {
      
     }
      
+public void atualizaFornecedor(FornecedorDao fornecedorDao) {
+    try {
+        ArrayList<Fornecedor> listarFornecedores = fornecedorDao.consultar(); 
 
+        // Limpa o JComboBox antes de adicionar novos itens
+        jFornecedor.removeAllItems(); 
+
+        for (Fornecedor fornecedor : listarFornecedores) {
+            jFornecedor.addItem(fornecedor.getRazaoSocial()); // Adiciona o objeto Fornecedor
+        }
+
+        jFornecedor.setSelectedIndex(-1); // Nenhum item selecionado inicialmente
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    private void atualizaForma(FormaDePagamentoDao formaDao)
+    {
+        
+
+                try
+                {
+                    limparCbxSexo();
+                    ArrayList<FormaDePagamento> listarForma;
+                    listarForma = formaDao.consultar(); 
+
+                    for(FormaDePagamento forma : listarForma)
+                    {
+                        jFormaDePagamento.addItem(forma.getDescricao());
+                    }
+                    jFormaDePagamento.setSelectedIndex(-1);
+                }
+                catch(Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+                }
+           
+        
+    }
+
+private void limparCbxSexo()
+    {
+     //  if(!(jcSexo.get().trim().isEmpty())){ 
+         // jFornecedor.removeAllItems();
+          //jFormaDePagamento.removeAllItems();
+      // }
+       
+    }
     
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -472,10 +654,12 @@ public class Compras extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox<String> jCor;
+    private javax.swing.JComboBox<String> jFormaDePagamento;
     private javax.swing.JComboBox<String> jFornecedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

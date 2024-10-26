@@ -17,6 +17,11 @@ public class Fornecedor {
         this.iE = iE;
     }
 
+    public Fornecedor(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
+    }
+    
+
     public int getIdFornecedor() {
         return idFornecedor;
     }
@@ -49,4 +54,8 @@ public class Fornecedor {
         this.iE = iE;
     }    
     
+    @Override
+    public String toString() {
+        return "Fornecedor{" + "razaoSocial=" + razaoSocial + '}';
+    }
 }

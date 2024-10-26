@@ -96,16 +96,16 @@ public class FornecedorDao {
     }
     
     public ArrayList<Fornecedor> consultar() {
-    String sql = "SELECT idFornecedor, razaoSocial FROM fornecedores"; // Verifique se o nome da tabela está correto
+    String sql = "SELECT * FROM fornecedores"; // Verifique se o nome da tabela está correto
     ArrayList<Fornecedor> listaFornecedores = new ArrayList<>();
 
     try (PreparedStatement pst = conn.prepareStatement(sql);
          ResultSet rs = pst.executeQuery()) {
-
+            
         while (rs.next()) {
             Fornecedor fornecedor = new Fornecedor();
-            fornecedor.setIdFornecedor(rs.getInt("idFornecedor")); // Supondo que você tenha esse método na classe Fornecedor
-            fornecedor.setRazaoSocial(rs.getString("razaoSocial")); // Supondo que você tenha esse método na classe Fornecedor
+            fornecedor.setIdFornecedor(rs.getInt("idFornecedor")); 
+            fornecedor.setRazaoSocial(rs.getString("razaoSocial")); 
             
             listaFornecedores.add(fornecedor);
         }
@@ -116,3 +116,5 @@ public class FornecedorDao {
     return listaFornecedores;
 }
 }
+       
+

@@ -1,14 +1,8 @@
-
 package modelo;
 
-/**
- *
- * @author difoz
- */
 public class Compra {
     private int idCompra;
-    private String dataCompra;
-    private int idUsuario;
+    private String dataCompra; // ainda será usado para armazenar a data da compra
     private int idFornecedor;
     private int idFormaPagamento;
     private int idCaixa;
@@ -16,22 +10,10 @@ public class Compra {
 
     public Compra() {
     }
-    
-    
 
-    public Compra(String dataCompra, int idUsuario, int idFornecedor, int idFormaPagamento, int idCaixa, int idRelatorio) {
-        this.dataCompra = dataCompra;
-        this.idUsuario = idUsuario;
-        this.idFornecedor = idFornecedor;
-        this.idFormaPagamento = idFormaPagamento;
-        this.idCaixa = idCaixa;
-        this.idRelatorio = idRelatorio;
-    }
-
-    public Compra(int idCompra, String dataCompra, int idUsuario, int idFornecedor, int idFormaPagamento, int idCaixa, int idRelatorio) {
+    public Compra(int idCompra, String dataCompra, int idFornecedor, int idFormaPagamento, int idCaixa, int idRelatorio) {
         this.idCompra = idCompra;
         this.dataCompra = dataCompra;
-        this.idUsuario = idUsuario;
         this.idFornecedor = idFornecedor;
         this.idFormaPagamento = idFormaPagamento;
         this.idCaixa = idCaixa;
@@ -52,14 +34,6 @@ public class Compra {
 
     public void setDataCompra(String dataCompra) {
         this.dataCompra = dataCompra;
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public int getIdFornecedor() {
@@ -93,7 +67,8 @@ public class Compra {
     public void setIdRelatorio(int idRelatorio) {
         this.idRelatorio = idRelatorio;
     }
+
+   
     
-    
-    
+ 
 }

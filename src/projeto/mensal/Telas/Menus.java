@@ -2,13 +2,9 @@
 package projeto.mensal.Telas;
 
 import dao.FornecedorDao;
-import dao.ProdutoDao;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import modelo.Produto;
+import projeto.mensal.Telas.Compras;
+
 
 
 public class Menus extends javax.swing.JFrame {
@@ -55,6 +51,11 @@ private Compras telaCompras;
 
         jCompras.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jCompras.setText("Compras");
+        jCompras.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComprasFocusGained(evt);
+            }
+        });
         jCompras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComprasActionPerformed(evt);
@@ -191,6 +192,7 @@ private Compras telaCompras;
     private Compras tela1;
     private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
         if (tela1 == null || !tela1.isVisible()) {
+        
         tela1 = new Compras(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela1);
         tela1.setVisible(true);
@@ -199,7 +201,7 @@ private Compras telaCompras;
         desktop.remove(desktop);
         desktop.repaint();
     }
-                // TODO add your handling code here:
+                
         
     }//GEN-LAST:event_jComprasActionPerformed
     private Estoque tela2;
@@ -241,58 +243,15 @@ private Compras telaCompras;
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        
-         ProdutoDao cadastroProdutos = new ProdutoDao();
-         atualizaTabela(cadastroProdutos);
 
     }//GEN-LAST:event_formWindowOpened
+
+    private void jComprasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComprasFocusGained
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jComprasFocusGained
     
-    private void atualizaTabela(ProdutoDao cadastroPDao)
-    {
-        
-
-               try {
-        limparTabela();
-
-        ArrayList<Produto> listaCadastros = cadastroPDao.consultar();
-        System.out.println("Produtos consultados: " + listaCadastros.size()); // Log para depuração
-        
-        DefaultTableModel modeloTabela = (DefaultTableModel) this.telaCompras.TabelaCompras.getModel();
-
-        for (Produto cadastroP : listaCadastros) {
-            String razaoSocial = "Não Disponível"; // Valor padrão caso o fornecedor seja nulo
-
-            if (cadastroP.getFornecedor() != null) {
-                razaoSocial = cadastroP.getFornecedor().getRazaoSocial();
-            }
-
-            modeloTabela.addRow(new String[]{
-                Integer.toString(cadastroP.getIdProduto()),
-                cadastroP.getDescricao(),
-                cadastroP.getModelo(),
-                razaoSocial,
-                cadastroP.getCor(),
-                cadastroP.getMarca(),
-                String.valueOf(cadastroP.getEstoque().getQuantidade()),
-                String.valueOf(cadastroP.getPrecoCompra()),
-                String.valueOf(cadastroP.getPrecoVenda())
-            });
-        }
-
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
-    }
-     
-    }
-        
-        private void limparTabela()
-    {
-        while(this.telaCompras.TabelaCompras.getRowCount() > 0) 
-        {
-            DefaultTableModel dm = (DefaultTableModel) this.telaCompras.TabelaCompras.getModel();
-            dm.getDataVector().removeAllElements();
-        }
-    }
+   
     /**
      * @param args the command line arguments
      */
