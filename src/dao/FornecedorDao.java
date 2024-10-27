@@ -115,6 +115,24 @@ public class FornecedorDao {
 
     return listaFornecedores;
 }
+    
+    public Fornecedor buscarFornecedorPorRazaoSocial(String razaoSocial) throws Exception {
+    Fornecedor fornecedor = null;
+    String sql = "SELECT * FROM fornecedores WHERE razaoSocial = ?";
+    
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, razaoSocial);
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            fornecedor = new Fornecedor();
+            fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+            fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
+            // Preencha os demais campos necessários
+        }
+    }
+    return fornecedor;
+}
 }
        
 

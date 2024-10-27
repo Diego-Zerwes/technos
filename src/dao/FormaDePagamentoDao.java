@@ -51,6 +51,24 @@ public class FormaDePagamentoDao implements DaoGenerica<FormaDePagamento>{
            throw new RuntimeException(ex);
         }
     }
+    
+    public FormaDePagamento buscarFormaDePagamento(String descricao) throws Exception {
+    FormaDePagamento forma  = null;
+    String sql = "SELECT * FROM formapagamento WHERE descricao = ?";
+    
+    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, descricao);
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            forma = new FormaDePagamento();
+            forma.setIdFormaPagamento(rs.getInt("idFormaPagamento"));
+            forma.setDescricao(rs.getString("descricao"));
+            // Preencha os demais campos necessários
+        }
+    }
+    return forma;
+}
 
     @Override
     public void alterar(FormaDePagamento objt) {

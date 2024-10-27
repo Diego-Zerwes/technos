@@ -56,6 +56,6 @@ public class Fornecedor {
     
     @Override
     public String toString() {
-        return "Fornecedor{" + "razaoSocial=" + razaoSocial + '}';
+        return this.razaoSocial;
     }
 }
