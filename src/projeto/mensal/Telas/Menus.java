@@ -24,10 +24,7 @@ private Compras telaCompras;
         jCompras = new javax.swing.JButton();
         jVendas = new javax.swing.JButton();
         jRelatorio = new javax.swing.JButton();
-        jFinanceiro = new javax.swing.JButton();
-        jCaixa = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
-        jEstoque = new javax.swing.JButton();
         desktop = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -78,30 +75,11 @@ private Compras telaCompras;
             }
         });
 
-        jFinanceiro.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        jFinanceiro.setText("Financeiro");
-        jFinanceiro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFinanceiroActionPerformed(evt);
-            }
-        });
-
-        jCaixa.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        jCaixa.setText("Caixa");
-
         jLogoff.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLogoff.setText("Logoff");
         jLogoff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jLogoffActionPerformed(evt);
-            }
-        });
-
-        jEstoque.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        jEstoque.setText("Estoque");
-        jEstoque.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jEstoqueActionPerformed(evt);
             }
         });
 
@@ -112,12 +90,9 @@ private Compras telaCompras;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jFinanceiro, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                    .addComponent(jEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                     .addComponent(jCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jRelatorio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLogoff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(86, Short.MAX_VALUE))
@@ -127,19 +102,13 @@ private Compras telaCompras;
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(195, Short.MAX_VALUE)
                 .addComponent(btnCadastro)
-                .addGap(27, 27, 27)
-                .addComponent(jFinanceiro)
-                .addGap(29, 29, 29)
-                .addComponent(jEstoque)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(jCompras)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addComponent(jVendas)
-                .addGap(31, 31, 31)
-                .addComponent(jCaixa)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(jRelatorio)
-                .addGap(32, 32, 32)
+                .addGap(241, 241, 241)
                 .addComponent(jLogoff)
                 .addGap(83, 83, 83))
         );
@@ -204,19 +173,7 @@ private Compras telaCompras;
                 
         
     }//GEN-LAST:event_jComprasActionPerformed
-    private Estoque tela2;
-    private void jEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEstoqueActionPerformed
-        if (tela2 == null || !tela2.isVisible()) {
-        tela2 = new Estoque(); // Cria a tela se não existir ou não estiver visível
-        desktop.add(tela2);
-        tela2.setVisible(true);
-    } else {
-        tela2.setVisible(false);
-        desktop.remove(desktop);
-        desktop.repaint();
-    }      
-    }//GEN-LAST:event_jEstoqueActionPerformed
-    private Relatorio tela3;
+      private Relatorio tela3;
     private void jRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRelatorioActionPerformed
         if (tela3 == null || !tela3.isVisible()) {
         tela3 = new Relatorio(); // Cria a tela se não existir ou não estiver visível
@@ -232,10 +189,6 @@ private Compras telaCompras;
     private void jVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVendasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jVendasActionPerformed
-
-    private void jFinanceiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceiroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFinanceiroActionPerformed
 
     private void jLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogoffActionPerformed
     dispose();        // TODO add your handling code here:
@@ -290,10 +243,7 @@ private Compras telaCompras;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastro;
     private javax.swing.JDesktopPane desktop;
-    private javax.swing.JButton jCaixa;
     private javax.swing.JButton jCompras;
-    private javax.swing.JButton jEstoque;
-    private javax.swing.JButton jFinanceiro;
     private javax.swing.JButton jLogoff;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jRelatorio;

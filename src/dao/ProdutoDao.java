@@ -128,7 +128,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
            + "p.precoCompra, p.precoVenda, e.quantidade, f.razaoSocial "
            + "FROM produto p "
            + "JOIN estoque e ON p.idProduto = e.idProduto "
-           + "JOIN fornecedor f ON p.idFornecedor = f.idFornecedor"; // Supondo que exista um campo idFornecedor na tabela produto
+           + "JOIN fornecedores f ON p.idFornecedor = f.idFornecedor"; // Supondo que exista um campo idFornecedor na tabela produto
 
     ArrayList<Produto> listaProdutos = new ArrayList<>();
 
