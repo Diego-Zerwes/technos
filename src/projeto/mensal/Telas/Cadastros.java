@@ -10,6 +10,7 @@ import modelo.Cliente;
 import modelo.Contatos;
 import modelo.Endereco;
 import modelo.Fornecedor;
+import net.proteanit.sql.DbUtils;
 
 public class Cadastros extends javax.swing.JInternalFrame {
 
@@ -26,6 +27,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         ConexaoBanco conn = new ConexaoBanco();
         if (conn.conectar()) {
             conexao = conn.getConnection();
+            pesquisarClentesFornecedores();
         } else {
             JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco!");
         }
@@ -85,6 +87,17 @@ public class Cadastros extends javax.swing.JInternalFrame {
 
         FornecedorDao fornDao = new FornecedorDao();
         fornDao.cadastrarFornecedor(forn, cont, end);
+    }
+    
+    public void pesquisarClentesFornecedores() {
+        String sql = "SELECT * FROM clientes";
+        try {
+            pstCli = conexao.prepareStatement(sql);
+            rs = pstCli.executeQuery();
+            tblCli.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao pesquisar os clientes! " + e.getMessage());
+        }
     }
 
     public void limparCampos() {
@@ -157,7 +170,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         btnCad = new javax.swing.JButton();
         btnCanc = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblCli = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         txtIE = new javax.swing.JFormattedTextField();
         jLabel15 = new javax.swing.JLabel();
@@ -276,18 +289,18 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCli.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "NomeRazaoSocial", "cpfCnpj", "rgIe", "sexo", "tipoCliente", "idEndereco"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblCli);
 
         jLabel11.setText("I.E");
 
@@ -352,7 +365,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
+                        .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnLimpCamp)
@@ -430,7 +443,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(rbtForn)))
                                 .addGap(4, 4, 4)))
-                        .addContainerGap(199, Short.MAX_VALUE))))
+                        .addContainerGap(262, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -582,10 +595,10 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JRadioButton rbtCliPf;
     private javax.swing.JRadioButton rbtCliPj;
     private javax.swing.JRadioButton rbtForn;
+    private javax.swing.JTable tblCli;
     private javax.swing.JFormattedTextField txtCel;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCid;
