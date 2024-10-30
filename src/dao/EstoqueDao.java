@@ -22,17 +22,14 @@ public class EstoqueDao implements DaoGenerica<Estoque>{
         
         try
         {
-            //tenta realizar a conexão, se retornar verdadeiro entra no IF
             if(this.conexao.conectar())
             {
-                //prepara a sentença com a consulta da string
                 PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
                 
-                //subtitui as interrograções da consulta, pelo valor específico
                 sentenca.setInt(1,estoque.getQuantidade()); 
-                sentenca.execute(); //executa o comando no banco
-                sentenca.close(); //fecha a sentença
-                this.conexao.getConnection().close(); //fecha a conexão com o banco
+                sentenca.execute(); 
+                sentenca.close(); 
+                this.conexao.getConnection().close(); 
             }
         }
         catch(SQLException ex)

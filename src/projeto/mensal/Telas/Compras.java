@@ -29,7 +29,7 @@ public class Compras extends javax.swing.JInternalFrame {
 
     public Compras() {
         initComponents();
-
+        
     } 
 
     @SuppressWarnings("unchecked")
@@ -57,7 +57,6 @@ public class Compras extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TabelaCompras = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         jFornecedor = new javax.swing.JComboBox<>();
@@ -170,17 +169,17 @@ public class Compras extends javax.swing.JInternalFrame {
 
         TabelaCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Descrição", "Modelo", "Fornecedor", "Cor", "Marca", "Quantidade", "Preço de Compra", "Preço de venda"
+                "ID", "Descrição", "Modelo", "Cor", "Marca", "Quantidade", "Preço de Compra", "Preço de venda"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -202,14 +201,17 @@ public class Compras extends javax.swing.JInternalFrame {
             TabelaCompras.getColumnModel().getColumn(5).setResizable(false);
             TabelaCompras.getColumnModel().getColumn(6).setResizable(false);
             TabelaCompras.getColumnModel().getColumn(7).setResizable(false);
-            TabelaCompras.getColumnModel().getColumn(8).setResizable(false);
         }
 
         jLabel10.setText("Fornecedor");
 
-        jLabel7.setText("jLabel7");
-
         jLabel11.setText("Buscar");
+
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyPressed(evt);
+            }
+        });
 
         jFornecedor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -239,7 +241,6 @@ public class Compras extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -262,15 +263,10 @@ public class Compras extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addGap(483, 483, 483))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel11)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtBuscar)
-                                                .addGap(229, 229, 229)))
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(229, 229, 229)
                                         .addComponent(btnCadastrar)
                                         .addGap(29, 29, 29))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -311,6 +307,9 @@ public class Compras extends javax.swing.JInternalFrame {
                         .addGap(120, 120, 120)))
                 .addComponent(btnCancelar)
                 .addGap(66, 66, 66))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1008, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -348,8 +347,7 @@ public class Compras extends javax.swing.JInternalFrame {
                         .addGap(100, 100, 100)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancelar)
-                            .addComponent(btnCadastrar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE))
+                            .addComponent(btnCadastrar)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -358,13 +356,10 @@ public class Compras extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addContainerGap())))
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
         );
 
         pack();
@@ -421,8 +416,12 @@ public class Compras extends javax.swing.JInternalFrame {
     
         JOptionPane.showMessageDialog(null, "Dados Inválidos");  
         txtDescricao.requestFocus();  
-    } else {  
-        // Criação do objeto Produto  
+    } else {
+         new Thread(){
+         @Override public void run(){
+                            
+                 
+              
         Produto cadastroP = new Produto();  
         Estoque estoque = new Estoque();
         estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));  
@@ -431,13 +430,11 @@ public class Compras extends javax.swing.JInternalFrame {
         cadastroP.setMarca(jMarca.getSelectedItem().toString());  
         cadastroP.setCor(jCor.getSelectedItem().toString());  
         cadastroP.setEstoque(estoque);  
-
-        // Criação da compra  
+ 
         Compra comprasP = new Compra();
 
-        // Busca o fornecedor selecionado com base na razão social
         String razaoSocialSelecionada = (String) jFornecedor.getSelectedItem();
-            FornecedorDao fornecedorDao = new FornecedorDao(); // Instância criada aqui
+            FornecedorDao fornecedorDao = new FornecedorDao(); 
 
         Fornecedor fornecedorSelecionado;
          try {
@@ -447,15 +444,13 @@ public class Compras extends javax.swing.JInternalFrame {
             System.out.println("ID do Fornecedor: " + comprasP.getIdFornecedor());  
         } else {  
             JOptionPane.showMessageDialog(null, "Fornecedor não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);  
-            return; // Interrompe a execução se não houver fornecedor válido  
+            return; 
         }   
          } catch (Exception ex) {
              Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
          }
         
         
-
-        // Verifica a forma de pagamento
             String descricaoFormaSelecionada = (String) jFormaDePagamento.getSelectedItem();
 
   
@@ -473,17 +468,12 @@ public class Compras extends javax.swing.JInternalFrame {
              Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
          }
     
-    
-
-        // Atribuições adicionais
         comprasP.setIdCaixa(1);
         comprasP.setIdRelatorio(1);
 
-        // Define a data da compra com o Timestamp atual  
         Timestamp timestampAtual = new Timestamp(System.currentTimeMillis()); 
         comprasP.setDataCompra(timestampAtual.toString());
 
-        // Salva a compra no banco
         ComprasDao compraDao = new ComprasDao();  
         try {  
             compraDao.inserirCompra(comprasP);  
@@ -493,7 +483,6 @@ public class Compras extends javax.swing.JInternalFrame {
             Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);  
         }
 
-        // Tratamento dos preços  
         try {  
             double precoCompra = Double.parseDouble(txtPrecoCompra.getText());  
             double precoVenda = Double.parseDouble(txtPrecoVenda.getText());  
@@ -501,19 +490,23 @@ public class Compras extends javax.swing.JInternalFrame {
             cadastroP.setPrecoVenda(precoVenda);  
         } catch (NumberFormatException e) {  
             JOptionPane.showMessageDialog(null, "Por favor, insira um preço válido.", "Erro", JOptionPane.ERROR_MESSAGE);  
-            return; // Encerrar execução se a conversão falhar  
+            return;  
         }  
 
-        // Inserção do produto no banco de dados  
         try {  
             ProdutoDao cadastroPDao = new ProdutoDao();  
-            cadastroPDao.inserir(cadastroP);  
-            atualizaTabela(cadastroPDao);
+            cadastroPDao.inserir(cadastroP); 
+            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();
+    atualizaTabela(listaProdutos);
+            //atualizaTabela(cadastroPDao.consultar());
             limparCampos();  
         } catch(Exception ex) {  
             JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);  
-        }  
-    }   
+        }
+        }
+        
+     }.start();
+    }
     
     }//GEN-LAST:event_btnCadastrarMouseClicked
 
@@ -534,14 +527,17 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formComponentAdded
 
     private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_formAncestorAdded
-
+       
     }//GEN-LAST:event_formAncestorAdded
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+
         FormaDePagamentoDao formadepagamentoDao = new FormaDePagamentoDao();
          atualizaForma(formadepagamentoDao);
          FornecedorDao fornecedorDao = new FornecedorDao();
          atualizaFornecedor(fornecedorDao);
+         conectarEBuscarProdutos();
+        
     }//GEN-LAST:event_formComponentShown
 
     private void jFormaDePagamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFormaDePagamentoMouseClicked
@@ -560,6 +556,11 @@ public class Compras extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
          
     }//GEN-LAST:event_jFornecedorMouseClicked
+
+    private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
+        ProdutoDao prod = new ProdutoDao();
+        buscarNome(prod);
+    }//GEN-LAST:event_txtBuscarKeyPressed
 
     private void limparCampos()
     {
@@ -585,31 +586,22 @@ public class Compras extends javax.swing.JInternalFrame {
         }
     }
      
-     public void atualizaTabela(ProdutoDao cadastroPDao)
-    {
-        
+    public void atualizaTabela(ArrayList<Produto> listaProdutos) {
+    try {
+        limparTabela();  
 
-                try {
-        limparTabela();
-
-        ArrayList<Produto> listaCadastros = cadastroPDao.consultar(); // consulta todos os registros da tabela Produto
-        
         DefaultTableModel modeloTabela = (DefaultTableModel) TabelaCompras.getModel();
 
-        for (Produto cadastroP : listaCadastros) {
-            String razaoSocial = "Não Disponível"; // Valor padrão caso o fornecedor seja nulo
-
-            // Verifica se o fornecedor não é nulo antes de tentar acessar a razão social
+        for (Produto cadastroP : listaProdutos) {
+            String razaoSocial = "Não Disponível"; 
             if (cadastroP.getFornecedor() != null) {
                 razaoSocial = cadastroP.getFornecedor().getRazaoSocial();
             }
 
-            // Adiciona em cada linha da tabela da tela o conteúdo de cada posição da listaProdutos
             modeloTabela.addRow(new String[]{
                 Integer.toString(cadastroP.getIdProduto()),
                 cadastroP.getDescricao(),
                 cadastroP.getModelo(),
-                razaoSocial, // Usando a variável que pode ser "Não Disponível"
                 cadastroP.getCor(),
                 cadastroP.getMarca(),
                 String.valueOf(cadastroP.getEstoque().getQuantidade()),
@@ -617,25 +609,22 @@ public class Compras extends javax.swing.JInternalFrame {
                 String.valueOf(cadastroP.getPrecoVenda())
             });
         }
-
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
     }
-     
-    }
+}
      
 public void atualizaFornecedor(FornecedorDao fornecedorDao) {
     try {
         ArrayList<Fornecedor> listarFornecedores = fornecedorDao.consultar(); 
 
-        // Limpa o JComboBox antes de adicionar novos itens
         jFornecedor.removeAllItems(); 
 
         for (Fornecedor fornecedor : listarFornecedores) {
-            jFornecedor.addItem(fornecedor.getRazaoSocial()); // Adiciona o objeto Fornecedor
+            jFornecedor.addItem(fornecedor.getRazaoSocial()); 
         }
 
-        jFornecedor.setSelectedIndex(-1); // Nenhum item selecionado inicialmente
+        jFornecedor.setSelectedIndex(-1); 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
     }
@@ -672,6 +661,60 @@ private void limparCbxSexo()
       // }
        
     }
+
+private void buscarNome(ProdutoDao prodDao)
+    {
+     
+     
+            try
+            {
+
+                limparTabela();
+
+                ArrayList<Produto> listaCadastrosStr;
+                listaCadastrosStr = prodDao.consultar(txtBuscar.getText()); 
+
+                DefaultTableModel modeloTabela = (DefaultTableModel) TabelaCompras.getModel();
+
+                for(Produto cadastroP : listaCadastrosStr)
+                {
+                    modeloTabela.addRow(new String[]{
+                Integer.toString(cadastroP.getIdProduto()), 
+                cadastroP.getDescricao(), 
+                cadastroP.getModelo(), 
+                cadastroP.getCor(),
+                cadastroP.getMarca(),
+                String.valueOf(cadastroP.getEstoque().getQuantidade()), 
+                String.valueOf(cadastroP.getPrecoCompra()),            
+                String.valueOf(cadastroP.getPrecoVenda())});
+                }
+
+            }
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+            }
+      
+    }
+   
+    private void conectarEBuscarProdutos() {
+    ProdutoDao cadastroPDao = new ProdutoDao();
+    
+    if (cadastroPDao.conexao.conectar()) {
+        try {
+            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();
+            atualizaTabela(listaProdutos);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } finally {
+             
+        }
+    } else {
+        // Mensagem de erro se a conexão falhar
+        JOptionPane.showMessageDialog(null, "Falha na conexão com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
     
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -690,7 +733,6 @@ private void limparCbxSexo()
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JComboBox<String> jMarca;

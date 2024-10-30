@@ -128,7 +128,6 @@ public class FornecedorDao {
             fornecedor = new Fornecedor();
             fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
             fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
-            // Preencha os demais campos necessários
         }
     }
     return fornecedor;

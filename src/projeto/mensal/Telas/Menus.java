@@ -2,7 +2,11 @@
 package projeto.mensal.Telas;
 
 import dao.FornecedorDao;
+import dao.ProdutoDao;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.Produto;
+import projeto.mensal.Telas.Compras;
 import projeto.mensal.Telas.Compras;
 
 
@@ -160,8 +164,7 @@ private Compras telaCompras;
     }//GEN-LAST:event_btnCadastroActionPerformed
     private Compras tela1;
     private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
-        if (tela1 == null || !tela1.isVisible()) {
-        
+       if (tela1 == null || !tela1.isVisible()) {
         tela1 = new Compras(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela1);
         tela1.setVisible(true);

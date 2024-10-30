@@ -16,7 +16,7 @@ import modelo.Fornecedor;
  * @author difoz
  */
 public class ProdutoDao implements DaoGenerica<Produto>{
-    private ConexaoBanco conexao;
+    public ConexaoBanco conexao;
     
     public ProdutoDao()
     {
@@ -29,7 +29,6 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
     try {
         if (this.conexao.conectar()) {
-            // Insira o produto
             try (PreparedStatement stmtProduto = this.conexao.getConnection().prepareStatement(sqlProduto)) {
                 stmtProduto.setString(1, produto.getDescricao());
                 stmtProduto.setString(2, produto.getModelo());
@@ -38,11 +37,9 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 stmtProduto.setDouble(5, produto.getPrecoCompra());
                 stmtProduto.setDouble(6, produto.getPrecoVenda());
 
-                // Executa a inserção do produto
                 stmtProduto.executeUpdate();
                 System.out.println("Produto inserido com sucesso.");
 
-                // Obtém o idProduto gerado
                 int novoIdProduto = 0;
                 String sqlLastId = "SELECT LAST_INSERT_ID()"; // Para MySQL
                 try (PreparedStatement stmtLastId = this.conexao.getConnection().prepareStatement(sqlLastId);
@@ -53,12 +50,10 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                     }
                 }
 
-                // Agora, insira na tabela estoque
                 try (PreparedStatement stmtEstoque = this.conexao.getConnection().prepareStatement(sqlEstoque)) {
                     stmtEstoque.setInt(1, novoIdProduto); // Usando o novo idProduto
                     stmtEstoque.setInt(2, produto.getEstoque().getQuantidade()); // Defina a quantidade
                     
-                    // Debug: Verifique a quantidade antes da inserção
                     System.out.println("Quantidade a ser inserida no estoque: " + produto.getEstoque().getQuantidade());
                     
                     stmtEstoque.executeUpdate();
@@ -81,7 +76,6 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
     try {
         if (this.conexao.conectar()) {
-            // Primeiro, verificamos a quantidade no estoque pelo idProduto
             PreparedStatement stmtEstoque = this.conexao.getConnection().prepareStatement(sqlEstoque);
             stmtEstoque.setInt(1, produto.getIdProduto());
 
@@ -91,7 +85,6 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 int quantidade = rs.getInt("quantidade");
                 System.out.println("Quantidade em estoque para idProduto " + produto.getIdProduto() + ": " + quantidade);
                 
-                // Agora, fazemos o UPDATE na tabela produto
                 PreparedStatement stmtAlterarProduto = this.conexao.getConnection().prepareStatement(sqlAlterarProduto);
 
                 stmtAlterarProduto.setString(1, produto.getDescricao());
@@ -124,12 +117,12 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
     @Override
     public ArrayList<Produto> consultar() {
-          String sql = "SELECT p.idProduto, p.descricao, p.modelo, p.marca, p.cor, "
-           + "p.precoCompra, p.precoVenda, e.quantidade, f.razaoSocial "
-           + "FROM produto p "
-           + "JOIN estoque e ON p.idProduto = e.idProduto "
-           + "JOIN fornecedores f ON p.idFornecedor = f.idFornecedor"; // Supondo que exista um campo idFornecedor na tabela produto
+    String sql = "SELECT p.idProduto, p.descricao, p.modelo, p.marca, p.cor, "
+               + "p.precoCompra, p.precoVenda, e.quantidade "
+               + "FROM produto p "
+               + "INNER JOIN estoque e ON p.idProduto = e.idProduto"; 
 
+    
     ArrayList<Produto> listaProdutos = new ArrayList<>();
 
     try (Connection conn = this.conexao.getConnection(); 
@@ -148,20 +141,64 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
             Estoque estoque = new Estoque();
             estoque.setQuantidade(rs.getInt("quantidade"));
-            produto.setEstoque(estoque);
-            
-            // Instanciando o objeto Fornecedor e definindo a razão social
-            Fornecedor fornecedor = new Fornecedor();
-            fornecedor.setRazaoSocial(rs.getString("razaoSocial")); // Supondo que a coluna da razão social seja 'razaoSocial'
-            produto.setFornecedor(fornecedor); // Atribuindo o fornecedor ao produto
+            produto.setEstoque(estoque);  // Associação do estoque ao produto          
 
             listaProdutos.add(produto);
         }
     } catch (SQLException ex) {
         System.err.println("Erro ao consultar produtos: " + ex.getMessage());
-        ex.printStackTrace(); // Para ver o erro completo
+        ex.printStackTrace(); 
     }
+
     return listaProdutos;
+}
+    
+    public ArrayList<Produto> consultar(String str) {
+        ArrayList<Produto> listaCadastrosStr = new ArrayList<Produto>();
+        String sql = "SELECT c.idProduto, c.descricao, c.modelo, c.marca, c.cor, c.precoCompra, c.precoVenda, s.quantidade " +
+                 "FROM produto AS c " +
+                 "JOIN estoque AS s ON c.idProduto = s.idProduto " + // INNER JOIN com a tabela estoque
+                 "WHERE UPPER(c.marca) LIKE UPPER(?) " +  // Corrigido para `LIKE` com UPPER
+                 "ORDER BY s.quantidade";
+        
+        try
+        {
+            if(this.conexao.conectar())
+            {
+                PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
+                
+                sentenca.setString(1, "%"+str+"%");
+                ResultSet resultadoSentenca = sentenca.executeQuery();
+
+                while(resultadoSentenca.next()) 
+                {
+                    Produto prod = new Produto();
+                    prod.setIdProduto(resultadoSentenca.getInt("idProduto"));
+                    prod.setDescricao(resultadoSentenca.getString("descricao"));
+                    prod.setModelo(resultadoSentenca.getString("modelo"));
+                    prod.setMarca(resultadoSentenca.getString("marca"));
+                    prod.setCor(resultadoSentenca.getString("cor"));
+                    prod.setPrecoCompra(resultadoSentenca.getDouble("precoCompra"));
+                    prod.setPrecoVenda(resultadoSentenca.getDouble("precoVenda"));
+
+                    Estoque estoque = new Estoque();
+                estoque.setQuantidade(resultadoSentenca.getInt("quantidade"));
+                
+                prod.setEstoque(estoque);
+                
+                    listaCadastrosStr.add(prod);
+                }
+
+                sentenca.close();
+                this.conexao.getConnection().close();
+            }
+            
+            return listaCadastrosStr;
+        }
+        catch(SQLException ex)
+        {
+           throw new RuntimeException(ex);
+        } 
     }
 
     @Override

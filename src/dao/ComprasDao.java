@@ -42,13 +42,11 @@ public void inserirCompra(Compra compra) throws SQLException {
         pstmt.setInt(4, compra.getIdCaixa());  
         pstmt.setInt(5, compra.getIdRelatorio());  
 
-        // Executa a inserção no banco de dados  
         pstmt.executeUpdate();  
         System.out.println("compra inserida com sucesso!");  
     } catch (SQLException e) {  
-        // Trate a exceção se ocorrer um erro de SQL  
         e.printStackTrace();  
-        throw e; // Lançar novamente a exceção para tratamento externo, se necessário  
+        throw e;  
     }  
 }  
 
