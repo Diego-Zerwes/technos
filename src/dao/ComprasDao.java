@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.Compra;
+import modelo.Estoque;
+import modelo.Produto;
 
 public class ComprasDao implements DaoGenerica<Compra>{
 Connection conn = null;
@@ -52,6 +54,7 @@ public void inserirCompra(Compra compra) throws SQLException {
 
 
 
+
     @Override
     public void alterar(Compra objt) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -64,7 +67,34 @@ public void inserirCompra(Compra compra) throws SQLException {
 
     @Override
     public ArrayList<Compra> consultar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT p.idCompra, p.dataCompra, e.idFornecedor, c.idFormaPagamento, p.idCaixa "
+           + "FROM compra p "
+           + "INNER JOIN fornecedor e ON p.idFornecedor = e.idFornecedor "
+           + "INNER JOIN formapagamento c ON p.idFormaPagamento = c.idFormaPagamento";
+
+    
+    ArrayList<Compra> listaCompras = new ArrayList<>();
+
+    try (Connection conn = this.conexao.getConnection(); 
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            Compra comp = new Compra();
+            comp.setIdCompra(rs.getInt("idCompra"));
+            comp.setDataCompra(rs.getString("dataCompra"));
+            comp.setIdFornecedor(rs.getInt("idFornecedor"));
+            comp.setIdFormaPagamento(rs.getInt("idFormaPagamento"));
+            comp.setIdCaixa(rs.getInt("idCaixa"));
+         
+            listaCompras.add(comp);
+        }
+    } catch (SQLException ex) {
+        System.err.println("Erro ao consultar produtos: " + ex.getMessage());
+        ex.printStackTrace(); 
+    }
+
+    return listaCompras;
     }
 
     @Override
@@ -74,6 +104,10 @@ public void inserirCompra(Compra compra) throws SQLException {
 
     @Override
     public void inserir(Compra objt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public ArrayList<Compra> consultar(String text) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
