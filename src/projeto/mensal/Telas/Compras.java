@@ -18,6 +18,7 @@ import modelo.Estoque;
 import modelo.FormaDePagamento;
 import modelo.Fornecedor;
 import java.sql.Timestamp;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 /**
  *
@@ -417,11 +418,12 @@ public class Compras extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(null, "Dados Inválidos");  
         txtDescricao.requestFocus();  
     } else {
-         new Thread(){
-         @Override public void run(){
+         if (vInsUpdate == 0) {
+        // new Thread(){
+        // @Override public void run(){
                             
                  
-              
+             
         Produto cadastroP = new Produto();  
         Estoque estoque = new Estoque();
         estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));  
@@ -430,6 +432,8 @@ public class Compras extends javax.swing.JInternalFrame {
         cadastroP.setMarca(jMarca.getSelectedItem().toString());  
         cadastroP.setCor(jCor.getSelectedItem().toString());  
         cadastroP.setEstoque(estoque);  
+        
+             
  
         Compra comprasP = new Compra();
 
@@ -503,15 +507,61 @@ public class Compras extends javax.swing.JInternalFrame {
         } catch(Exception ex) {  
             JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);  
         }
-        }
+       // }
         
-     }.start();
+    // }.start();
+    }else{
+                Produto produto = new Produto();
+                produto.setIdProduto(Integer.parseInt(txtId.getText()));
+                produto.setDescricao(txtDescricao.getText());
+                produto.setModelo(txtModelo.getText());
+                Estoque estoque = new Estoque();
+                estoque.setQuantidade( Integer.parseInt(txtQuantidade.getText()));
+                produto.setEstoque(estoque);
+                produto.setCor(jCor.getSelectedItem().toString());
+                produto.setMarca(jMarca.getSelectedItem().toString());
+                produto.setPrecoCompra(Double.parseDouble(txtPrecoCompra.getText()));
+                produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
+
+
+                ProdutoDao produtoDao = new ProdutoDao();
+                produtoDao.alterar(produto);
+                limparTabela();
+                
+                conectarEBuscarProdutos();
+                TabelaCompras.clearSelection(); 
+                //conectarEBuscarProdutos();
+               // TabelaCompras.repaint();
+
+                JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso!", "", INFORMATION_MESSAGE);
+                txtId.requestFocus();
+
+                limparCampos();
+                
+                vInsUpdate = 0;
+                TabelaCompras.setVisible(true);
+                btnCadastrar.setText("Cadastrar"); 
+                
+            }   
     }
     
     }//GEN-LAST:event_btnCadastrarMouseClicked
 
     private void TabelaComprasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabelaComprasMouseClicked
-
+        if((TabelaCompras.getSelectedRow() != -1) && (vInsUpdate == 0) && (evt.getClickCount() == 2)){
+           txtId.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),0).toString());
+           txtDescricao.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),1).toString());
+           txtModelo.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),2).toString());
+           jCor.setSelectedItem(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(), 3).toString());
+           jMarca.setSelectedItem(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(), 4).toString());
+           txtQuantidade.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),5).toString());
+           txtPrecoCompra.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),6).toString());
+           txtPrecoVenda.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),7).toString());
+           vInsUpdate = 1;
+           TabelaCompras.setEnabled(false);
+           btnCadastrar.setText("Alterar");
+           txtId.setEnabled(false);
+        }   
     }//GEN-LAST:event_TabelaComprasMouseClicked
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
@@ -700,7 +750,7 @@ private void buscarNome(ProdutoDao prodDao)
     private void conectarEBuscarProdutos() {
     ProdutoDao cadastroPDao = new ProdutoDao();
     
-    if (cadastroPDao.conexao.conectar()) {
+    if(cadastroPDao.conexao.conectar()) {
         try {
             ArrayList<Produto> listaProdutos = cadastroPDao.consultar();
             atualizaTabela(listaProdutos);
