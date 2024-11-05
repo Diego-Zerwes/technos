@@ -2,6 +2,7 @@
 package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 //Objeto
 public class ConexaoBanco {   
@@ -29,6 +30,10 @@ public class ConexaoBanco {
     }
     public Connection getConnection() {
         return conexao;
+    }
+
+    PreparedStatement prepareStatement(String sql) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
