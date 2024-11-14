@@ -426,7 +426,9 @@ public class Compras extends javax.swing.JInternalFrame {
              
         Produto cadastroP = new Produto();  
         Estoque estoque = new Estoque();
-        estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));  
+        estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText())); 
+        Timestamp timestampAtual2 = new Timestamp(System.currentTimeMillis()); 
+        estoque.setDataEstoque(timestampAtual2.toString());
         cadastroP.setDescricao(txtDescricao.getText());  
         cadastroP.setModelo(txtModelo.getText());  
         cadastroP.setMarca(jMarca.getSelectedItem().toString());  
@@ -558,7 +560,7 @@ public class Compras extends javax.swing.JInternalFrame {
            txtPrecoCompra.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),6).toString());
            txtPrecoVenda.setText(TabelaCompras.getValueAt(TabelaCompras.getSelectedRow(),7).toString());
            vInsUpdate = 1;
-           TabelaCompras.setEnabled(false);
+           //TabelaCompras.setEnabled(false);
            btnCadastrar.setText("Alterar");
            txtId.setEnabled(false);
         }   

@@ -1,11 +1,25 @@
 
 package projeto.mensal.Telas;
 
+import dao.ConexaoBanco;
 import dao.FornecedorDao;
 import dao.ProdutoDao;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.Produto;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import projeto.mensal.Telas.Compras;
 import projeto.mensal.Telas.Compras;
 
@@ -13,9 +27,27 @@ import projeto.mensal.Telas.Compras;
 
 public class Menus extends javax.swing.JFrame {
 private Compras telaCompras; 
+
+    Connection conn = null;
+    PreparedStatement pstEnd = null;
+    PreparedStatement pstForn = null;
+    PreparedStatement pstCont = null;
+    ResultSet rs = null;
+    
+    //ConexaoBanco conexao = null;
+    private Connection conexao;
+    
+    
    
     public Menus() {
         initComponents();
+        ConexaoBanco con = new ConexaoBanco();
+        if(con.conectar()){
+            conexao = con.getConnection();
+            atualizaDash();
+        }else{
+            JOptionPane.showMessageDialog(null, "Conexao com o Banco falhou");
+        }
     }
 
    
@@ -30,6 +62,9 @@ private Compras telaCompras;
         jRelatorio = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
         desktop = new javax.swing.JDesktopPane();
+        jPanel2 = new javax.swing.JPanel();
+        pizzaPanel = new javax.swing.JPanel();
+        barPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -117,15 +152,43 @@ private Compras telaCompras;
                 .addGap(83, 83, 83))
         );
 
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        desktop.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1051, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         desktopLayout.setVerticalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout barPanelLayout = new javax.swing.GroupLayout(barPanel);
+        barPanel.setLayout(barPanelLayout);
+        barPanelLayout.setHorizontalGroup(
+            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 484, Short.MAX_VALUE)
+        );
+        barPanelLayout.setVerticalGroup(
+            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 260, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pizzaPanelLayout = new javax.swing.GroupLayout(pizzaPanel);
+        pizzaPanel.setLayout(pizzaPanelLayout);
+        pizzaPanelLayout.setHorizontalGroup(
+            pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pizzaPanelLayout.createSequentialGroup()
+                .addGap(0, 495, Short.MAX_VALUE)
+                .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pizzaPanelLayout.setVerticalGroup(
+            pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(barPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -134,13 +197,18 @@ private Compras telaCompras;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pizzaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -206,7 +274,74 @@ private Compras telaCompras;
         // TODO add your handling code here:
         
     }//GEN-LAST:event_jComprasFocusGained
+    private void atualizaDash()
+    {
+        new Thread(){
+           @Override public void run(){
+                try
+                {
+
+                    ArrayList<Integer> listaProduto = dashboard();
+                   
+                    DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
+                barChartData.addValue(listaProduto.get(0), "totalProduto", "Núm Produto");
+                barChartData.addValue(listaProduto.get(1), "TotalCompra", "Núm de Compra");
+
+                JFreeChart barChart = ChartFactory.createBarChart(
+                    "Ex Barras",         
+                    "Dados",             
+                    "Valores",              
+                    barChartData,        
+                    PlotOrientation.VERTICAL,   
+                    true,                
+                    true,                
+                    false                
+                );
+                CategoryPlot barchrt = barChart.getCategoryPlot();
+                barchrt.setRangeGridlinePaint(new Color(140,105,204));
+                CategoryPlot barPlot = (CategoryPlot) barChart.getPlot();
+                
+
+                ChartPanel chartPanel = new ChartPanel(barChart);
+                barPanel.removeAll();
+                barPanel.add(chartPanel, BorderLayout.CENTER);
+                barPanel.validate();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+            }
+              
+        }   
+        }.start();
+                }
     
+    public ArrayList<Integer> dashboard() {
+         ArrayList<Integer> ListarDashBoard = new ArrayList<>();
+        String sql = "SELECT distinct(select count(*) FROM produto) AS totalProduto, "+
+                    "(select count(*) FROM compra) as totalCompra";
+        
+        try
+        {
+            
+            PreparedStatement psProduto = conexao.prepareStatement(sql);
+            ResultSet rsProduto = psProduto.executeQuery();
+            if (rsProduto.next()) {
+                ListarDashBoard.add(rsProduto.getInt("totalProduto"));
+            }
+            PreparedStatement pstCompra = conexao.prepareStatement(sql);
+            ResultSet rsCompra = pstCompra.executeQuery();
+            if (rsCompra.next()) {
+                ListarDashBoard.add(rsCompra.getInt("totalCompra"));
+            }
+
+            
+            
+        }
+        catch(Exception ex)
+        {
+           throw new RuntimeException(ex);
+        }
+        return ListarDashBoard;
+    }
    
     /**
      * @param args the command line arguments
@@ -244,12 +379,15 @@ private Compras telaCompras;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel barPanel;
     private javax.swing.JButton btnCadastro;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JButton jCompras;
     private javax.swing.JButton jLogoff;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jRelatorio;
     private javax.swing.JButton jVendas;
+    private javax.swing.JPanel pizzaPanel;
     // End of variables declaration//GEN-END:variables
 }

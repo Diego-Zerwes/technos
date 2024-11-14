@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import modelo.Produto;
 import modelo.Estoque;
 import modelo.Fornecedor;
@@ -24,12 +25,15 @@ public class ProdutoDao implements DaoGenerica<Produto>{
     }
     @Override
     public void inserir(Produto produto) {
+        
         String sqlProduto = "INSERT INTO produto (descricao, modelo, marca, cor, precoCompra, precoVenda) VALUES (?, ?, ?, ?, ?, ?)";
-    String sqlEstoque = "INSERT INTO estoque (idProduto, quantidade) VALUES (?, ?)";
+    String sqlEstoque = "INSERT INTO estoque (idProduto, quantidade, dataEstoque) VALUES (?, ?, ?)";
 
     try {
         if (this.conexao.conectar()) {
             try (PreparedStatement stmtProduto = this.conexao.getConnection().prepareStatement(sqlProduto)) {
+               
+                
                 stmtProduto.setString(1, produto.getDescricao());
                 stmtProduto.setString(2, produto.getModelo());
                 stmtProduto.setString(3, produto.getMarca());
@@ -51,8 +55,10 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 }
 
                 try (PreparedStatement stmtEstoque = this.conexao.getConnection().prepareStatement(sqlEstoque)) {
+                    Timestamp dataCompraFormatada2 = new Timestamp(System.currentTimeMillis()); 
                     stmtEstoque.setInt(1, novoIdProduto); // Usando o novo idProduto
                     stmtEstoque.setInt(2, produto.getEstoque().getQuantidade()); // Defina a quantidade
+                    stmtEstoque.setTimestamp(3, dataCompraFormatada2);
                     
                     System.out.println("Quantidade a ser inserida no estoque: " + produto.getEstoque().getQuantidade());
                     
