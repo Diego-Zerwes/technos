@@ -25,14 +25,54 @@ public class Cadastros extends javax.swing.JInternalFrame {
     public Cadastros() {
         initComponents();
         ConexaoBanco conn = new ConexaoBanco();
+        
         if (conn.conectar()) {
-            conexao = conn.getConnection();
-            pesquisarClentesFornecedores();
+            conexao = conn.getConnection();   
+            pesquisarClentes();
+            pesquisarFornecedores();
         } else {
             JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco!");
         }
+
+        rbtCliPf.addActionListener(e -> {
+            txtIE.setVisible(false);
+            txtCnpj.setVisible(false);
+            txtRg.setVisible(true);
+            txtCpf.setVisible(true);
+            cboSex.setVisible(true);       
+            labelRg.setVisible(true);
+            labelCpf.setVisible(true);
+            labelIe.setVisible(false);
+            labelCnpj.setVisible(false);
+        });
+
+        rbtCliPj.addActionListener(e -> {
+            txtIE.setVisible(true);
+            txtCnpj.setVisible(true);
+            txtRg.setVisible(false);
+            txtCpf.setVisible(false);
+            cboSex.setVisible(false);            
+            labelRg.setVisible(false);
+            labelCpf.setVisible(false);
+            labelIe.setVisible(true);
+            labelCnpj.setVisible(true);
+            labelSexo.setVisible(false);
+        });
+            
+        rbtForn.addActionListener(e -> {
+            txtIE.setVisible(true);
+            txtCnpj.setVisible(true);
+            txtRg.setVisible(false);
+            txtCpf.setVisible(false);
+            cboSex.setVisible(false);      
+            labelRg.setVisible(false);
+            labelCpf.setVisible(false);
+            labelIe.setVisible(true);
+            labelCnpj.setVisible(true);
+            labelSexo.setVisible(false);
+        });
     }
-   
+
     public void cadastrarCliente() {
         Cliente cli = new Cliente();
 
@@ -42,6 +82,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             cli.setRgInscEst(txtRg.getText());
             cli.setSexo(cboSex.getSelectedItem().toString());
             cli.setTipoCliente("pessoaFisica");
+            
         } else if (rbtCliPj.isSelected()) {
             cli.setNomeRazaoSocial(txtNome.getText());
             cli.setCpfCnpj(txtCnpj.getText());
@@ -88,8 +129,8 @@ public class Cadastros extends javax.swing.JInternalFrame {
         FornecedorDao fornDao = new FornecedorDao();
         fornDao.cadastrarFornecedor(forn, cont, end);
     }
-    
-    public void pesquisarClentesFornecedores() {
+
+    public void pesquisarClentes() {
         String sql = "SELECT * FROM clientes";
         try {
             pstCli = conexao.prepareStatement(sql);
@@ -97,6 +138,17 @@ public class Cadastros extends javax.swing.JInternalFrame {
             tblCli.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao pesquisar os clientes! " + e.getMessage());
+        }
+    }
+    
+    public void pesquisarFornecedores() {
+        String sql = "SELECT * FROM fornecedores";
+        try {
+            pstForn = conexao.prepareStatement(sql);
+            rs = pstForn.executeQuery();
+            tblForn.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao pesquisar os fornecedores! " + e.getMessage());
         }
     }
 
@@ -123,7 +175,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtRg.setEnabled(false);
         txtCpf.setEnabled(false);
     }
-    
+
     public void habilitarCamposCliPf() {
         cboSex.setEnabled(true);
         txtIE.setEnabled(false);
@@ -143,7 +195,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel5 = new javax.swing.JLabel();
+        labelRg = new javax.swing.JLabel();
         txtRg = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
         txtCel = new javax.swing.JFormattedTextField();
@@ -163,26 +215,29 @@ public class Cadastros extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         txtEst = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
+        labelSexo = new javax.swing.JLabel();
         cboSex = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        labelCpf = new javax.swing.JLabel();
         txtCpf = new javax.swing.JFormattedTextField();
         btnCad = new javax.swing.JButton();
         btnCanc = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCli = new javax.swing.JTable();
-        jLabel11 = new javax.swing.JLabel();
+        labelIe = new javax.swing.JLabel();
         txtIE = new javax.swing.JFormattedTextField();
-        jLabel15 = new javax.swing.JLabel();
+        labelCnpj = new javax.swing.JLabel();
         txtCnpj = new javax.swing.JFormattedTextField();
         rbtCliPf = new javax.swing.JRadioButton();
         rbtForn = new javax.swing.JRadioButton();
         rbtCliPj = new javax.swing.JRadioButton();
         btnLimpCamp = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblForn = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setPreferredSize(new java.awt.Dimension(1051, 800));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -201,7 +256,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel5.setText("RG");
+        labelRg.setText("RG");
 
         try {
             txtRg.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
@@ -263,11 +318,11 @@ public class Cadastros extends javax.swing.JInternalFrame {
         txtEst.setSelectedIndex(-1);
         txtEst.setEnabled(false);
 
-        jLabel3.setText("Sexo");
+        labelSexo.setText("Sexo");
 
         cboSex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F", " " }));
 
-        jLabel4.setText("CPF");
+        labelCpf.setText("CPF");
 
         try {
             txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -302,7 +357,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblCli);
 
-        jLabel11.setText("I.E");
+        labelIe.setText("I.E");
 
         try {
             txtIE.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###")));
@@ -311,7 +366,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         }
         txtIE.setEnabled(false);
 
-        jLabel15.setText("CNPJ");
+        labelCnpj.setText("CNPJ");
 
         try {
             txtCnpj.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###/####-##")));
@@ -356,94 +411,107 @@ public class Cadastros extends javax.swing.JInternalFrame {
             }
         });
 
+        tblForn.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblForn);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                .addGap(57, 57, 57)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnLimpCamp)
-                                .addGap(37, 37, 37)
-                                .addComponent(btnCad)
-                                .addGap(32, 32, 32)
-                                .addComponent(btnCanc))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(111, 111, 111)
-                                        .addComponent(jLabel2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cboSex, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel12)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel8)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtCep, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel9))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel10)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel13)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtCid, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel14)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtEst, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(txtLograd, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtIE, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel15)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel5)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel4)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(rbtCliPf)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbtCliPj)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbtForn)))
-                                .addGap(4, 4, 4)))
-                        .addContainerGap(262, Short.MAX_VALUE))))
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCep, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCid, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtEst, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtLograd, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rbtCliPf)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbtCliPj)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbtForn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelIe)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtIE, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelCnpj)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelSexo)
+                                .addGap(18, 18, 18)
+                                .addComponent(cboSex, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelRg)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLimpCamp)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnCad)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnCanc))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelCpf)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtCel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel12)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,17 +520,17 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
+                    .addComponent(labelSexo)
                     .addComponent(cboSex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
+                    .addComponent(labelIe)
                     .addComponent(txtIE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
+                    .addComponent(labelCnpj)
                     .addComponent(txtCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
+                    .addComponent(labelRg)
                     .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                    .addComponent(labelCpf)
                     .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -496,8 +564,11 @@ public class Cadastros extends javax.swing.JInternalFrame {
                     .addComponent(btnCad)
                     .addComponent(btnCanc)
                     .addComponent(btnLimpCamp))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(161, Short.MAX_VALUE))
         );
 
         pack();
@@ -552,7 +623,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
             cadastrarCliente();
             //voltarTelaLogin();
             limparCampos();
-        } else if(rbtForn.isSelected()) {
+        } else if (rbtForn.isSelected()) {
             cadastrarFornecedor();
             //voltarTelaLogin();
             limparCampos();
@@ -581,24 +652,26 @@ public class Cadastros extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboSex;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel labelCnpj;
+    private javax.swing.JLabel labelCpf;
+    private javax.swing.JLabel labelIe;
+    private javax.swing.JLabel labelRg;
+    private javax.swing.JLabel labelSexo;
     private javax.swing.JRadioButton rbtCliPf;
     private javax.swing.JRadioButton rbtCliPj;
     private javax.swing.JRadioButton rbtForn;
     private javax.swing.JTable tblCli;
+    private javax.swing.JTable tblForn;
     private javax.swing.JFormattedTextField txtCel;
     private javax.swing.JFormattedTextField txtCep;
     private javax.swing.JTextField txtCid;
