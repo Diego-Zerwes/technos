@@ -6,12 +6,17 @@ import dao.FornecedorDao;
 import dao.ProdutoDao;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import javax.swing.SwingUtilities;
 import modelo.Produto;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -62,8 +67,6 @@ private Compras telaCompras;
         jRelatorio = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
         desktop = new javax.swing.JDesktopPane();
-        jPanel2 = new javax.swing.JPanel();
-        pizzaPanel = new javax.swing.JPanel();
         barPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -139,7 +142,7 @@ private Compras telaCompras;
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(195, Short.MAX_VALUE)
+                .addContainerGap(201, Short.MAX_VALUE)
                 .addComponent(btnCadastro)
                 .addGap(18, 18, 18)
                 .addComponent(jCompras)
@@ -152,43 +155,17 @@ private Compras telaCompras;
                 .addGap(83, 83, 83))
         );
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        desktop.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
-        desktop.setLayout(desktopLayout);
-        desktopLayout.setHorizontalGroup(
-            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        desktopLayout.setVerticalGroup(
-            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        desktop.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout barPanelLayout = new javax.swing.GroupLayout(barPanel);
         barPanel.setLayout(barPanelLayout);
         barPanelLayout.setHorizontalGroup(
             barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         barPanelLayout.setVerticalGroup(
             barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout pizzaPanelLayout = new javax.swing.GroupLayout(pizzaPanel);
-        pizzaPanel.setLayout(pizzaPanelLayout);
-        pizzaPanelLayout.setHorizontalGroup(
-            pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pizzaPanelLayout.createSequentialGroup()
-                .addGap(0, 495, Short.MAX_VALUE)
-                .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        pizzaPanelLayout.setVerticalGroup(
-            pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(barPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,18 +174,21 @@ private Compras telaCompras;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pizzaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 662, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(barPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -222,8 +202,11 @@ private Compras telaCompras;
         tela = new Cadastros(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela);
         tela.setVisible(true);
+        barPanel.setVisible(false);
+    desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
     } else {
         tela.setVisible(false);
+        barPanel.setVisible(true);
         desktop.remove(desktop);
         desktop.repaint();
     }
@@ -236,8 +219,13 @@ private Compras telaCompras;
         tela1 = new Compras(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela1);
         tela1.setVisible(true);
+        barPanel.setVisible(false);
+            desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
+
+        
     } else {
         tela1.setVisible(false);
+        barPanel.setVisible(true);
         desktop.remove(desktop);
         desktop.repaint();
     }
@@ -250,8 +238,11 @@ private Compras telaCompras;
         tela3 = new Relatorio(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela3);
         tela3.setVisible(true);
+        barPanel.setVisible(false);
+            desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
     } else {
         tela3.setVisible(false);
+        barPanel.setVisible(true);
         desktop.remove(desktop);
         desktop.repaint();
     }        // TODO add your handling code here:
@@ -276,42 +267,61 @@ private Compras telaCompras;
     }//GEN-LAST:event_jComprasFocusGained
     private void atualizaDash()
     {
-        new Thread(){
-           @Override public void run(){
-                try
-                {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    scheduler.scheduleAtFixedRate(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                ArrayList<Integer> listaProduto = dashboard();
+                
+                // Verifica se os dados são válidos
+                if (listaProduto.size() != 2) {
+                    throw new Exception("Os dados retornados são inválidos.");
+                }
 
-                    ArrayList<Integer> listaProduto = dashboard();
-                   
-                    DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
+                System.out.println("Dados: TotalProduto = " + listaProduto.get(0) + ", TotalCompra = " + listaProduto.get(1));
+
+                // Cria o dataset do gráfico
+                DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
                 barChartData.addValue(listaProduto.get(0), "totalProduto", "Núm Produto");
                 barChartData.addValue(listaProduto.get(1), "TotalCompra", "Núm de Compra");
 
+                // Cria o gráfico de barras
                 JFreeChart barChart = ChartFactory.createBarChart(
-                    "Ex Barras",         
-                    "Dados",             
-                    "Valores",              
-                    barChartData,        
-                    PlotOrientation.VERTICAL,   
-                    true,                
-                    true,                
-                    false                
+                        "Ex Barras",         // Título do gráfico
+                        "Dados",             // Eixo X
+                        "Valores",           // Eixo Y
+                        barChartData,        // Dados do gráfico
+                        PlotOrientation.VERTICAL,  // Orientação do gráfico
+                        true,                // Exibe a legenda
+                        true,                // Exibe dicas de ferramenta
+                        false                // Não usa URL para links
                 );
+                    System.out.println("Gráfico gerado com sucesso!");
+                   // desktop.add(barPanel);
+                    //desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
+                    
+                // Personaliza o gráfico
                 CategoryPlot barchrt = barChart.getCategoryPlot();
-                barchrt.setRangeGridlinePaint(new Color(140,105,204));
-                CategoryPlot barPlot = (CategoryPlot) barChart.getPlot();
-                
+                barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
 
+                // Cria o painel para exibir o gráfico
                 ChartPanel chartPanel = new ChartPanel(barChart);
-                barPanel.removeAll();
-                barPanel.add(chartPanel, BorderLayout.CENTER);
-                barPanel.validate();
+
+                // Atualiza o painel com a nova visualização do gráfico
+                barPanel.setLayout(new BorderLayout());
+                barPanel.setPreferredSize(new Dimension(500, 300));
+                SwingUtilities.invokeLater(() -> {
+                    barPanel.removeAll();
+                    barPanel.add(chartPanel, BorderLayout.CENTER);
+                    barPanel.revalidate();  // Revalida o layout do painel
+                    barPanel.repaint();     // Repinta o painel
+                });
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
             }
-              
-        }   
-        }.start();
+        }
+    }, 0, 5, TimeUnit.SECONDS); 
                 }
     
     public ArrayList<Integer> dashboard() {
@@ -322,16 +332,12 @@ private Compras telaCompras;
         try
         {
             
-            PreparedStatement psProduto = conexao.prepareStatement(sql);
-            ResultSet rsProduto = psProduto.executeQuery();
-            if (rsProduto.next()) {
-                ListarDashBoard.add(rsProduto.getInt("totalProduto"));
-            }
-            PreparedStatement pstCompra = conexao.prepareStatement(sql);
-            ResultSet rsCompra = pstCompra.executeQuery();
-            if (rsCompra.next()) {
-                ListarDashBoard.add(rsCompra.getInt("totalCompra"));
-            }
+             PreparedStatement psProduto = conexao.prepareStatement(sql);
+        ResultSet rsProduto = psProduto.executeQuery();
+        if (rsProduto.next()) {
+            ListarDashBoard.add(rsProduto.getInt("totalProduto"));
+            ListarDashBoard.add(rsProduto.getInt("totalCompra"));
+        }
 
             
             
@@ -385,9 +391,7 @@ private Compras telaCompras;
     private javax.swing.JButton jCompras;
     private javax.swing.JButton jLogoff;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jRelatorio;
     private javax.swing.JButton jVendas;
-    private javax.swing.JPanel pizzaPanel;
     // End of variables declaration//GEN-END:variables
 }
