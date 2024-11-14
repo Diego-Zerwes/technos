@@ -194,11 +194,14 @@ public class Login extends javax.swing.JFrame {
         usu.setSenha(txtSenha.getText());
         
         UsuarioDao usuDao =  new UsuarioDao();
-        usuDao.verificarCredencial(usu);
+        if(usuDao.verificarCredencial(usu)){
+            Menus menus = new Menus();
+            menus.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao logar!");            
+        }
         
-        Menus menus = new Menus();
-        menus.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

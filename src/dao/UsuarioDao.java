@@ -23,7 +23,7 @@ public class UsuarioDao {
         }
     }
 
-    public void verificarCredencial(Usuario usuario) {
+    public boolean verificarCredencial(Usuario usuario) {
         String sql = "SELECT * FROM usuario WHERE nome=? AND senha=?";
         try {
             pst = conn.prepareStatement(sql);
@@ -32,10 +32,13 @@ public class UsuarioDao {
             rs = pst.executeQuery();
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Credencial verificada com sucesso!");
+                return true;
             }
         } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
+                return false;
         }
+        return false;
     }
 
 }
