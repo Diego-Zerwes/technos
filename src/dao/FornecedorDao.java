@@ -104,7 +104,7 @@ public class FornecedorDao {
             
         while (rs.next()) {
             Fornecedor fornecedor = new Fornecedor();
-            fornecedor.setIdFornecedor(rs.getInt("idFornecedor")); 
+            fornecedor.setIdFornecedor(rs.getInt("idFornecedores")); 
             fornecedor.setRazaoSocial(rs.getString("razaoSocial")); 
             
             listaFornecedores.add(fornecedor);
@@ -114,8 +114,8 @@ public class FornecedorDao {
     }
 
     return listaFornecedores;
-}
-    
+} 
+      
     public Fornecedor buscarFornecedorPorRazaoSocial(String razaoSocial) throws Exception {
     Fornecedor fornecedor = null;
     String sql = "SELECT * FROM fornecedores WHERE razaoSocial = ?";
@@ -126,7 +126,7 @@ public class FornecedorDao {
         
         if (rs.next()) {
             fornecedor = new Fornecedor();
-            fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+            fornecedor.setIdFornecedor(rs.getInt("idFornecedores"));
             fornecedor.setRazaoSocial(rs.getString("razaoSocial"));
         }
     }

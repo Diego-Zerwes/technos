@@ -35,14 +35,14 @@ Connection conn = null;
 public void inserirCompra(Compra compra) throws SQLException {  
     // Formatação da data  
     Timestamp dataCompraFormatada = new Timestamp(System.currentTimeMillis()); 
-    String sql = "INSERT INTO compra (dataCompra, idFornecedor, idFormaPagamento, idCaixa, idRelatorio) VALUES (?, ?, ?, ?, ?)";  
+    String sql = "INSERT INTO compra (dataCompra, idFornecedor, idFormaPagamento) VALUES (?, ?, ?)";  
 
     try (PreparedStatement pstmt = conn.prepareStatement(sql)) {  
         pstmt.setTimestamp(1, dataCompraFormatada);  
         pstmt.setInt(2, compra.getIdFornecedor());  
         pstmt.setInt(3, compra.getIdFormaPagamento());  
-        pstmt.setInt(4, compra.getIdCaixa());  
-        pstmt.setInt(5, compra.getIdRelatorio());  
+        //pstmt.setInt(4, compra.getIdCaixa());  
+        //pstmt.setInt(4, compra.getIdRelatorio());  
 
         pstmt.executeUpdate();  
         System.out.println("compra inserida com sucesso!");  
@@ -67,7 +67,7 @@ public void inserirCompra(Compra compra) throws SQLException {
 
     @Override
     public ArrayList<Compra> consultar() {
-        String sql = "SELECT p.idCompra, p.dataCompra, e.idFornecedor, c.idFormaPagamento, p.idCaixa "
+        String sql = "SELECT p.idCompra, p.dataCompra, e.idFornecedor, c.idFormaPagamento "
            + "FROM compra p "
            + "INNER JOIN fornecedor e ON p.idFornecedor = e.idFornecedor "
            + "INNER JOIN formapagamento c ON p.idFormaPagamento = c.idFormaPagamento";
@@ -85,7 +85,7 @@ public void inserirCompra(Compra compra) throws SQLException {
             comp.setDataCompra(rs.getString("dataCompra"));
             comp.setIdFornecedor(rs.getInt("idFornecedor"));
             comp.setIdFormaPagamento(rs.getInt("idFormaPagamento"));
-            comp.setIdCaixa(rs.getInt("idCaixa"));
+            //comp.setIdCaixa(rs.getInt("idCaixa"));
          
             listaCompras.add(comp);
         }

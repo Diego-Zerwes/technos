@@ -474,8 +474,8 @@ public class Compras extends javax.swing.JInternalFrame {
              Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
          }
     
-        comprasP.setIdCaixa(1);
-        comprasP.setIdRelatorio(1);
+        //comprasP.setIdCaixa(1);
+        //comprasP.setIdRelatorio(1);
 
         Timestamp timestampAtual = new Timestamp(System.currentTimeMillis()); 
         comprasP.setDataCompra(timestampAtual.toString());
