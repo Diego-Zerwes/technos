@@ -66,9 +66,9 @@ private Compras telaCompras;
         jRelatorio = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
         desktop = new javax.swing.JDesktopPane();
-        barPanel = new javax.swing.JPanel();
-        pizzaPanel = new javax.swing.JPanel();
         linePanel = new javax.swing.JPanel();
+        pizzaPanel = new javax.swing.JPanel();
+        barPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -143,7 +143,7 @@ private Compras telaCompras;
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(201, Short.MAX_VALUE)
+                .addContainerGap(233, Short.MAX_VALUE)
                 .addComponent(btnCadastro)
                 .addGap(18, 18, 18)
                 .addComponent(jCompras)
@@ -156,39 +156,70 @@ private Compras telaCompras;
                 .addGap(83, 83, 83))
         );
 
-        desktop.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout barPanelLayout = new javax.swing.GroupLayout(barPanel);
-        barPanel.setLayout(barPanelLayout);
-        barPanelLayout.setHorizontalGroup(
-            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+        javax.swing.GroupLayout linePanelLayout = new javax.swing.GroupLayout(linePanel);
+        linePanel.setLayout(linePanelLayout);
+        linePanelLayout.setHorizontalGroup(
+            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 780, Short.MAX_VALUE)
         );
-        barPanelLayout.setVerticalGroup(
-            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 188, Short.MAX_VALUE)
+        linePanelLayout.setVerticalGroup(
+            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 208, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pizzaPanelLayout = new javax.swing.GroupLayout(pizzaPanel);
         pizzaPanel.setLayout(pizzaPanelLayout);
         pizzaPanelLayout.setHorizontalGroup(
             pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
         pizzaPanelLayout.setVerticalGroup(
             pizzaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 328, Short.MAX_VALUE)
+            .addGap(0, 285, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout linePanelLayout = new javax.swing.GroupLayout(linePanel);
-        linePanel.setLayout(linePanelLayout);
-        linePanelLayout.setHorizontalGroup(
-            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 329, Short.MAX_VALUE)
+        javax.swing.GroupLayout barPanelLayout = new javax.swing.GroupLayout(barPanel);
+        barPanel.setLayout(barPanelLayout);
+        barPanelLayout.setHorizontalGroup(
+            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 440, Short.MAX_VALUE)
         );
-        linePanelLayout.setVerticalGroup(
-            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+        barPanelLayout.setVerticalGroup(
+            barPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 276, Short.MAX_VALUE)
+        );
+
+        desktop.setLayer(linePanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(pizzaPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
+        desktop.setLayout(desktopLayout);
+        desktopLayout.setHorizontalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(desktopLayout.createSequentialGroup()
+                .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(desktopLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        desktopLayout.setVerticalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(desktopLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(desktopLayout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(desktopLayout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,39 +228,16 @@ private Compras telaCompras;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1056, Short.MAX_VALUE)
-                                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(pizzaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(12, 12, 12)
-                                .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(352, 352, 352))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(desktop)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(desktop)
                 .addContainerGap())
         );
 
@@ -240,20 +248,17 @@ private Compras telaCompras;
     private Cadastros tela;
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
         
-        if (tela == null || !tela.isVisible()) {
+         if (tela == null || !tela.isVisible()) {
         tela = new Cadastros(); // Cria a tela se não existir ou não estiver visível
         desktop.add(tela);
         tela.setVisible(true);
-        barPanel.setVisible(false);
-    desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
+        barPanel.setVisible(false);  // Se necessário, esconda o barPanel
     } else {
         tela.setVisible(false);
-        barPanel.setVisible(true);
-        desktop.remove(desktop);
+        barPanel.setVisible(true);  // Se necessário, mostre o barPanel
+        desktop.remove(tela);
         desktop.repaint();
     }
-    // TODO add your handling code here:
-    
     }//GEN-LAST:event_btnCadastroActionPerformed
     private Compras tela1;
     private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
@@ -262,13 +267,11 @@ private Compras telaCompras;
         desktop.add(tela1);
         tela1.setVisible(true);
         barPanel.setVisible(false);
-            desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
-
-        
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
     } else {
         tela1.setVisible(false);
         barPanel.setVisible(true);
-        desktop.remove(desktop);
+        desktop.remove(tela1);
         desktop.repaint();
     }
                 
@@ -281,13 +284,13 @@ private Compras telaCompras;
         desktop.add(tela3);
         tela3.setVisible(true);
         barPanel.setVisible(false);
-            desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER);
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
     } else {
         tela3.setVisible(false);
         barPanel.setVisible(true);
-        desktop.remove(desktop);
+        desktop.remove(tela3);
         desktop.repaint();
-    }        // TODO add your handling code here:
+    }
     }//GEN-LAST:event_jRelatorioActionPerformed
 
     private void jVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVendasActionPerformed
@@ -339,8 +342,6 @@ private Compras telaCompras;
                         false                // Não usa URL para links
                 );
 
-                System.out.println("Gráfico de barras gerado com sucesso!");
-
                 // Personaliza o gráfico de barras
                 CategoryPlot barchrt = barChart.getCategoryPlot();
                 barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
@@ -362,7 +363,7 @@ private Compras telaCompras;
                         true,                    // Exibe dicas de ferramenta
                         false                    // Não usa URL para links
                 );
-
+                ChartPanel pieChartPanel = new ChartPanel(pieChart);
                 // Personaliza o gráfico de pizza
                 PiePlot piePlot = (PiePlot) pieChart.getPlot();
                 piePlot.setSectionPaint("Dinheiro", new Color(140, 105, 204));  // Cor para "Dinheiro"
@@ -370,35 +371,38 @@ private Compras telaCompras;
                 piePlot.setSectionPaint("Débito", new Color(255, 165, 0));      // Cor para "Débito"
                 piePlot.setBackgroundPaint(Color.WHITE);  // Cor de fundo do gráfico
 
-                // Cria o painel para o gráfico de pizza
-                ChartPanel pieChartPanel = new ChartPanel(pieChart);
-                
-                
-                ///////////////////////////////////INICIA AQUI O GRAFICO DE LINHA////////////////////////////////////////////////////
+                // Cria o gráfico de linha
                 XYSeriesCollection lineChartData = new XYSeriesCollection();
                 XYSeries series = new XYSeries("Vendas");
-                series.add(1, listaProduto.get(5));
+
+                // Verifica se o valor da listaProduto.get(5) é válido
+                Integer vendas = listaProduto.get(5);
+                if (vendas != null) {
+                    series.add(1, vendas); // Só adiciona o valor se for válido
+                } else {
+                    System.out.println("Valor inválido para vendas.");
+                }
                 lineChartData.addSeries(series);
 
-        JFreeChart lineChart = ChartFactory.createXYLineChart(
-                "Gráfico de Linha",  // Título
-                "Meses",             // Eixo X
-                "Quantidade",        // Eixo Y
-                lineChartData,       // Dados
-                PlotOrientation.VERTICAL, 
-                true, 
-                true, 
-                false
-        );
+                JFreeChart lineChart = ChartFactory.createXYLineChart(
+                        "Gráfico de Linha",  // Título
+                        "Meses",             // Eixo X
+                        "Quantidade",        // Eixo Y
+                        lineChartData,       // Dados
+                        PlotOrientation.VERTICAL, 
+                        true, 
+                        true, 
+                        false
+                );
 
-        // Personalizando o gráfico de linha
-        XYPlot linePlot = (XYPlot) lineChart.getPlot();
-        linePlot.setDomainGridlinePaint(Color.black);
-        linePlot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-        linePlot.setRangeGridlinesVisible(true);
+                // Personalizando o gráfico de linha
+                XYPlot linePlot = (XYPlot) lineChart.getPlot();
+                linePlot.setDomainGridlinePaint(Color.black);
+                linePlot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+                linePlot.setRangeGridlinesVisible(true);
 
-        // Adicionando o gráfico de linha ao painel
-        ChartPanel lineChartPanel = new ChartPanel(lineChart);
+                // Adicionando o gráfico de linha ao painel
+                ChartPanel lineChartPanel = new ChartPanel(lineChart);
 
                 // Atualiza os painéis com os gráficos
                 SwingUtilities.invokeLater(() -> {
@@ -430,8 +434,9 @@ private Compras telaCompras;
                 JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }, 0, 5, TimeUnit.SECONDS); 
+    }, 0, 5, TimeUnit.SECONDS);
 }
+
 
 
     
