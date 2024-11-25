@@ -1,10 +1,16 @@
 
 package projeto.mensal.Telas;
 
+import com.mysql.cj.xdevapi.Statement;
+//import com.sun.jdi.connect.spi.Connection;
 import dao.ComprasDao;
+import dao.ConexaoBanco;
 import dao.FormaDePagamentoDao;
 import dao.FornecedorDao;
 import dao.ProdutoDao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -26,13 +32,28 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
  */
 public class Compras extends javax.swing.JInternalFrame {
     int vInsUpdate = 0;
-    
+    Connection conn = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+
+    ConexaoBanco conexao = null;
 
     public Compras() {
         initComponents();
-        
+        ConexaoBanco conexaoBanco = new ConexaoBanco();
+    try {
+        conn = conexaoBanco.getConnection();  // Tente obter a conexão diretamente aqui
+        if (conn != null) {
+            System.out.println("Conexão estabelecida com o banco!");
+        } else {
+            System.out.println("Falha na conexão com o banco.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Erro ao tentar estabelecer a conexão: " + e.getMessage());
+    }
     } 
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -407,144 +428,116 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPrecoCompraKeyPressed
 
     private void btnCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarMouseClicked
-     if ((txtDescricao.getText().trim().isEmpty()) ||   
-        (txtModelo.getText().trim().isEmpty()) ||   
-        (txtQuantidade.getText().trim().isEmpty()) ||   
-        (jCor.getSelectedIndex() < 0) ||   
-        (jMarca.getSelectedIndex() < 0) ||      
-        (txtPrecoCompra.getText().trim().isEmpty()) ||   
-        (txtPrecoVenda.getText().trim().isEmpty())) {  
-    
-        JOptionPane.showMessageDialog(null, "Dados Inválidos");  
-        txtDescricao.requestFocus();  
+      // Verificar se algum campo está vazio
+    if ((txtDescricao.getText().trim().isEmpty()) ||
+        (txtModelo.getText().trim().isEmpty()) ||
+        (txtQuantidade.getText().trim().isEmpty()) ||
+        (jCor.getSelectedIndex() < 0) ||
+        (jMarca.getSelectedIndex() < 0) ||
+        (txtPrecoCompra.getText().trim().isEmpty()) ||
+        (txtPrecoVenda.getText().trim().isEmpty())) {
+
+        JOptionPane.showMessageDialog(null, "Dados Inválidos");
+        txtDescricao.requestFocus();
     } else {
-         if (vInsUpdate == 0) {
-        // new Thread(){
-        // @Override public void run(){
-                            
-                 
-             
-        Produto cadastroP = new Produto();  
-        Estoque estoque = new Estoque();
-        estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText())); 
-        Timestamp timestampAtual2 = new Timestamp(System.currentTimeMillis()); 
-        estoque.setDataEstoque(timestampAtual2.toString());
-        cadastroP.setDescricao(txtDescricao.getText());  
-        cadastroP.setModelo(txtModelo.getText());  
-        cadastroP.setMarca(jMarca.getSelectedItem().toString());  
-        cadastroP.setCor(jCor.getSelectedItem().toString());  
-        cadastroP.setEstoque(estoque);  
-        
-             
- 
-        Compra comprasP = new Compra();
+        try {
+            // Validar se os valores de preço são numéricos
+            double precoCompra = 0.0;
+            double precoVenda = 0.0;
 
-        String razaoSocialSelecionada = (String) jFornecedor.getSelectedItem();
-            FornecedorDao fornecedorDao = new FornecedorDao(); 
+            try {
+                precoCompra = Double.parseDouble(txtPrecoCompra.getText().trim());
+                precoVenda = Double.parseDouble(txtPrecoVenda.getText().trim());
 
-        Fornecedor fornecedorSelecionado;
-         try {
-             fornecedorSelecionado = fornecedorDao.buscarFornecedorPorRazaoSocial(razaoSocialSelecionada);
-             if (fornecedorSelecionado != null) {  
-            comprasP.setIdFornecedor(fornecedorSelecionado.getIdFornecedor());  
-            System.out.println("ID do Fornecedor: " + comprasP.getIdFornecedor());  
-        } else {  
-            JOptionPane.showMessageDialog(null, "Fornecedor não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);  
-            return; 
-        }   
-         } catch (Exception ex) {
-             Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
-        
+                // Verifica se os preços são positivos
+                if (precoCompra <= 0 || precoVenda <= 0) {
+                    JOptionPane.showMessageDialog(null, "Os preços devem ser maiores que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;  // Encerra a execução caso os preços sejam inválidos
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Preço de compra ou venda inválido. Por favor, insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;  // Encerra a execução caso ocorra erro na conversão para número
+            }
+
+            System.out.println("Preços válidos: Preço Compra = " + precoCompra + ", Preço Venda = " + precoVenda);
+
+            Produto cadastroP = new Produto();
+            Estoque estoque = new Estoque();
+            estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+            Timestamp timestampAtual2 = new Timestamp(System.currentTimeMillis());
+            estoque.setDataEstoque(timestampAtual2.toString());
+
+            // Preencher dados do produto
+            cadastroP.setDescricao(txtDescricao.getText().trim());
+            cadastroP.setModelo(txtModelo.getText().trim());
+            cadastroP.setMarca(jMarca.getSelectedItem().toString().trim());
+            cadastroP.setCor(jCor.getSelectedItem().toString().trim());
+            cadastroP.setPrecoCompra(precoCompra);  // Atribuindo o valor de precoCompra
+            cadastroP.setPrecoVenda(precoVenda);  // Atribuindo o valor de precoVenda
+            cadastroP.setEstoque(estoque);
+
+            // Validar e inserir os dados de compra
+            Compra comprasP = new Compra();
+            String razaoSocialSelecionada = (String) jFornecedor.getSelectedItem();
+            FornecedorDao fornecedorDao = new FornecedorDao();
+
+            Fornecedor fornecedorSelecionado;
+            try {
+                fornecedorSelecionado = fornecedorDao.buscarFornecedorPorRazaoSocial(razaoSocialSelecionada);
+                if (fornecedorSelecionado != null) {
+                    comprasP.setIdFornecedor(fornecedorSelecionado.getIdFornecedor());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Fornecedor não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // Validar forma de pagamento
             String descricaoFormaSelecionada = (String) jFormaDePagamento.getSelectedItem();
+            FormaDePagamentoDao formapagamentoDao = new FormaDePagamentoDao();
+            FormaDePagamento formaPagamentoSelecionada;
+            try {
+                formaPagamentoSelecionada = formapagamentoDao.buscarFormaDePagamento(descricaoFormaSelecionada);
+                if (formaPagamentoSelecionada != null) {
+                    comprasP.setIdFormaPagamento(formaPagamentoSelecionada.getIdFormaPagamento());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Forma de pagamento não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-  
-        FormaDePagamentoDao formapagamentoDao = new FormaDePagamentoDao();
-        FormaDePagamento formaPagamentoSelecionada;
-         try {
-             formaPagamentoSelecionada = formapagamentoDao.buscarFormaDePagamento(descricaoFormaSelecionada);
-             if (formaPagamentoSelecionada != null) {  
-        comprasP.setIdFormaPagamento(formaPagamentoSelecionada.getIdFormaPagamento());  
-    } else {  
-        JOptionPane.showMessageDialog(null, "Forma de pagamento não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);  
-        return;
-    }
-         } catch (Exception ex) {
-             Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    
-        //comprasP.setIdCaixa(1);
-        //comprasP.setIdRelatorio(1);
+            // Definir data de compra
+            Timestamp timestampAtual = new Timestamp(System.currentTimeMillis());
+            comprasP.setDataCompra(timestampAtual.toString());
 
-        Timestamp timestampAtual = new Timestamp(System.currentTimeMillis()); 
-        comprasP.setDataCompra(timestampAtual.toString());
+            // Inserir compra
+            ComprasDao compraDao = new ComprasDao();
+            try {
+                compraDao.inserirCompra(comprasP);
+                JOptionPane.showMessageDialog(null, "Compra registrada com sucesso!");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao registrar a compra: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
 
-        ComprasDao compraDao = new ComprasDao();  
-        try {  
-            compraDao.inserirCompra(comprasP);  
-            JOptionPane.showMessageDialog(null, "Compra registrada com sucesso!");  
-        } catch (SQLException ex) {  
-            JOptionPane.showMessageDialog(null, "Erro ao registrar a compra: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);  
-            Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);  
+            // Inserir produto e estoque com transação
+            ProdutoDao produtoDao = new ProdutoDao();
+            try {
+                produtoDao.inserirProduto(cadastroP, estoque);  // Chama o método que você criou
+                JOptionPane.showMessageDialog(null, "Produto e Estoque inseridos com sucesso.");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao inserir produto e estoque: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // Log de erro geral
+            JOptionPane.showMessageDialog(null, "Erro ao processar o cadastro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
-        try {  
-            double precoCompra = Double.parseDouble(txtPrecoCompra.getText());  
-            double precoVenda = Double.parseDouble(txtPrecoVenda.getText());  
-            cadastroP.setPrecoCompra(precoCompra);  
-            cadastroP.setPrecoVenda(precoVenda);  
-        } catch (NumberFormatException e) {  
-            JOptionPane.showMessageDialog(null, "Por favor, insira um preço válido.", "Erro", JOptionPane.ERROR_MESSAGE);  
-            return;  
-        }  
-
-        try {  
-            ProdutoDao cadastroPDao = new ProdutoDao();  
-            cadastroPDao.inserir(cadastroP); 
-            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();
-    atualizaTabela(listaProdutos);
-            //atualizaTabela(cadastroPDao.consultar());
-            limparCampos();  
-        } catch(Exception ex) {  
-            JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);  
-        }
-       // }
-        
-    // }.start();
-    }else{
-                Produto produto = new Produto();
-                produto.setIdProduto(Integer.parseInt(txtId.getText()));
-                produto.setDescricao(txtDescricao.getText());
-                produto.setModelo(txtModelo.getText());
-                Estoque estoque = new Estoque();
-                estoque.setQuantidade( Integer.parseInt(txtQuantidade.getText()));
-                produto.setEstoque(estoque);
-                produto.setCor(jCor.getSelectedItem().toString());
-                produto.setMarca(jMarca.getSelectedItem().toString());
-                produto.setPrecoCompra(Double.parseDouble(txtPrecoCompra.getText()));
-                produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
-
-
-                ProdutoDao produtoDao = new ProdutoDao();
-                produtoDao.alterar(produto);
-                limparTabela();
-                
-                conectarEBuscarProdutos();
-                TabelaCompras.clearSelection(); 
-                //conectarEBuscarProdutos();
-               // TabelaCompras.repaint();
-
-                JOptionPane.showMessageDialog(null, "Cadastro alterado com sucesso!", "", INFORMATION_MESSAGE);
-                txtId.requestFocus();
-
-                limparCampos();
-                
-                vInsUpdate = 0;
-                TabelaCompras.setVisible(true);
-                btnCadastrar.setText("Cadastrar"); 
-                
-            }   
     }
     
     }//GEN-LAST:event_btnCadastrarMouseClicked
@@ -768,7 +761,7 @@ private void buscarNome(ProdutoDao prodDao)
     }
 }
     
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable TabelaCompras;
     private javax.swing.JButton btnCadastrar;

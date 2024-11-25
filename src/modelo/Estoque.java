@@ -3,6 +3,7 @@ package modelo;
 
 
 public class Estoque {
+    private int idEstoque;
     private int idProduto;
     private int quantidade;
     private String dataEstoque;
@@ -14,7 +15,8 @@ public class Estoque {
         this.quantidade = quantidade;
     }
 
-    public Estoque(int idProduto, int quantidade) {
+    public Estoque(int idEstoque, int idProduto, int quantidade) {
+        this.idEstoque = idEstoque;
         this.idProduto = idProduto;
         this.quantidade = quantidade;
     }
@@ -41,6 +43,14 @@ public class Estoque {
 
     public void setDataEstoque(String dataEstoque) {
         this.dataEstoque = dataEstoque;
+    }
+
+    public int getIdEstoque() {
+        return idEstoque;
+    }
+
+    public void setIdEstoque(int idEstoque) {
+        this.idEstoque = idEstoque;
     }
     
     

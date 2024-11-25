@@ -292,9 +292,20 @@ private Compras telaCompras;
         desktop.repaint();
     }
     }//GEN-LAST:event_jRelatorioActionPerformed
-
+    private Vendas tela4;
     private void jVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVendasActionPerformed
-        // TODO add your handling code here:
+         if (tela4 == null || !tela4.isVisible()) {
+        tela4 = new Vendas(); // Cria a tela se não existir ou não estiver visível
+        desktop.add(tela4);
+        tela4.setVisible(true);
+        barPanel.setVisible(false);
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
+    } else {
+        tela4.setVisible(false);
+        barPanel.setVisible(true);
+        desktop.remove(tela4);
+        desktop.repaint();
+    }
     }//GEN-LAST:event_jVendasActionPerformed
 
     private void jLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogoffActionPerformed

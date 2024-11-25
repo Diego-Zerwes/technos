@@ -4,6 +4,7 @@ package modelo;
 public class Produto {
     private int idProduto;
     private String descricao;
+    private int idEstoque;
     private String modelo;
     private String marca;
     private String Cor;
@@ -15,7 +16,7 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(String descricao, String modelo, String marca, String Cor, Double precoCompra, Double precoVenda) {
+    public Produto(String descricao, String modelo, int idEstoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
         this.descricao = descricao;
         this.modelo = modelo;
         this.marca = marca;
@@ -24,7 +25,7 @@ public class Produto {
         this.precoVenda = precoVenda;
     }
 
-    public Produto(int idProduto, String descricao, String modelo, String marca, String Cor, Double precoCompra, Double precoVenda) {
+    public Produto(int idProduto, String descricao, String modelo, int idEstoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
         this.idProduto = idProduto;
         this.descricao = descricao;
         this.modelo = modelo;
@@ -104,6 +105,14 @@ public class Produto {
 
     public void setPrecoVenda(Double precoVenda) {
         this.precoVenda = precoVenda;
+    }
+
+    public int getIdEstoque() {
+        return idEstoque;
+    }
+
+    public void setIdEstoque(int idEstoque) {
+        this.idEstoque = idEstoque;
     }
     
     

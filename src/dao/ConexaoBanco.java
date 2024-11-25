@@ -21,19 +21,49 @@ public class ConexaoBanco {
     public boolean conectar(){
         try
         {
+            System.out.println("Tentando conectar ao banco...");
             this.conexao = DriverManager.getConnection("jdbc:mysql://"+this.servidor+"/"+this.banco,this.usuario,this.senha);
+            System.out.println("Conexão bem-sucedida!");
             return true;
         }
         catch(SQLException ex){
+             System.out.println("Erro ao conectar: " + ex.getMessage());
             throw new RuntimeException(ex);
         }
     }
     public Connection getConnection() {
-        return conexao;
+        try {
+        System.out.println("Tentando conectar ao banco...");
+        this.conexao = DriverManager.getConnection(
+            "jdbc:mysql://200.195.171.124:3306/grupo07_Vendas_Celular?useSSL=false&serverTimezone=UTC",
+            "grupo07", 
+            "Vu9EIaowZuJ3mBsP"
+        );
+        if (this.conexao != null) {
+            System.out.println("Conexão estabelecida com o banco.");
+        }
+        return this.conexao;
+    } catch (SQLException ex) {
+        System.out.println("Erro ao conectar: " + ex.getMessage());
+        return null;
+    }
     }
 
     PreparedStatement prepareStatement(String sql) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    void fecharConexao() {
+       try {
+            if (this.conexao != null && !this.conexao.isClosed()) {
+                this.conexao.close();  // Fecha a conexão com o banco
+            }
+        } catch (SQLException e) {
+            // Se ocorrer um erro ao fechar a conexão, você pode exibir um erro ou log
+            System.out.println("Erro ao fechar a conexão: " + e.getMessage());
+        }
+    }
+    
+   
+    
 }
