@@ -32,8 +32,8 @@ public class FornecedorDao {
 
     public void cadastrarFornecedor(Fornecedor fornecedor, Contatos contato, Endereco endereco) {
         String sqlEnd = "INSERT INTO endereco (cep, logradouro, cidade, estado, numero) VALUES (?, ?, ?, ?, ?)";
-        String sqlCli = "INSERT INTO fornecedores (razaoSocial, cnpj, ie, idEndereco) VALUES (?, ? , ?, ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFornecedor) VALUES (?, ?, ?, ?)";
+        String sqlCli = "INSERT INTO fornecedores (razaoSocial, cnpj, ie, idEndereco, dataFornecedores) VALUES (?, ? , ?, ?, ?)";
+        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idFornecedor, idCliente) VALUES (?, ?, ?, ?, ?)";
         try {
             conn.setAutoCommit(false);
 
@@ -67,6 +67,7 @@ public class FornecedorDao {
                             pstCont.setString(2, contato.getCelular());
                             pstCont.setString(3, contato.getEmail());
                             pstCont.setInt(4, idForn);
+                            pstCont.setString(5, null);
                             pstCont.executeUpdate();
 
                             conn.commit();

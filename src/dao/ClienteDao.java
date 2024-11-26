@@ -30,7 +30,7 @@ public class ClienteDao {
     public void cadastrarClientePf(Cliente cliente, Contatos contato, Endereco endereco) {
         String sqlEnd = "INSERT INTO endereco (cep, logradouro, cidade, estado, numero) VALUES (?, ?, ?, ?, ?)";
         String sqlCli = "INSERT INTO clientes (nomeRazaoSocial, cpfCnpj, rgIe, sexo, tipoCliente, idEndereco) VALUES (?, ? , ?, ?, ?, ?)";
-        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente) VALUES (?, ?, ?, ?)";
+        String sqlCon = "INSERT INTO contatos (telefone, celular, email, idCliente, idFornecedor) VALUES (?, ?, ?, ?, ?)";
         try {           
             conn.setAutoCommit(false);
             
@@ -66,6 +66,7 @@ public class ClienteDao {
                             pstCont.setString(2, contato.getCelular());
                             pstCont.setString(3, contato.getEmail());
                             pstCont.setInt(4, idCli);
+                            pstCont.setInt(5, 0);
                             pstCont.executeUpdate();
                             
                             conn.commit();
@@ -83,7 +84,7 @@ public class ClienteDao {
                 JOptionPane.showMessageDialog(null, "Erro ao cadastrar endereço!");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, "Erro aqui????" + e.getMessage());
         }
     }
 

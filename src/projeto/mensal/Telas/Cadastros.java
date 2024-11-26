@@ -6,6 +6,12 @@ import dao.ConexaoBanco;
 import dao.FornecedorDao;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import java.text.MessageFormat;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttribute;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.OrientationRequested;
+import javax.swing.JTable;
 import modelo.Cliente;
 import modelo.Contatos;
 import modelo.Endereco;
@@ -233,6 +239,7 @@ public class Cadastros extends javax.swing.JInternalFrame {
         btnLimpCamp = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblForn = new javax.swing.JTable();
+        btnImp = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -424,6 +431,13 @@ public class Cadastros extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(tblForn);
 
+        btnImp.setText("Imprimir");
+        btnImp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImpActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -510,8 +524,11 @@ public class Cadastros extends javax.swing.JInternalFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel12)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(231, Short.MAX_VALUE))
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnImp)
+                        .addGap(320, 320, 320)))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -563,12 +580,13 @@ public class Cadastros extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCad)
                     .addComponent(btnCanc)
-                    .addComponent(btnLimpCamp))
+                    .addComponent(btnLimpCamp)
+                    .addComponent(btnImp))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         pack();
@@ -644,10 +662,25 @@ public class Cadastros extends javax.swing.JInternalFrame {
         limparCampos();
     }//GEN-LAST:event_btnLimpCampActionPerformed
 
+    private void btnImpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpActionPerformed
+        // 
+        MessageFormat header = new MessageFormat("Testando");
+        MessageFormat footer = new MessageFormat("Página(0,number,Integer)");
+        try {
+            PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+            set.add(OrientationRequested.PORTRAIT);
+            tblCli.print(JTable.PrintMode.FIT_WIDTH, header, footer, true, set, true);
+            JOptionPane.showMessageDialog(null, "\n" + "Impressão concluída");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "\n" + "Falha: " + e);
+        }
+    }//GEN-LAST:event_btnImpActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCad;
     private javax.swing.JButton btnCanc;
+    private javax.swing.JButton btnImp;
     private javax.swing.JButton btnLimpCamp;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboSex;
