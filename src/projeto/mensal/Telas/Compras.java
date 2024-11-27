@@ -462,10 +462,8 @@ public class Compras extends javax.swing.JInternalFrame {
             System.out.println("Preços válidos: Preço Compra = " + precoCompra + ", Preço Venda = " + precoVenda);
 
             Produto cadastroP = new Produto();
-            Estoque estoque = new Estoque();
-            estoque.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+            
             Timestamp timestampAtual2 = new Timestamp(System.currentTimeMillis());
-            estoque.setDataEstoque(timestampAtual2.toString());
 
             // Preencher dados do produto
             cadastroP.setDescricao(txtDescricao.getText().trim());
@@ -474,7 +472,7 @@ public class Compras extends javax.swing.JInternalFrame {
             cadastroP.setCor(jCor.getSelectedItem().toString().trim());
             cadastroP.setPrecoCompra(precoCompra);  // Atribuindo o valor de precoCompra
             cadastroP.setPrecoVenda(precoVenda);  // Atribuindo o valor de precoVenda
-            cadastroP.setEstoque(estoque);
+            cadastroP.setEstoque(Integer.parseInt(txtQuantidade.getText().trim()));
 
             // Validar e inserir os dados de compra
             Compra comprasP = new Compra();
@@ -528,7 +526,7 @@ public class Compras extends javax.swing.JInternalFrame {
             // Inserir produto e estoque com transação
             ProdutoDao produtoDao = new ProdutoDao();
             try {
-                produtoDao.inserirProduto(cadastroP, estoque);  // Chama o método que você criou
+                produtoDao.inserirProduto(cadastroP);  // Chama o método que você criou
                 JOptionPane.showMessageDialog(null, "Produto e Estoque inseridos com sucesso.");
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao inserir produto e estoque: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -649,7 +647,7 @@ public class Compras extends javax.swing.JInternalFrame {
                 cadastroP.getModelo(),
                 cadastroP.getCor(),
                 cadastroP.getMarca(),
-                String.valueOf(cadastroP.getEstoque().getQuantidade()),
+                String.valueOf(cadastroP.getEstoque()),
                 String.valueOf(cadastroP.getPrecoCompra()),
                 String.valueOf(cadastroP.getPrecoVenda())
             });
@@ -729,7 +727,7 @@ private void buscarNome(ProdutoDao prodDao)
                 cadastroP.getModelo(), 
                 cadastroP.getCor(),
                 cadastroP.getMarca(),
-                String.valueOf(cadastroP.getEstoque().getQuantidade()), 
+                String.valueOf(cadastroP.getEstoque()), 
                 String.valueOf(cadastroP.getPrecoCompra()),            
                 String.valueOf(cadastroP.getPrecoVenda())});
                 }

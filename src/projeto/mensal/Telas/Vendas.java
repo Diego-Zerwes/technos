@@ -38,7 +38,42 @@ public class Vendas extends javax.swing.JInternalFrame {
    
     public Vendas() {
         initComponents();
+     ConexaoBanco conexaoBanco = new ConexaoBanco();
+    try {
+        conn = conexaoBanco.getConnection();  // Tente obter a conexão diretamente aqui
+        if (conn != null) {
+            System.out.println("Conexão estabelecida com o banco!");
+        } else {
+            System.out.println("Falha na conexão com o banco.");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Erro ao tentar estabelecer a conexão: " + e.getMessage());
+    }
+    }
     
+    
+    // Método para abrir a conexão com o banco
+    private void abrirConexao() {
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = new ConexaoBanco().getConnection();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao estabelecer a conexão com o banco", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Método para fechar a conexão com o banco
+    private void fecharConexao() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     
@@ -310,40 +345,43 @@ public class Vendas extends javax.swing.JInternalFrame {
 }
   
     public void atualizaTabela(ArrayList<Produto> listaProdutos) {
+        // Usando a conexão global já aberta
+    if (conn == null) {
+        JOptionPane.showMessageDialog(this, "Conexão com o banco não estabelecida.");
+        return;
+    }
+
     try {
         // Limpa a tabela antes de adicionar as novas linhas
         limparTabela();
 
         DefaultTableModel modeloTabela = (DefaultTableModel) jTabelaVenda.getModel();
 
-        // Criação de uma instância do EstoqueDao
-        EstoqueDao estoqueDao = new EstoqueDao();
+        // Criação de uma instância do ProdutoDao sem passar a conexão explicitamente
+        ProdutoDao produtoDao = new ProdutoDao(); // Não passamos a conexão, pois já está sendo utilizada globalmente
 
         // Para cada produto na lista, consultar o estoque e adicionar à tabela
         for (Produto cadastroP : listaProdutos) {
-            Estoque estoque = cadastroP.getEstoque(); // Aqui temos o objeto Estoque
+            // Obtém o ID do produto
+            int idProduto = cadastroP.getIdProduto();
 
-            // Verifique se o objeto Estoque não é nulo
-            if (estoque != null) {
-                // Obtém o ID do estoque associado ao produto
-                int idEstoque = estoque.getIdProduto();  // Aqui estamos acessando o ID correto do Estoque
+            // Consulta a quantidade do estoque usando o DAO de Produto
+            int quantidadeEstoque = produtoDao.consultarQuantidadePorId(idProduto);  // Método para consultar quantidade por ID
 
-                // Consulta a quantidade do estoque usando o DAO de Estoque
-                int quantidadeEstoque = estoqueDao.consultarQuantidadePorId(idEstoque);  // Passa o ID do estoque para o método
+            // Verifique o valor retornado
+            System.out.println("Quantidade de estoque para o produto " + idProduto + ": " + quantidadeEstoque);
 
-                // Verifique o valor retornado
-                System.out.println("Quantidade de estoque para o produto " + idEstoque + ": " + quantidadeEstoque);
-
-                // Adiciona a linha na tabela com as informações do produto e a quantidade do estoque
+            // Adiciona a linha na tabela com as informações do produto
+            if (quantidadeEstoque >= 0) { // Se a quantidade é válida (pode ser alterado para outro critério)
                 modeloTabela.addRow(new String[] {
-                    Integer.toString(cadastroP.getIdProduto()), // ID do produto
+                    Integer.toString(idProduto), // ID do produto
                     cadastroP.getDescricao(), // Descrição do produto
                     String.valueOf(quantidadeEstoque), // Quantidade de estoque
                     String.valueOf(cadastroP.getPrecoVenda()) // Preço de venda
                 });
             } else {
                 modeloTabela.addRow(new String[] {
-                    Integer.toString(cadastroP.getIdProduto()), // ID do produto
+                    Integer.toString(idProduto), // ID do produto
                     cadastroP.getDescricao(), // Descrição do produto
                     "Estoque não encontrado", // Mensagem de erro ou valor padrão
                     String.valueOf(cadastroP.getPrecoVenda()) // Preço de venda
@@ -353,7 +391,7 @@ public class Vendas extends javax.swing.JInternalFrame {
 
     } catch (Exception e) {
         // Exibe o erro completo no console
-        e.printStackTrace();  // Isso irá exibir o erro completo no console
+        e.printStackTrace(); // Isso irá exibir o erro completo no console
         JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar o estoque:\n" + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
     }
 }
@@ -368,25 +406,29 @@ public class Vendas extends javax.swing.JInternalFrame {
     }
     
     private void conectarEBuscarProdutos() {
-     ProdutoDao cadastroPDao = new ProdutoDao();
-    
-    // Verifica a conexão ao banco de dados
-    if (cadastroPDao.conectar()) {  // Agora conecta corretamente
-        try {
-            // Chama o método para consultar os produtos
-            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();
-            // Atualiza a tabela com a lista de produtos
-            atualizaTabela(listaProdutos);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao carregar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            // Fechar a conexão após o uso
-            cadastroPDao.fecharConexao();  // Fechar a conexão corretamente após a consulta
+         // Verifica se a conexão está aberta
+    abrirConexao(); // Certifica-se de que a conexão foi aberta
+
+    ProdutoDao cadastroPDao = new ProdutoDao();  // Não passamos a conexão explicitamente
+
+    try {
+        if (cadastroPDao.conectar()) {  // Conecta ao banco de dados
+            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();  // Consulta os produtos
+            atualizaTabela(listaProdutos);  // Atualiza a tabela com os produtos
+        } else {
+            JOptionPane.showMessageDialog(null, "Falha na conexão com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        // Mensagem de erro se a conexão falhar
-        JOptionPane.showMessageDialog(null, "Falha na conexão com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        // Captura exceções relacionadas ao banco de dados
+        JOptionPane.showMessageDialog(null, "Erro ao carregar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    } finally {
+        try {
+            // Fechar a conexão no final (não precisa ser aqui, pode ser feito quando for necessário)
+            // cadastroPDao.fecharConexao(); 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -395,6 +437,7 @@ public class Vendas extends javax.swing.JInternalFrame {
     
     public void atualizarEstoque(ArrayList<ItemCarrinho> itensCarrinho) {
     // Verifica se o carrinho está vazio
+    abrirConexao();
     if (itensCarrinho.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Carrinho vazio. Adicione produtos antes de finalizar a compra.");
         return;
@@ -433,6 +476,7 @@ public class Vendas extends javax.swing.JInternalFrame {
 }
     private ArrayList<ItemCarrinho> itensCarrinho = new ArrayList<>();
     private void finalizarCompra() {
+        abrirConexao();
     // Calcula o valor total da compra
     double totalCompra = calcularValorTotal();
 

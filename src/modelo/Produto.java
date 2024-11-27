@@ -4,19 +4,18 @@ package modelo;
 public class Produto {
     private int idProduto;
     private String descricao;
-    private int idEstoque;
+    private int estoque;
     private String modelo;
     private String marca;
     private String Cor;
     private Double precoCompra;
     private Double precoVenda;
-    private Estoque estoque;
     private Fornecedor fornecedor;
 
     public Produto() {
     }
 
-    public Produto(String descricao, String modelo, int idEstoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
+    public Produto(String descricao, String modelo, int estoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
         this.descricao = descricao;
         this.modelo = modelo;
         this.marca = marca;
@@ -25,7 +24,7 @@ public class Produto {
         this.precoVenda = precoVenda;
     }
 
-    public Produto(int idProduto, String descricao, String modelo, int idEstoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
+    public Produto(int idProduto, String descricao, String modelo, int estoque, String marca, String Cor, Double precoCompra, Double precoVenda) {
         this.idProduto = idProduto;
         this.descricao = descricao;
         this.modelo = modelo;
@@ -75,14 +74,6 @@ public class Produto {
         this.Cor = Cor;
     }
 
-    public Estoque getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(Estoque estoque) {
-        this.estoque = estoque;
-    }
-
     public Fornecedor getFornecedor() {
         return fornecedor;
     }
@@ -107,12 +98,12 @@ public class Produto {
         this.precoVenda = precoVenda;
     }
 
-    public int getIdEstoque() {
-        return idEstoque;
+    public int getEstoque() {
+        return estoque;
     }
 
-    public void setIdEstoque(int idEstoque) {
-        this.idEstoque = idEstoque;
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
     }
     
     

@@ -32,25 +32,25 @@ public class ConexaoBanco {
         }
     }
     public Connection getConnection() {
-        try {
-        System.out.println("Tentando conectar ao banco...");
-        this.conexao = DriverManager.getConnection(
-            "jdbc:mysql://200.195.171.124:3306/grupo07_Vendas_Celular?useSSL=false&serverTimezone=UTC",
-            "grupo07", 
-            "Vu9EIaowZuJ3mBsP"
-        );
-        if (this.conexao != null) {
-            System.out.println("Conexão estabelecida com o banco.");
+         if (this.conexao == null) {
+            try {
+                this.conexao = DriverManager.getConnection(
+                    "jdbc:mysql://" + this.servidor + "/" + this.banco,
+                    this.usuario,
+                    this.senha
+                );
+                System.out.println("Conexão estabelecida com sucesso.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return this.conexao;
-    } catch (SQLException ex) {
-        System.out.println("Erro ao conectar: " + ex.getMessage());
-        return null;
     }
-    }
+    
 
     PreparedStatement prepareStatement(String sql) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
     void fecharConexao() {

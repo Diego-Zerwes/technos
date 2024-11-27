@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.Produto;
 import modelo.Estoque;
@@ -30,6 +32,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
         this.conexao = new ConexaoBanco(); // Instancia a classe de conexão
     }
 
+
     // Método para conectar ao banco
     public boolean conectar() {
         return this.conexao.conectar(); // Usa o método conectar da classe ConexaoBanco
@@ -44,7 +47,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
     public void fecharConexao() {
         this.conexao.fecharConexao(); // Usa o método fecharConexao da classe ConexaoBanco
     }
-    public void inserirProduto(Produto produto, Estoque estoque) throws SQLException {
+    public void inserirProduto(Produto produto) throws SQLException {
      Connection conn = null;
 
     try {
@@ -55,32 +58,8 @@ public class ProdutoDao implements DaoGenerica<Produto>{
         }
 
         conn.setAutoCommit(false);  // Desabilitar auto-commit para controle manual da transação
-
-        // 1. Inserir o estoque
-        String sqlEstoque = "INSERT INTO estoque (quantidade, dataEstoque) VALUES (?, ?)";
-        try (PreparedStatement psEstoque = conn.prepareStatement(sqlEstoque, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            psEstoque.setInt(1, estoque.getQuantidade());
-            psEstoque.setString(2, estoque.getDataEstoque());
-
-            int rowsAffectedEstoque = psEstoque.executeUpdate();
-            if (rowsAffectedEstoque == 0) {
-                throw new SQLException("Nenhuma linha foi inserida na tabela estoque.");
-            }
-
-            // Recuperar o ID gerado para o estoque
-            try (ResultSet rs = psEstoque.getGeneratedKeys()) {
-                if (rs.next()) {
-                    int idEstoque = rs.getInt(1);
-                    estoque.setIdEstoque(idEstoque);  // Atribuir o idEstoque gerado ao objeto Estoque
-                    System.out.println("ID do estoque gerado: " + idEstoque);
-                } else {
-                    throw new SQLException("Erro ao obter o ID do estoque.");
-                }
-            }
-        }
-
-        // 2. Inserir o produto com o idEstoque já atribuído
-        String sqlProduto = "INSERT INTO produto (descricao, modelo, marca, cor, precoCompra, precoVenda, idEstoque) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        String sqlProduto = "INSERT INTO produto (descricao, modelo, marca, cor, precoCompra, precoVenda, quantidade) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement psProduto = conn.prepareStatement(sqlProduto, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             // Verificações de dados obrigatórios
@@ -114,9 +93,9 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 throw new SQLException("Preço de venda inválido.");
             }
             psProduto.setDouble(6, produto.getPrecoVenda());
+            psProduto.setInt(7, produto.getEstoque());
 
             // Definir idEstoque para o produto
-            psProduto.setInt(7, estoque.getIdEstoque());
 
             // Executar a inserção do produto
             int rowsAffectedProduto = psProduto.executeUpdate();
@@ -165,19 +144,14 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
     @Override
     public void alterar(Produto produto) {
-     String sqlEstoque = "SELECT quantidade FROM estoque WHERE idProduto = ?";
-    String sqlAlterarProduto = "UPDATE produto SET descricao = ?, modelo = ?, marca = ?, cor = ?, precoCompra = ?, precoVenda = ? WHERE idProduto = ?";
+    String sqlAlterarProduto = "UPDATE produto SET descricao = ?, modelo = ?, marca = ?, cor = ?, precoCompra = ?, precoVenda = ?, quantidade = ? WHERE idProduto = ?";
 
     try {
         if (this.conexao.conectar()) {
-            PreparedStatement stmtEstoque = this.conexao.getConnection().prepareStatement(sqlEstoque);
-            stmtEstoque.setInt(1, produto.getIdProduto());
-
-            ResultSet rs = stmtEstoque.executeQuery();
             
             if (rs.next()) {
-                int quantidade = rs.getInt("quantidade");
-                System.out.println("Quantidade em estoque para idProduto " + produto.getIdProduto() + ": " + quantidade);
+               // int quantidade = rs.getInt("quantidade");
+                System.out.println("Quantidade em estoque para idProduto " + produto.getIdProduto());
                 
                 PreparedStatement stmtAlterarProduto = this.conexao.getConnection().prepareStatement(sqlAlterarProduto);
 
@@ -188,6 +162,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 stmtAlterarProduto.setDouble(5, produto.getPrecoCompra());
                 stmtAlterarProduto.setDouble(6, produto.getPrecoVenda());
                 stmtAlterarProduto.setInt(7, produto.getIdProduto());
+                stmtAlterarProduto.setInt(8, produto.getEstoque());
 
                 stmtAlterarProduto.executeUpdate();
                 stmtAlterarProduto.close();
@@ -196,8 +171,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
             }
 
             rs.close();
-            stmtEstoque.close();
-            this.conexao.getConnection().close();
+           
         }
     } catch (SQLException ex) {
         throw new RuntimeException(ex);
@@ -211,49 +185,55 @@ public class ProdutoDao implements DaoGenerica<Produto>{
 
     @Override
     public ArrayList<Produto> consultar() {
-    String sql = "SELECT p.idProduto, p.descricao, p.modelo, p.marca, p.cor, "
-               + "p.precoCompra, p.precoVenda, e.quantidade "
-               + "FROM produto p "
-               + "INNER JOIN estoque e ON p.idProduto = e.idProduto"; 
-
+   String sql = "SELECT * FROM produtos";  // Exemplo de SQL para consultar todos os produtos
+    ArrayList<Produto> produtos = new ArrayList<>();
     
-    ArrayList<Produto> listaProdutos = new ArrayList<>();
+    // Usando a conexão obtida da classe ConexaoBanco
+    try {
+        // Inicialize a variável conn usando o método getConnection da classe ConexaoBanco
+        conn = this.conexao.getConnection();  // Usando a conexão que foi configurada
 
-    try (Connection conn = this.conexao.getConnection(); 
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-
-        while (rs.next()) {
-            Produto produto = new Produto();
-            produto.setIdProduto(rs.getInt("idProduto"));
-            produto.setDescricao(rs.getString("descricao"));
-            produto.setModelo(rs.getString("modelo"));
-            produto.setMarca(rs.getString("marca"));
-            produto.setCor(rs.getString("cor"));
-            produto.setPrecoCompra(rs.getDouble("precoCompra"));
-            produto.setPrecoVenda(rs.getDouble("precoVenda"));
-
-            Estoque estoque = new Estoque();
-            estoque.setQuantidade(rs.getInt("quantidade"));
-            produto.setEstoque(estoque);  // Associação do estoque ao produto          
-
-            listaProdutos.add(produto);
+        if (conn != null) {
+            // Prepare o statement com a conexão
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            
+            // Iterando sobre o ResultSet e criando os objetos Produto
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setPrecoVenda(rs.getDouble("precoVenda"));
+                produtos.add(produto);
+            }
+            
+            rs.close();
+            pst.close();
         }
+
     } catch (SQLException ex) {
-        System.err.println("Erro ao consultar produtos: " + ex.getMessage());
-        ex.printStackTrace(); 
+        Logger.getLogger(ProdutoDao.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+        // Aqui você pode garantir que a conexão seja fechada corretamente após o uso
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close(); // Fecha a conexão
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    return produtos;
     }
 
-    return listaProdutos;
-}
     
     public ArrayList<Produto> consultar(String str) {
         ArrayList<Produto> listaCadastrosStr = new ArrayList<Produto>();
-        String sql = "SELECT c.idProduto, c.descricao, c.modelo, c.marca, c.cor, c.precoCompra, c.precoVenda, s.quantidade " +
+        String sql = "SELECT c.idProduto, c.descricao, c.modelo, c.marca, c.cor, c.precoCompra, c.precoVenda, c.quantidade " +
                  "FROM produto AS c " +
-                 "JOIN estoque AS s ON c.idProduto = s.idProduto " + // INNER JOIN com a tabela estoque
                  "WHERE UPPER(c.marca) LIKE UPPER(?) " +  // Corrigido para `LIKE` com UPPER
-                 "ORDER BY s.quantidade";
+                 "ORDER BY c.quantidade";
         
         try
         {
@@ -275,10 +255,10 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                     prod.setPrecoCompra(resultadoSentenca.getDouble("precoCompra"));
                     prod.setPrecoVenda(resultadoSentenca.getDouble("precoVenda"));
 
-                    Estoque estoque = new Estoque();
-                estoque.setQuantidade(resultadoSentenca.getInt("quantidade"));
+
+                prod.setEstoque(resultadoSentenca.getInt("quantidade"));
                 
-                prod.setEstoque(estoque);
+                //prod.setEstoque(estoque);
                 
                     listaCadastrosStr.add(prod);
                 }
@@ -297,9 +277,8 @@ public class ProdutoDao implements DaoGenerica<Produto>{
     
     public ArrayList<Produto> consultarProduto() {
          ArrayList<Produto> listaCadastros = new ArrayList<>();
-    String sql = "SELECT p.idProduto, p.descricao, p.precoCompra, e.quantidade "
-               + "FROM produto p "
-               + "LEFT JOIN estoque e ON p.idProduto = e.idProduto"; // Usando LEFT JOIN para garantir todos os produtos
+    String sql = "SELECT p.idProduto, p.descricao, p.precoCompra, p.quantidade "
+               + "FROM produto p "; // Usando LEFT JOIN para garantir todos os produtos
 
     try {
         if(this.conexao.conectar()) {
@@ -313,10 +292,8 @@ public class ProdutoDao implements DaoGenerica<Produto>{
                 prod.setPrecoVenda(resultadoSentenca.getDouble("precoCompra"));
 
                 // Verifique se a quantidade foi retornada corretamente
-                int quantidadeEstoque = resultadoSentenca.getInt("quantidade");
-                Estoque estoque = new Estoque();
-                estoque.setQuantidade(quantidadeEstoque); // Armazena a quantidade correta
-                prod.setEstoque(estoque);
+                prod.setEstoque(resultadoSentenca.getInt("quantidade")); // Armazena a quantidade correta
+                //prod.setEstoque(estoque);
 
                 listaCadastros.add(prod);
             }
@@ -336,4 +313,55 @@ public class ProdutoDao implements DaoGenerica<Produto>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    
+    public int consultarQuantidadePorId(int idProduto) throws SQLException {
+    if (this.conn == null) {
+        throw new SQLException("Conexão não estabelecida.");
+    }
+    
+    String sql = "SELECT quantidade FROM estoque WHERE id_produto = ?";
+    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setInt(1, idProduto);
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("quantidade");
+            }
+            return -1;  // Produto não encontrado
+        }
+    }
 }
+     public int consultarQuantidadeEstoque(int idProduto) {
+        String sql = "SELECT quantidade FROM produto WHERE idProduto = ?";
+        int quantidade = 0;
+        try (PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, idProduto);  // Atribui o ID do produto para a consulta
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                quantidade = rs.getInt("quantidade");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return quantidade;
+    }
+    
+    public boolean atualizarQuantidadeEstoque(int idProduto, int novaQuantidade) {
+    String sql = "UPDATE produto SET quantidade = ? WHERE idProduto = ?"; // Atualizando a quantidade do estoque
+
+    try (PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.setInt(1, novaQuantidade); // Nova quantidade após a compra
+        pst.setInt(2, idProduto); // ID do produto para o qual atualizar o estoque
+        int rowsAffected = pst.executeUpdate();
+
+        return rowsAffected > 0; // Retorna true se a atualização for bem-sucedida
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false; // Caso ocorra algum erro
+    }
+}
+    
+
+    }
+    
+    
+
