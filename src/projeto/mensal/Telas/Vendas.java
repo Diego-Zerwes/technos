@@ -5,8 +5,9 @@
 package projeto.mensal.Telas;
 
 import dao.ConexaoBanco;
-import dao.EstoqueDao;
+import dao.FormaDePagamentoDao;
 import dao.ProdutoDao;
+import dao.VendasDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import javax.swing.table.DefaultTableModel;
 import modelo.Estoque;
+import modelo.FormaDePagamento;
 import modelo.ItemCarrinho;
 import modelo.Produto;
 import modelo.Venda;
@@ -53,7 +55,6 @@ public class Vendas extends javax.swing.JInternalFrame {
     }
     
     
-    // Método para abrir a conexão com o banco
     private void abrirConexao() {
         try {
             if (conn == null || conn.isClosed()) {
@@ -65,7 +66,6 @@ public class Vendas extends javax.swing.JInternalFrame {
         }
     }
 
-    // Método para fechar a conexão com o banco
     private void fecharConexao() {
         try {
             if (conn != null && !conn.isClosed()) {
@@ -90,6 +90,7 @@ public class Vendas extends javax.swing.JInternalFrame {
         jTabelaCarrinho = new javax.swing.JTable();
         btnComprar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jPagamento = new javax.swing.JComboBox<>();
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -99,10 +100,7 @@ public class Vendas extends javax.swing.JInternalFrame {
 
         jTabelaVenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "DESCRIÇÃO", "QUANTIDADE", "VALOR"
@@ -178,15 +176,18 @@ public class Vendas extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addGap(495, 495, 495))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(72, 72, 72)
                         .addComponent(btnComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(44, 44, 44))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(302, 302, 302)
+                .addComponent(jPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,11 +197,13 @@ public class Vendas extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jValorTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(53, 53, 53)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnComprar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -211,42 +214,57 @@ public class Vendas extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTabelaVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabelaVendaMouseClicked
-         if((jTabelaVenda.getSelectedRow() != -1) && (vInsUpdate == 0) && (evt.getClickCount() == 2)){
+       if ((jTabelaVenda.getSelectedRow() != -1) && (vInsUpdate == 0) && (evt.getClickCount() == 2)) {
+        // Obtém os dados do produto selecionado
         String idProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 0).toString();
         String nomeProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 1).toString();
         String valorProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 3).toString();
         String estoqueDisponivel = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 2).toString();
-        
-        // A quantidade solicitada (para a compra) é capturada via JOptionPane
+
+        // Solicita a quantidade do produto
         String quantidadeCompra = JOptionPane.showInputDialog(this, "Digite a quantidade desejada:", "Quantidade", JOptionPane.PLAIN_MESSAGE);
 
+        // Verifica se a quantidade foi fornecida e valida
         if (quantidadeCompra != null && !quantidadeCompra.isEmpty()) {
             try {
                 int quantidade = Integer.parseInt(quantidadeCompra);
                 int estoque = Integer.parseInt(estoqueDisponivel);
 
+                // Verifica se a quantidade solicitada é válida
                 if (quantidade > 0 && quantidade <= estoque) {
                     double valorUnitario = Double.parseDouble(valorProduto.replace(",", "."));
                     double valorTotal = valorUnitario * quantidade;
 
-                    // Adicionar a linha no carrinho de compras
-                    DefaultTableModel modeloTabelaCompra = (DefaultTableModel) jTabelaCarrinho.getModel();
-                    modeloTabelaCompra.addRow(new Object[]{
-                        idProduto,
-                        nomeProduto,
-                        quantidade,
-                        valorTotal
-                    });
+                    // Verifica se o item já está no carrinho
+                    boolean itemExistente = false;
+                    for (ItemCarrinho item : itensCarrinho) {
+                        if (item.getIdProduto() == Integer.parseInt(idProduto)) {
+                            itemExistente = true;
+                            break;
+                        }
+                    }
 
-                    // Atualiza o valor total da compra
-                    atualizaValorTotal();
+                    if (!itemExistente) {
+                        // Atualiza a tabela do carrinho com os dados do produto
+                        DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel) jTabelaCarrinho.getModel();
+                        modeloTabelaCarrinho.addRow(new Object[]{
+                            idProduto,
+                            nomeProduto,
+                            quantidade,
+                            valorTotal
+                        });
 
-                    // Agora, a manipulação do estoque
-                    EstoqueDao estoqueDao = new EstoqueDao();  // Cria uma instância de EstoqueDao
-                    estoqueDao.atualizarQuantidadeEstoque(Integer.parseInt(idProduto), estoque - quantidade); // Atualiza o estoque no banco de dados
+                        // Adiciona o item ao carrinho (ArrayList)
+                        itensCarrinho.add(new ItemCarrinho(Integer.parseInt(idProduto), nomeProduto, quantidade, valorUnitario));
 
-                    // Exibe a quantidade de estoque após a compra
-                    System.out.println("Estoque após compra: " + (estoque - quantidade));  // Exibe quantidade no estoque após a compra
+                        // Atualiza o valor total da compra
+                        atualizaValorTotal();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Este item já está no carrinho!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                    // Decrementa o estoque do produto
+                    System.out.println("Estoque após compra: " + (estoque - quantidade));
 
                 } else {
                     JOptionPane.showMessageDialog(this, "Quantidade solicitada inválida ou maior que o estoque disponível!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -259,57 +277,61 @@ public class Vendas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTabelaVendaMouseClicked
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        conectarEBuscarProdutos();
+        ProdutoDao cadastroPessoaP = new ProdutoDao();
+        atualizaTabela(cadastroPessoaP);
+        FormaDePagamentoDao formadepagamentoDao = new FormaDePagamentoDao();
+         atualizaForma(formadepagamentoDao);
     }//GEN-LAST:event_formComponentShown
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         // Chama a função que irá atualizar o estoque, passando os itens do carrinho
     finalizarCompra();
 
-    // Após finalizar a compra, você pode limpar o carrinho
-    limparCarrinho();
+   // limparCarrinho();
 
     // Exibe uma mensagem de confirmação
     JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
     }//GEN-LAST:event_btnComprarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // Limpa o carrinho sem realizar nenhuma ação no estoque
-    limparCarrinho();
 
-    // Exibe uma mensagem de cancelamento
+    limparCarrinho();
     JOptionPane.showMessageDialog(this, "Compra cancelada.");
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private double  atualizaValorTotal() {
     double total = 0.0;
-    DefaultTableModel modeloTabela2 = (DefaultTableModel) jTabelaCarrinho.getModel();
+    DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel) jTabelaCarrinho.getModel();
 
-    for (int i = 0; i < modeloTabela2.getRowCount(); i++) {
-        Object valorObj = modeloTabela2.getValueAt(i, 3);  
+    // Itera sobre todas as linhas da tabela do carrinho
+    for (int i = 0; i < modeloTabelaCarrinho.getRowCount(); i++) {
+        Object valorObj = modeloTabelaCarrinho.getValueAt(i, 3);  // Obtém o valor total de cada item no carrinho
 
         if (valorObj instanceof String) {
             try {
+                // Caso o valor esteja como string, converte para número
                 String valorStr = ((String) valorObj).replace(",", ".");
                 total += Double.parseDouble(valorStr);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Erro ao calcular o valor total: formato inválido", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else if (valorObj instanceof Number) {
+            // Caso o valor já seja um número, adiciona diretamente
             total += ((Number) valorObj).doubleValue();
         }
     }
 
+    // Formata o valor total para o formato de moeda (R$)
     DecimalFormat df = new DecimalFormat("#,##0.00");
     String valorFormatado = df.format(total);
 
-    jValorTotal.setText(valorFormatado);
+    // Exibe o valor total na interface
+    jValorTotal.setText("R$ " + valorFormatado);
     return total;
 }
     public double calcularValorTotal() {
     double total = 0.0;
 
-    // Itera sobre todos os itens no carrinho e soma o preço total
     for (ItemCarrinho item : itensCarrinho) {
         total += item.getQuantidade() * item.getPrecoUnitario();
     }
@@ -317,84 +339,73 @@ public class Vendas extends javax.swing.JInternalFrame {
     return total;
 }
     private boolean simularPagamento(double valorTotal) {
-    // Simulando pagamento com 100% de aprovação (isso pode ser substituído por integração com sistema de pagamento)
-    int resposta = JOptionPane.showConfirmDialog(null, "Total da compra: R$ " + valorTotal + ". Deseja confirmar o pagamento?", "Pagamento", JOptionPane.YES_NO_OPTION);
+    System.out.println("Valor total da compra: R$ " + jValorTotal);  
+    
+    int resposta = JOptionPane.showConfirmDialog(
+        null, 
+        "Total da compra: R$ " +  jValorTotal.getText() + ". Deseja confirmar o pagamento?", 
+        "Pagamento", 
+        JOptionPane.YES_NO_OPTION
+    );
+    
     return resposta == JOptionPane.YES_OPTION;
 }
+    
+    
     public double obterPrecoProduto(int idProduto) {
-    // Supondo que 'conn' seja a conexão com o banco de dados
     String sql = "SELECT precoVenda FROM produto WHERE idProduto = ?";
     double preco = 0.0;
 
     try (PreparedStatement pst = conn.prepareStatement(sql)) {
-        pst.setInt(1, idProduto);  // Configura o ID do produto na consulta
+        pst.setInt(1, idProduto);  
         ResultSet rs = pst.executeQuery();
 
-        // Verifica se o produto foi encontrado e obtém o preço
         if (rs.next()) {
-            preco = rs.getDouble("precoVenda");  // Obtém o preço do produto
+            preco = rs.getDouble("precoVenda");  
         } else {
-            // Caso o produto não seja encontrado, pode-se lançar uma exceção ou retornar um valor padrão
             JOptionPane.showMessageDialog(null, "Produto não encontrado no banco de dados.");
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Erro ao consultar preço do produto: " + e.getMessage());
     }
 
-    return preco;  // Retorna o preço do produto
+    return preco;  
 }
   
-    public void atualizaTabela(ArrayList<Produto> listaProdutos) {
-        // Usando a conexão global já aberta
-    if (conn == null) {
-        JOptionPane.showMessageDialog(this, "Conexão com o banco não estabelecida.");
-        return;
+    
+    private void atualizaTabela(ProdutoDao cadastroPDao)
+    {
+        
+
+                try
+                {
+
+
+                    limparTabela();
+
+                    ArrayList<Produto> listaCadastros;
+                    listaCadastros = cadastroPDao.consultar(); //consulta todos os registros da tabela Escola
+
+                    //Resgata o modelo da tabela            
+                    DefaultTableModel modeloTabela = (DefaultTableModel) jTabelaVenda.getModel();
+
+                    for(Produto cadastroP : listaCadastros)
+                    {
+                        //adiciona em cada linha da tabela da tela o conteúdo de cada posição da listaEscolas
+                        modeloTabela.addRow(new String[]{Integer.toString(cadastroP.getIdProduto()), 
+                                                                          cadastroP.getDescricao(), 
+                                                                          String.valueOf(cadastroP.getEstoque()), 
+                                                                          String.valueOf(cadastroP.getPrecoVenda())});
+                    }
+
+                }
+                catch(Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+                }
+     
     }
-
-    try {
-        // Limpa a tabela antes de adicionar as novas linhas
-        limparTabela();
-
-        DefaultTableModel modeloTabela = (DefaultTableModel) jTabelaVenda.getModel();
-
-        // Criação de uma instância do ProdutoDao sem passar a conexão explicitamente
-        ProdutoDao produtoDao = new ProdutoDao(); // Não passamos a conexão, pois já está sendo utilizada globalmente
-
-        // Para cada produto na lista, consultar o estoque e adicionar à tabela
-        for (Produto cadastroP : listaProdutos) {
-            // Obtém o ID do produto
-            int idProduto = cadastroP.getIdProduto();
-
-            // Consulta a quantidade do estoque usando o DAO de Produto
-            int quantidadeEstoque = produtoDao.consultarQuantidadePorId(idProduto);  // Método para consultar quantidade por ID
-
-            // Verifique o valor retornado
-            System.out.println("Quantidade de estoque para o produto " + idProduto + ": " + quantidadeEstoque);
-
-            // Adiciona a linha na tabela com as informações do produto
-            if (quantidadeEstoque >= 0) { // Se a quantidade é válida (pode ser alterado para outro critério)
-                modeloTabela.addRow(new String[] {
-                    Integer.toString(idProduto), // ID do produto
-                    cadastroP.getDescricao(), // Descrição do produto
-                    String.valueOf(quantidadeEstoque), // Quantidade de estoque
-                    String.valueOf(cadastroP.getPrecoVenda()) // Preço de venda
-                });
-            } else {
-                modeloTabela.addRow(new String[] {
-                    Integer.toString(idProduto), // ID do produto
-                    cadastroP.getDescricao(), // Descrição do produto
-                    "Estoque não encontrado", // Mensagem de erro ou valor padrão
-                    String.valueOf(cadastroP.getPrecoVenda()) // Preço de venda
-                });
-            }
-        }
-
-    } catch (Exception e) {
-        // Exibe o erro completo no console
-        e.printStackTrace(); // Isso irá exibir o erro completo no console
-        JOptionPane.showMessageDialog(null, "Ocorreu um erro ao consultar o estoque:\n" + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
-    }
-}
+    
     
     private void limparTabela()
     {
@@ -405,117 +416,128 @@ public class Vendas extends javax.swing.JInternalFrame {
         }
     }
     
-    private void conectarEBuscarProdutos() {
-         // Verifica se a conexão está aberta
-    abrirConexao(); // Certifica-se de que a conexão foi aberta
-
-    ProdutoDao cadastroPDao = new ProdutoDao();  // Não passamos a conexão explicitamente
-
-    try {
-        if (cadastroPDao.conectar()) {  // Conecta ao banco de dados
-            ArrayList<Produto> listaProdutos = cadastroPDao.consultar();  // Consulta os produtos
-            atualizaTabela(listaProdutos);  // Atualiza a tabela com os produtos
-        } else {
-            JOptionPane.showMessageDialog(null, "Falha na conexão com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (Exception e) {
-        // Captura exceções relacionadas ao banco de dados
-        JOptionPane.showMessageDialog(null, "Erro ao carregar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    } finally {
-        try {
-            // Fechar a conexão no final (não precisa ser aqui, pode ser feito quando for necessário)
-            // cadastroPDao.fecharConexao(); 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-    
-    
     
     public void atualizarEstoque(ArrayList<ItemCarrinho> itensCarrinho) {
-    // Verifica se o carrinho está vazio
     abrirConexao();
+
     if (itensCarrinho.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Carrinho vazio. Adicione produtos antes de finalizar a compra.");
         return;
     }
 
-    // Cria uma instância de EstoqueDao (passando a conexão do banco)
-    EstoqueDao estoqueDao = new EstoqueDao(); // Aqui você usa a conexão já existente
+    ProdutoDao produtoDao = new ProdutoDao(); 
 
-    // Itera sobre os itens do carrinho para atualizar o estoque
     for (ItemCarrinho item : itensCarrinho) {
-        // Obtém o produto e a quantidade comprada
         int idProduto = item.getIdProduto();
         int quantidadeComprada = item.getQuantidade();
 
-        // Verifica a quantidade em estoque do produto usando o EstoqueDao
-        int quantidadeEmEstoque = estoqueDao.consultarQuantidadeEstoque(idProduto);
+        // Consultar a quantidade de estoque diretamente na tabela produto
+        //JOptionPane.showMessageDialog(null, idProduto);
+
+        int quantidadeEmEstoque = produtoDao.consultarQuantidadeEstoque(idProduto);
 
         if (quantidadeEmEstoque >= quantidadeComprada) {
-            // Subtrai a quantidade comprada do estoque
             int novaQuantidade = quantidadeEmEstoque - quantidadeComprada;
 
-            // Atualiza o estoque no banco de dados usando o EstoqueDao
-            boolean sucesso = estoqueDao.atualizarQuantidadeEstoque(idProduto, novaQuantidade);
+            // Atualizar a quantidade de estoque
+            boolean sucesso = produtoDao.atualizarQuantidadeEstoque(idProduto, novaQuantidade);
 
-            // Notifica o usuário se a atualização foi bem-sucedida ou não
             if (sucesso) {
-                JOptionPane.showMessageDialog(null, "Estoque atualizado com sucesso.");
+               // JOptionPane.showMessageDialog(null, "Estoque atualizado com sucesso.");
             } else {
                 JOptionPane.showMessageDialog(null, "Erro ao atualizar o estoque do produto: " + idProduto);
             }
         } else {
-            // Exibe uma mensagem se a quantidade solicitada for maior que o estoque disponível
             JOptionPane.showMessageDialog(null, "Quantidade solicitada maior que o estoque disponível para o produto: " + idProduto);
         }
     }
 }
+    
     private ArrayList<ItemCarrinho> itensCarrinho = new ArrayList<>();
     private void finalizarCompra() {
-        abrirConexao();
-    // Calcula o valor total da compra
-    double totalCompra = calcularValorTotal();
+        try {
+        abrirConexao(); 
 
-    // Simula o pagamento
-    boolean pagamentoConfirmado = simularPagamento(totalCompra);
+        double totalCompra = calcularValorTotal();  
 
-    if (pagamentoConfirmado) {
-        // Atualiza o estoque com base nos itens no carrinho
-        atualizarEstoque(itensCarrinho);
+        boolean pagamentoConfirmado = simularPagamento(totalCompra);
 
-        // Exemplo: Você pode registrar a venda no banco de dados, se necessário
-        // Exemplo: salvarVenda(itensCarrinho);
+        if (pagamentoConfirmado) {
+            atualizarEstoque(itensCarrinho);
+            
+            FormaDePagamento forma = new FormaDePagamento();
+            VendasDao produtoDao = new VendasDao();
 
-        // Exibe uma mensagem de sucesso
-        JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
-        
-        // Limpa o carrinho após a compra ser concluída
-        limparCarrinho();
-    } else {
-        // Caso o pagamento não seja confirmado
-        JOptionPane.showMessageDialog(this, "Pagamento cancelado. A compra não foi concluída.");
+            Venda venda = new Venda();
+            venda.setIdCliente(1);  
+            venda.setIdFormaPagamento(jPagamento.getSelectedIndex() + 1);  
+            venda.setIdTipoVenda(1);  
+            venda.setIdRelatorio(1);  
+
+            boolean vendaInserida = produtoDao.inserirVenda(venda);  // Passando o objeto venda
+
+            if (vendaInserida) {
+                JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
+                limparCarrinho();  // Limpa o carrinho após a compra
+            } else {
+                JOptionPane.showMessageDialog(this, "Falha ao registrar a venda.");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Pagamento cancelado. A compra não foi concluída.");
+        }
+    } catch (Exception e) {
+        System.out.println("Erro ao finalizar a compra: " + e.getMessage());
+        e.printStackTrace();
     }
 }
     public void limparCarrinho() {
-    // Limpa a lista de itens do carrinho (se for uma lista de objetos ItemCarrinho)
     itensCarrinho.clear();
     
-    // Atualiza a tabela ou interface gráfica do carrinho, se necessário
-    DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel) jTabelaCarrinho.getModel();
+    DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel)  jTabelaCarrinho.getModel();
     modeloTabelaCarrinho.setRowCount(0);  // Remove todas as linhas da tabela
     
-    // Se quiser exibir uma mensagem informando que o carrinho foi limpo
     JOptionPane.showMessageDialog(null, "Carrinho limpo com sucesso.");
 }
+    
+    private void atualizaForma(FormaDePagamentoDao formaDao)
+    {
+        
+
+                try
+                {
+                    limparCbxSexo();
+                    ArrayList<FormaDePagamento> listarForma;
+                    listarForma = formaDao.consultar(); 
+
+                    for(FormaDePagamento forma : listarForma)
+                    {
+                        jPagamento.addItem(forma.getDescricao());
+                    }
+                    jPagamento.setSelectedIndex(-1);
+                }
+                catch(Exception ex)
+                {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO!", ERROR_MESSAGE);
+                }
+           
+        
+    }
+
+private void limparCbxSexo()
+    {
+     //  if(!(jcSexo.get().trim().isEmpty())){ 
+         // jFornecedor.removeAllItems();
+          //jFormaDePagamento.removeAllItems();
+      // }
+       
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnComprar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<String> jPagamento;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTabelaCarrinho;
