@@ -6,6 +6,7 @@ package projeto.mensal.Telas;
 
 import dao.ConexaoBanco;
 import dao.FormaDePagamentoDao;
+import dao.ItemVendaDao;
 import dao.ProdutoDao;
 import dao.VendasDao;
 import java.sql.Connection;
@@ -103,11 +104,11 @@ public class Vendas extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "DESCRIÇÃO", "QUANTIDADE", "VALOR"
+                "ID", "MARCA", "DESCRIÇÃO", "QUANTIDADE", "VALOR"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -124,6 +125,8 @@ public class Vendas extends javax.swing.JInternalFrame {
             jTabelaVenda.getColumnModel().getColumn(0).setResizable(false);
             jTabelaVenda.getColumnModel().getColumn(1).setResizable(false);
             jTabelaVenda.getColumnModel().getColumn(2).setResizable(false);
+            jTabelaVenda.getColumnModel().getColumn(3).setResizable(false);
+            jTabelaVenda.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -136,16 +139,31 @@ public class Vendas extends javax.swing.JInternalFrame {
 
         jTabelaCarrinho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "DESCRIÇÃO", "QUANTIDADE", "VALOR"
+                "ID", "MARCA", "DESCRIÇÃO", "QUANTIDADE", "VALOR"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTabelaCarrinho);
+        if (jTabelaCarrinho.getColumnModel().getColumnCount() > 0) {
+            jTabelaCarrinho.getColumnModel().getColumn(0).setResizable(false);
+            jTabelaCarrinho.getColumnModel().getColumn(1).setResizable(false);
+            jTabelaCarrinho.getColumnModel().getColumn(2).setResizable(false);
+            jTabelaCarrinho.getColumnModel().getColumn(3).setResizable(false);
+            jTabelaCarrinho.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         btnComprar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnComprar.setText("Comprar");
@@ -218,8 +236,8 @@ public class Vendas extends javax.swing.JInternalFrame {
         // Obtém os dados do produto selecionado
         String idProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 0).toString();
         String nomeProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 1).toString();
-        String valorProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 3).toString();
-        String estoqueDisponivel = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 2).toString();
+        String valorProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 4).toString();
+        String estoqueDisponivel = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 3).toString();
 
         // Solicita a quantidade do produto
         String quantidadeCompra = JOptionPane.showInputDialog(this, "Digite a quantidade desejada:", "Quantidade", JOptionPane.PLAIN_MESSAGE);
@@ -259,6 +277,29 @@ public class Vendas extends javax.swing.JInternalFrame {
 
                         // Atualiza o valor total da compra
                         atualizaValorTotal();
+                        ItemVendaDao itemVendaDao = new ItemVendaDao();
+                        itemVendaDao.conectar();
+
+                        StringBuilder idsProduto = new StringBuilder();
+                        int quantidadeTotalCarrinho = 0; // Variável para armazenar a quantidade total no carrinho
+
+                        // Adiciona os IDs ao StringBuilder
+                        for (ItemCarrinho item : itensCarrinho) {
+                            if (idsProduto.length() > 0) {
+                                idsProduto.append(",");  // Adiciona a vírgula separadora
+                            }
+                            idsProduto.append(item.getIdProduto());  // Adiciona o ID do produto
+                            quantidadeTotalCarrinho += item.getQuantidade();  // Soma a quantidade total do carrinho
+
+                        }
+
+                        // Agora, você chama o método para adicionar os itens na tabela itemvenda
+                        itemVendaDao.adicionarItemVenda(idsProduto.toString(), quantidadeTotalCarrinho, atualizaValorTotal());
+
+                        itemVendaDao.fecharConexao();
+                        
+                        
+
                     } else {
                         JOptionPane.showMessageDialog(this, "Este item já está no carrinho!", "Aviso", JOptionPane.WARNING_MESSAGE);
                     }
@@ -392,9 +433,10 @@ public class Vendas extends javax.swing.JInternalFrame {
                     for(Produto cadastroP : listaCadastros)
                     {
                         //adiciona em cada linha da tabela da tela o conteúdo de cada posição da listaEscolas
-                        modeloTabela.addRow(new String[]{Integer.toString(cadastroP.getIdProduto()), 
-                                                                          cadastroP.getDescricao(), 
-                                                                          String.valueOf(cadastroP.getEstoque()), 
+                        modeloTabela.addRow(new String[]{Integer.toString(cadastroP.getIdProduto()),
+                                                                          cadastroP.getMarca(),
+                                                                          cadastroP.getDescricao(),
+                                                                          String.valueOf(cadastroP.getEstoque()),
                                                                           String.valueOf(cadastroP.getPrecoVenda())});
                     }
 
@@ -470,7 +512,8 @@ public class Vendas extends javax.swing.JInternalFrame {
 
             Venda venda = new Venda();
             venda.setIdCliente(1);  
-            venda.setIdFormaPagamento(jPagamento.getSelectedIndex() + 1);  
+            venda.setIdFormaPagamento(jPagamento.getSelectedIndex() + 1);
+            venda.setIdUsuario(1);
             venda.setIdTipoVenda(1);  
             venda.setIdRelatorio(1);  
 

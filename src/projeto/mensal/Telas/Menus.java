@@ -66,9 +66,39 @@ private Compras telaCompras;
         jRelatorio = new javax.swing.JButton();
         jLogoff = new javax.swing.JButton();
         desktop = new javax.swing.JDesktopPane();
-        linePanel = new javax.swing.JPanel();
         pizzaPanel = new javax.swing.JPanel();
         barPanel = new javax.swing.JPanel();
+        jDados = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jDadosValor = new javax.swing.JLabel();
+        jValoresForn = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jMarca = new javax.swing.JLabel();
+        jMarcaMenos = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jDia = new javax.swing.JLabel();
+        jMes = new javax.swing.JLabel();
+        jAno = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jSamsung = new javax.swing.JLabel();
+        jIphone1 = new javax.swing.JLabel();
+        jXiaomi = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jPrazo = new javax.swing.JLabel();
+        jAtacado = new javax.swing.JLabel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jEstado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -156,17 +186,6 @@ private Compras telaCompras;
                 .addGap(83, 83, 83))
         );
 
-        javax.swing.GroupLayout linePanelLayout = new javax.swing.GroupLayout(linePanel);
-        linePanel.setLayout(linePanelLayout);
-        linePanelLayout.setHorizontalGroup(
-            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
-        );
-        linePanelLayout.setVerticalGroup(
-            linePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout pizzaPanelLayout = new javax.swing.GroupLayout(pizzaPanel);
         pizzaPanel.setLayout(pizzaPanelLayout);
         pizzaPanelLayout.setHorizontalGroup(
@@ -189,37 +208,431 @@ private Compras telaCompras;
             .addGap(0, 276, Short.MAX_VALUE)
         );
 
-        desktop.setLayer(linePanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDados.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Numero de Clientes Cadastrados");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jDadosValor.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jDadosValor.setForeground(new java.awt.Color(255, 255, 255));
+        jDadosValor.setText("000000");
+
+        jValoresForn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jValoresForn.setForeground(new java.awt.Color(255, 255, 255));
+        jValoresForn.setText("jLabel2");
+
+        javax.swing.GroupLayout jDadosLayout = new javax.swing.GroupLayout(jDados);
+        jDados.setLayout(jDadosLayout);
+        jDadosLayout.setHorizontalGroup(
+            jDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDadosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDadosLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jDadosLayout.createSequentialGroup()
+                        .addGroup(jDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jValoresForn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDadosValor, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jDadosLayout.setVerticalGroup(
+            jDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDadosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jDadosValor, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jValoresForn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel4.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Marca Mais Vendida");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addComponent(jLabel2)
+                .addContainerGap(108, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        jMarca.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jMarca.setForeground(new java.awt.Color(255, 255, 255));
+        jMarca.setText("jLabel3");
+
+        jMarcaMenos.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jMarcaMenos.setForeground(new java.awt.Color(255, 255, 255));
+        jMarcaMenos.setText("jLabel3");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jMarca)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jMarcaMenos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jMarca)
+                .addGap(18, 18, 18)
+                .addComponent(jMarcaMenos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Vendas");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(137, 137, 137))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+
+        jDia.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jDia.setForeground(new java.awt.Color(255, 255, 255));
+        jDia.setText("jLabel4");
+
+        jMes.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jMes.setForeground(new java.awt.Color(255, 255, 255));
+        jMes.setText("jLabel5");
+
+        jAno.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jAno.setForeground(new java.awt.Color(255, 255, 255));
+        jAno.setText("jLabel6");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDia)
+                            .addComponent(jMes)
+                            .addComponent(jAno))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jDia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jMes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jAno)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel7.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel8.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Quantidade de Estoque por Marca");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jSamsung.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jSamsung.setForeground(new java.awt.Color(255, 255, 255));
+        jSamsung.setText("jLabel5");
+
+        jIphone1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jIphone1.setForeground(new java.awt.Color(255, 255, 255));
+        jIphone1.setText("jLabel5");
+
+        jXiaomi.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jXiaomi.setForeground(new java.awt.Color(255, 255, 255));
+        jXiaomi.setText("jLabel5");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSamsung, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jIphone1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel7Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jXiaomi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jIphone1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSamsung)
+                .addGap(45, 45, 45))
+            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                    .addContainerGap(109, Short.MAX_VALUE)
+                    .addComponent(jXiaomi)
+                    .addGap(98, 98, 98)))
+        );
+
+        jPanel9.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel10.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Tipo Venda");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(112, 112, 112)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jPrazo.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jPrazo.setForeground(new java.awt.Color(255, 255, 255));
+        jPrazo.setText("jLabel6");
+
+        jAtacado.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jAtacado.setForeground(new java.awt.Color(255, 255, 255));
+        jAtacado.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPrazo)
+                            .addComponent(jAtacado))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPrazo)
+                .addGap(57, 57, 57)
+                .addComponent(jAtacado)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jPanel11.setBackground(new java.awt.Color(102, 102, 102));
+
+        jPanel12.setBackground(new java.awt.Color(51, 51, 51));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Estado com Mais Cadastro");
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap(78, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(68, 68, 68))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+
+        jEstado.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jEstado.setForeground(new java.awt.Color(255, 255, 255));
+        jEstado.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(jEstado)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addComponent(jEstado)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         desktop.setLayer(pizzaPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktop.setLayer(barPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jDados, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel9, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktop.setLayer(jPanel11, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(desktopLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(64, 64, 64)
-                        .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopLayout.createSequentialGroup()
+                        .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         desktopLayout.setVerticalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(desktopLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(linePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopLayout.createSequentialGroup()
+                .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jDados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
                 .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(desktopLayout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(pizzaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(desktopLayout.createSequentialGroup()
-                        .addGap(112, 112, 112)
+                        .addGap(9, 9, 9)
                         .addComponent(barPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,11 +743,31 @@ private Compras telaCompras;
                 ArrayList<Integer> listaProduto = dashboard();
 
                 // Verifica se os dados são válidos
-                if (listaProduto.size() != 6) {
+                if (listaProduto.size() != 7) {
                     throw new Exception("Os dados retornados são inválidos.");
                 }
+                
+                
+               
 
                 System.out.println("Dados: TotalProduto = " + listaProduto.get(0) + ", TotalCompra = " + listaProduto.get(1));
+                
+                int vendasDia = buscarVendasDia();
+                int vendasMes = buscarVendasMes();
+                int vendasAno = buscarVendasAno();
+                
+                int quantidadeXiaomi = buscarQuantidadePorMarca("XIAOMI");
+                int quantidadeIphone = buscarQuantidadePorMarca("IPHONE");
+                int quantidadeSamsung = buscarQuantidadePorMarca("SAMSUNG");
+                
+                String estadoMaisCadastrado = buscarEstadoMaisCadastrado();
+                
+                
+                String marcaMaisVendida = buscarMarcaMaisVendida();
+                System.out.println("Marca mais vendida: " + marcaMaisVendida);
+                
+                String marcaMenosVendida = buscarMarcaMenosVendida();
+                System.out.println("Marca menos vendida: " + marcaMenosVendida);
 
                 // Cria o dataset do gráfico de barras
                 DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
@@ -382,38 +815,7 @@ private Compras telaCompras;
                 piePlot.setSectionPaint("Débito", new Color(255, 165, 0));      // Cor para "Débito"
                 piePlot.setBackgroundPaint(Color.WHITE);  // Cor de fundo do gráfico
 
-                // Cria o gráfico de linha
-                XYSeriesCollection lineChartData = new XYSeriesCollection();
-                XYSeries series = new XYSeries("Vendas");
 
-                // Verifica se o valor da listaProduto.get(5) é válido
-                Integer vendas = listaProduto.get(5);
-                if (vendas != null) {
-                    series.add(1, vendas); // Só adiciona o valor se for válido
-                } else {
-                    System.out.println("Valor inválido para vendas.");
-                }
-                lineChartData.addSeries(series);
-
-                JFreeChart lineChart = ChartFactory.createXYLineChart(
-                        "Gráfico de Linha",  // Título
-                        "Meses",             // Eixo X
-                        "Quantidade",        // Eixo Y
-                        lineChartData,       // Dados
-                        PlotOrientation.VERTICAL, 
-                        true, 
-                        true, 
-                        false
-                );
-
-                // Personalizando o gráfico de linha
-                XYPlot linePlot = (XYPlot) lineChart.getPlot();
-                linePlot.setDomainGridlinePaint(Color.black);
-                linePlot.setRangeGridlinePaint(Color.LIGHT_GRAY);
-                linePlot.setRangeGridlinesVisible(true);
-
-                // Adicionando o gráfico de linha ao painel
-                ChartPanel lineChartPanel = new ChartPanel(lineChart);
 
                 // Atualiza os painéis com os gráficos
                 SwingUtilities.invokeLater(() -> {
@@ -432,13 +834,22 @@ private Compras telaCompras;
                     pizzaPanel.add(pieChartPanel, BorderLayout.CENTER);
                     pizzaPanel.revalidate();
                     pizzaPanel.repaint();
+                    jDadosValor.setText("Total de Clientes: " + listaProduto.get(5));  // Exibe o total de clientes no jDados
+                    jValoresForn.setText("Total Fornecedor: " + listaProduto.get(6));
+                    jMarca.setText("Marca Mais Vendida: " + marcaMaisVendida);  // Atualiza o jLabel jMarca com a marca
+                    jMarcaMenos.setText("Marca Menos Vendida: " + marcaMenosVendida);  // Atualiza o jLabel jMarcaMenos com a marca menos vendida
                     
-                    linePanel.setLayout(new BorderLayout());
-                    linePanel.setPreferredSize(new Dimension(500, 300));
-                    linePanel.removeAll();
-                    linePanel.add(lineChartPanel, BorderLayout.CENTER);
-                    linePanel.revalidate();
-                    linePanel.repaint();
+                    jDia.setText("Vendas no dia: " + vendasDia);
+                    jMes.setText("Vendas no mês: " + vendasMes);
+                    jAno.setText("Vendas no ano: " + vendasAno);
+
+                    jXiaomi.setText("Xiaomi: " + quantidadeXiaomi);
+                    jIphone1.setText("Iphone: " + quantidadeIphone);
+                    jSamsung.setText("Samsung: " + quantidadeSamsung);
+                    
+                    jEstado.setText("Estado:" + estadoMaisCadastrado);  
+                    
+                    atualizarTotaisVendas();
                 });
 
             } catch (Exception ex) {
@@ -459,8 +870,9 @@ private Compras telaCompras;
                  "(SELECT COUNT(*) FROM compra c JOIN formapagamento f ON c.idFormaPagamento = f.idFormaPagamento WHERE f.descricao = 'dinheiro') AS totalDinheiro, " +
                  "(SELECT COUNT(*) FROM compra c JOIN formapagamento f ON c.idFormaPagamento = f.idFormaPagamento WHERE f.descricao = 'credito') AS totalCredito, " +
                  "(SELECT COUNT(*) FROM compra c JOIN formapagamento f ON c.idFormaPagamento = f.idFormaPagamento WHERE f.descricao = 'debito') AS totalDebito, " +
-                 "(SELECT COUNT(*) FROM venda) AS totalVenda ";
-
+                 "(SELECT COUNT(*) FROM venda) AS totalVenda, "+
+                 "(SELECT COUNT(*) FROM clientes) AS totalCliente, " +
+                 "(SELECT COUNT(*) FROM fornecedores) AS totalFornecedores " ;
     try {
         PreparedStatement psProduto = conexao.prepareStatement(sql);
         ResultSet rsProduto = psProduto.executeQuery();
@@ -473,6 +885,7 @@ private Compras telaCompras;
             System.out.println("TotalCredito: " + rsProduto.getInt("totalCredito"));
             System.out.println("TotalDebito: " + rsProduto.getInt("totalDebito"));
             System.out.println("TotalVenda: " + rsProduto.getInt("totalVenda"));
+            System.out.println("TotalCliente: " + rsProduto.getInt("totalCliente"));
             
             ListarDashBoard.add(rsProduto.getInt("totalProduto"));
             ListarDashBoard.add(rsProduto.getInt("totalCompra"));
@@ -480,6 +893,9 @@ private Compras telaCompras;
             ListarDashBoard.add(rsProduto.getInt("totalCredito"));
             ListarDashBoard.add(rsProduto.getInt("totalDebito"));
             ListarDashBoard.add(rsProduto.getInt("totalVenda"));
+            ListarDashBoard.add(rsProduto.getInt("totalFornecedores"));
+
+
 
         }
             
@@ -490,7 +906,192 @@ private Compras telaCompras;
         }
         return ListarDashBoard;
     }
+    
+   public String buscarMarcaMaisVendida() {
+    String marcaMaisVendida = "";  // Variável para armazenar a marca mais vendida
+
+    // SQL para obter a marca mais vendida
+    String sql = "SELECT p.marca " +
+                 "FROM produto p " +
+                 "JOIN itemvenda iv ON iv.idProduto = p.idProduto " +
+                 "GROUP BY p.marca " +
+                 "ORDER BY SUM(iv.quantidade) DESC " +
+                 "LIMIT 1";  // A marca com a maior soma de quantidades vendidas
+
+    try (PreparedStatement ps = conexao.prepareStatement(sql);
+         ResultSet rsProduto = ps.executeQuery()) {  // Executando a consulta SQL
+
+        // Verifica se o ResultSet contém dados antes de tentar acessá-los
+        if (rsProduto.next()) {
+            marcaMaisVendida = rsProduto.getString("marca");  // Pega a marca mais vendida
+        } else {
+            System.out.println("Nenhuma marca foi encontrada!");
+            marcaMaisVendida = "Nenhuma marca encontrada";  // Mensagem caso não haja resultados
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();  // Imprime a stack trace para entender qual erro aconteceu
+        throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  // Lança uma exceção com a mensagem
+    }
+
+    return marcaMaisVendida;  // Retorna a marca mais vendida
+}
    
+            public String buscarMarcaMenosVendida() {
+             String marcaMenosVendida = "";  // Variável para armazenar a marca menos vendida
+
+             // SQL para obter a marca menos vendida
+             String sql = "SELECT p.marca " +
+                          "FROM produto p " +
+                          "LEFT JOIN itemvenda iv ON iv.idProduto = p.idProduto " +
+                          "GROUP BY p.marca " +
+                          "ORDER BY SUM(IFNULL(iv.quantidade, 0)) ASC " +  // Ordena pela quantidade menor, tratando nulos
+                          "LIMIT 1";  // A marca com a menor soma de quantidades vendidas
+
+             try (PreparedStatement ps = conexao.prepareStatement(sql);
+                  ResultSet rsProduto = ps.executeQuery()) {  // Executando a consulta SQL
+
+                 // Verifica se o ResultSet contém dados antes de tentar acessá-los
+                 if (rsProduto.next()) {
+                     marcaMenosVendida = rsProduto.getString("marca");  // Pega a marca menos vendida
+                 } else {
+                     System.out.println("Nenhuma marca foi encontrada!");
+                     marcaMenosVendida = "Nenhuma marca encontrada";  // Mensagem caso não haja resultados
+                 }
+
+             } catch (Exception e) {
+                 e.printStackTrace();  // Imprime a stack trace para entender qual erro aconteceu
+                 throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  // Lança uma exceção com a mensagem
+             }
+
+             return marcaMenosVendida;  // Retorna a marca menos vendida
+         }
+
+            public int buscarVendasDia() {
+             String sql = "SELECT COUNT(*) AS vendasDia FROM venda WHERE DATE(dataVenda) = CURDATE()";
+             try (PreparedStatement ps = conexao.prepareStatement(sql);
+                  ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+                     return rs.getInt("vendasDia");
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 throw new RuntimeException("Erro ao consultar vendas por dia: " + e.getMessage(), e);
+             }
+             return 0;  // Retorna 0 se não houver vendas
+         }
+
+         public int buscarVendasMes() {
+             String sql = "SELECT COUNT(*) AS vendasMes FROM venda WHERE YEAR(dataVenda) = YEAR(CURDATE()) AND MONTH(dataVenda) = MONTH(CURDATE())";
+             try (PreparedStatement ps = conexao.prepareStatement(sql);
+                  ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+                     return rs.getInt("vendasMes");
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 throw new RuntimeException("Erro ao consultar vendas por mês: " + e.getMessage(), e);
+             }
+             return 0;  // Retorna 0 se não houver vendas
+         }
+
+         public int buscarVendasAno() {
+             String sql = "SELECT COUNT(*) AS vendasAno FROM venda WHERE YEAR(dataVenda) = YEAR(CURDATE())";
+             try (PreparedStatement ps = conexao.prepareStatement(sql);
+                  ResultSet rs = ps.executeQuery()) {
+                 if (rs.next()) {
+                     return rs.getInt("vendasAno");
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 throw new RuntimeException("Erro ao consultar vendas por ano: " + e.getMessage(), e);
+             }
+             return 0;  // Retorna 0 se não houver vendas
+         }
+
+         public int buscarQuantidadePorMarca(String marca) {
+        String sql = "SELECT SUM(p.quantidade) AS totalProdutos " +
+                 "FROM produto p " +
+                 "WHERE p.marca = ?";  // Soma as quantidades dos produtos de uma marca específica
+        try (PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, marca);  // Define o parâmetro da marca na consulta
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("totalProdutos");  // Retorna a soma das quantidades para a marca
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao consultar a quantidade de produtos da marca " + marca + ": " + e.getMessage(), e);
+        }
+        return 0;  // Retorna 0 se não houver produtos da marca
+}
+         
+         public void atualizarTotaisVendas() {
+    String sql = "SELECT idTipoVenda, SUM(idTipoVenda) AS totalQuantidade " +
+                 "FROM venda " +
+                 "WHERE idTipoVenda IN (1, 2) " +  // Apenas "Á PRAZO" (1) e "ATACADO" (2)
+                 "GROUP BY idTipoVenda";
+            int totalPrazo = 0;
+            int totalAvista = 0;
+    
+
+    try (PreparedStatement ps = conexao.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        
+        // Itera sobre os resultados da consulta
+        while (rs.next()) {
+           
+            int idTipoVenda = rs.getInt("idTipoVenda");
+            int totalQuantidade = rs.getInt("totalQuantidade");
+             
+            // Se for 'Á PRAZO' (idTipoVenda = 1)
+            if (idTipoVenda == 1) {
+                totalPrazo = totalQuantidade;
+            } 
+            // Se for 'À VISTA' (idTipoVenda = 2)
+            else if (idTipoVenda == 2) {
+                totalAvista = totalQuantidade;
+            }
+        }
+        jPrazo.setText("Á PRAZO: " + totalPrazo);
+        jAtacado.setText("ATACADO: " + totalAvista);
+        // Atualiza os JLabels com os totais
+       // SwingUtilities.invokeLater(() -> {
+        //    ;
+       // });
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Erro ao obter os totais de venda: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+         
+         public String buscarEstadoMaisCadastrado() {
+    String estadoMaisCadastrado = ""; // Variável para armazenar o estado mais cadastrado
+
+    // SQL para obter o estado com o maior número de cadastros
+    String sql = "SELECT estado, COUNT(*) AS total " +
+                 "FROM endereco " +
+                 "GROUP BY estado " +
+                 "ORDER BY total DESC " +
+                 "LIMIT 1"; // Obtém o estado com a maior contagem
+
+    try (PreparedStatement ps = conexao.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+            estadoMaisCadastrado = rs.getString("estado"); // Pega o estado mais cadastrado
+        } else {
+            estadoMaisCadastrado = "Nenhum estado encontrado"; // Mensagem caso não haja resultados
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Imprime a stack trace para depuração
+        throw new RuntimeException("Erro ao buscar o estado mais cadastrado: " + e.getMessage(), e);
+    }
+
+    return estadoMaisCadastrado; // Retorna o estado com mais cadastros
+}
+    
     /**
      * @param args the command line arguments
      */
@@ -530,12 +1131,42 @@ private Compras telaCompras;
     private javax.swing.JPanel barPanel;
     private javax.swing.JButton btnCadastro;
     private javax.swing.JDesktopPane desktop;
+    private javax.swing.JLabel jAno;
+    private javax.swing.JLabel jAtacado;
     private javax.swing.JButton jCompras;
+    private javax.swing.JPanel jDados;
+    public javax.swing.JLabel jDadosValor;
+    private javax.swing.JLabel jDia;
+    private javax.swing.JLabel jEstado;
+    private javax.swing.JLabel jIphone1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton jLogoff;
+    private javax.swing.JLabel jMarca;
+    private javax.swing.JLabel jMarcaMenos;
+    private javax.swing.JLabel jMes;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel jPrazo;
     private javax.swing.JButton jRelatorio;
+    private javax.swing.JLabel jSamsung;
+    private javax.swing.JLabel jValoresForn;
     private javax.swing.JButton jVendas;
-    private javax.swing.JPanel linePanel;
+    private javax.swing.JLabel jXiaomi;
     private javax.swing.JPanel pizzaPanel;
     // End of variables declaration//GEN-END:variables
 }

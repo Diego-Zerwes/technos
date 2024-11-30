@@ -40,7 +40,7 @@ public class VendasDao implements DaoGenerica<Venda>{
     
     public boolean inserirVenda(Venda venda) {
     boolean sucesso = false;
-    String sql = "INSERT INTO venda (idCliente, idFormaPagamento, idTipoVenda, idRelatorio, dataVenda) VALUES (?, ?, ?, ?, NOW())"; 
+    String sql = "INSERT INTO venda (idCliente, idFormaPagamento, idTipoVenda, idUsuario, idRelatorio, dataVenda) VALUES (?, ?, ?, ?, ?, NOW())"; 
 
     try {
         if(this.conexao.conectar()){
@@ -49,8 +49,10 @@ public class VendasDao implements DaoGenerica<Venda>{
         // Define os valores dos parâmetros
         sentenca.setInt(1, venda.getIdCliente());          
         sentenca.setInt(2, venda.getIdFormaPagamento());   
-        sentenca.setInt(3, venda.getIdTipoVenda());        
-        sentenca.setInt(4, venda.getIdRelatorio());        
+        sentenca.setInt(3, venda.getIdTipoVenda()); 
+        sentenca.setInt(4, venda.getIdUsuario());
+        sentenca.setInt(5, venda.getIdRelatorio());
+        
 
 
         int linhasAfetadas = sentenca.executeUpdate();

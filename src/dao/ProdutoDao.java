@@ -188,6 +188,7 @@ public class ProdutoDao implements DaoGenerica<Produto>{
             while (rs.next()) {
                 Produto produto = new Produto();
                 produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setMarca(rs.getString("marca"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setPrecoVenda(rs.getDouble("precoVenda"));
                 produto.setEstoque(rs.getInt("quantidade"));

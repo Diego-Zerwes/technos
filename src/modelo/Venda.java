@@ -14,17 +14,19 @@ public class Venda {
        private int idFormaPagamento;
        private int idTipoVenda;
        private int idRelatorio;
+       private int idUsuario;
        private String dataVenda;
 
     public Venda() {
     }
 
-    public Venda(int idVenda, int idCliente, int idFormaPagamento, int idTipoVenda, int idRelatorio, String dataVenda) {
+    public Venda(int idVenda, int idCliente, int idFormaPagamento, int idTipoVenda, int idRelatorio, int idUsuario, String dataVenda) {
         this.idVenda = idVenda;
         this.idCliente = idCliente;
         this.idFormaPagamento = idFormaPagamento;
         this.idTipoVenda = idTipoVenda;
         this.idRelatorio = idRelatorio;
+        this.idUsuario = idUsuario;
         this.dataVenda = dataVenda;
     }
 
@@ -74,6 +76,14 @@ public class Venda {
 
     public void setDataVenda(String dataVenda) {
         this.dataVenda = dataVenda;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
        
        
