@@ -722,7 +722,7 @@ private Compras telaCompras;
     }//GEN-LAST:event_jVendasActionPerformed
 
     private void jLogoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogoffActionPerformed
-    //dispose();        // TODO add your handling code here:
+           // TODO add your handling code here:
     System.exit(0);
     }//GEN-LAST:event_jLogoffActionPerformed
 

@@ -1,21 +1,44 @@
 package projeto.mensal.Telas;
 
 import dao.RelatoriosDAO;
+import dao.ConexaoBanco;
+import java.awt.Container;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Relatorio extends javax.swing.JInternalFrame {
     int vInsUpdate = 0;
-    Connection conexao = null;
-    ResultSet rs = null;
+    Connection conn = null;
+   // PreparedStatement pstEnd = null;
+    //PreparedStatement pstForn = null;
+   // PreparedStatement pstCont = null;
+   // ResultSet rs = null;
+    
+    //ConexaoBanco conexao = null;
+    private Connection conexao;
     public RelatoriosDAO relatoriosDAO;
+    
+    
     
     public Relatorio() {
        initComponents();
        relatoriosDAO = new RelatoriosDAO();
+       ConexaoBanco con = new ConexaoBanco();
+        if(con.conectar()){
+            conexao = con.getConnection();
+        }else{
+            JOptionPane.showMessageDialog(null, "Conexao com o Banco falhou");
+        }
     }
 
     private void buscarRelatorios() { 
@@ -25,16 +48,10 @@ public class Relatorio extends javax.swing.JInternalFrame {
 
         if (jRadioCompras.isSelected()) { 
             DefaultTableModel modeloCompras = relatoriosDAO.buscarCompras(dataInicio, dataFim); 
-            tblRelatorios.setModel(modeloCompras); 
+            tbCompras.setModel(modeloCompras); 
         } else if (jRadioVendas.isSelected()) { 
             DefaultTableModel modeloVendas = relatoriosDAO.buscarVendas(dataInicio, dataFim); 
-            tblRelatorios.setModel(modeloVendas); 
-        } else if (jRadioFornecedor.isSelected()) { 
-            DefaultTableModel modeloFornecedores = relatoriosDAO.buscarFornecedores(dataInicio, dataFim); 
-            tblRelatorios.setModel(modeloFornecedores); 
-        } else if (jRadioEstoque.isSelected()) { 
-            DefaultTableModel modeloEstoque = relatoriosDAO.buscarEstoque(dataInicio, dataFim); 
-            tblRelatorios.setModel(modeloEstoque); 
+            tbCompras.setModel(modeloVendas); 
         } else { 
             JOptionPane.showMessageDialog(null, "Por favor, selecione um tipo de relatório.");
         } 
@@ -52,14 +69,18 @@ public class Relatorio extends javax.swing.JInternalFrame {
         jDataFinal = new javax.swing.JFormattedTextField();
         jRadioCompras = new javax.swing.JRadioButton();
         jRadioVendas = new javax.swing.JRadioButton();
-        jRadioEstoque = new javax.swing.JRadioButton();
-        jRadioFornecedor = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
-        txtProduto = new javax.swing.JTextField();
         btnConfirmar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblRelatorios = new javax.swing.JTable();
+        tbCompras = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbVendas = new javax.swing.JTable();
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         try {
             jDataInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -78,19 +99,28 @@ public class Relatorio extends javax.swing.JInternalFrame {
         }
 
         jRadioCompras.setText("Compras");
+        jRadioCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioComprasActionPerformed(evt);
+            }
+        });
 
         jRadioVendas.setText("Vendas");
-
-        jRadioEstoque.setText("Estoque");
-
-        jRadioFornecedor.setText("Fornecedor");
-
-        jLabel3.setText("Produto");
+        jRadioVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioVendasActionPerformed(evt);
+            }
+        });
 
         btnConfirmar.setText("Confirmar");
         btnConfirmar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnConfirmarMouseClicked(evt);
+            }
+        });
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarActionPerformed(evt);
             }
         });
 
@@ -101,18 +131,32 @@ public class Relatorio extends javax.swing.JInternalFrame {
             }
         });
 
-        tblRelatorios.setModel(new javax.swing.table.DefaultTableModel(
+        tbCompras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Compra", "Forma de Pagamento", "Data"
             }
         ));
-        jScrollPane1.setViewportView(tblRelatorios);
+        tbCompras.setEnabled(false);
+        jScrollPane1.setViewportView(tbCompras);
+
+        tbVendas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "IdVenda", "formaPagamento", "tipoVenda", "clientes", "dataVenda"
+            }
+        ));
+        jScrollPane2.setViewportView(tbVendas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,72 +164,58 @@ public class Relatorio extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 856, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnConfirmar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnCancelar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jRadioCompras)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jRadioVendas)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jRadioEstoque)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jRadioFornecedor))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(64, 64, 64)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3))))))
-                        .addGap(0, 35, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                                        .addComponent(jRadioVendas))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel1)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jDataInicial)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(211, 211, 211)
+                                .addComponent(btnConfirmar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCancelar)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel2)
+                    .addComponent(jDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioCompras)
-                    .addComponent(jRadioVendas)
-                    .addComponent(jRadioEstoque)
-                    .addComponent(jRadioFornecedor))
-                .addGap(18, 18, 18)
+                    .addComponent(jRadioVendas))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirmar)
                     .addComponent(btnCancelar))
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -198,7 +228,150 @@ public class Relatorio extends javax.swing.JInternalFrame {
     private void btnCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarMouseClicked
         dispose();
     }//GEN-LAST:event_btnCancelarMouseClicked
+
+    private void jRadioComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioComprasActionPerformed
  
+    }//GEN-LAST:event_jRadioComprasActionPerformed
+
+    private void jRadioVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioVendasActionPerformed
+   
+    }//GEN-LAST:event_jRadioVendasActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+
+    jScrollPane1.setVisible(false);
+    jScrollPane2.setVisible(false);
+        
+        
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+      // Primeiro, ocultar todas as tabelas
+    jScrollPane1.setVisible(false);
+    jScrollPane2.setVisible(false);
+   
+
+    // Verifique qual JRadioButton está selecionado e exiba a tabela correspondente
+    if (jRadioCompras.isSelected()) {
+        System.out.println("Exibindo Tabela de Compras");
+        try {
+            carregarCompras(); // Carrega as compras, se necessário
+        } catch (ParseException ex) {
+            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jScrollPane1.setVisible(true);  // Torna a tabela de compras visível
+    } else if (jRadioVendas.isSelected()) {
+        System.out.println("Exibindo Tabela de Vendas");
+        carregarVendas();
+        jScrollPane2.setVisible(true);  // Torna a tabela de vendas visível
+    } 
+
+    // Obter o contêiner pai correto
+    Container parent = this.getRootPane();  // Usa o RootPane como contêiner principal
+
+    // Chama repaint() e revalidate() no contêiner pai
+    if (parent != null) {
+        parent.repaint();  // Redesenha o contêiner
+        parent.revalidate();  // Recalcula o layout
+    } else {
+        System.out.println("Erro: contêiner pai não encontrado.");
+    }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
+ 
+    private void carregarCompras() throws ParseException {
+   DefaultTableModel modelo = (DefaultTableModel) tbCompras.getModel();
+    modelo.setRowCount(0); // Limpa a tabela
+    
+    String dataInicio = jDataInicial.getText();  // Pega a data inicial como String
+    String dataFim = jDataFinal.getText();  // Pega a data final como String
+
+    // Converte as datas para o formato 'yyyy-MM-dd' para consulta no banco
+    SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatoSaida = new SimpleDateFormat("yyyy-MM-dd");
+
+    try {
+        java.util.Date dateInicio = formatoEntrada.parse(dataInicio);
+        java.util.Date dateFim = formatoEntrada.parse(dataFim);
+
+        java.sql.Date sqlDataInicio = new java.sql.Date(dateInicio.getTime());
+        java.sql.Date sqlDataFim = new java.sql.Date(dateFim.getTime());
+
+        String sql = "SELECT c.idCompra," + 
+                   "CASE f.idFormaPagamento " +
+                       " WHEN 1 THEN 'Dinheiro' " +
+                       " WHEN 2 THEN 'Crédito' " +
+                       "WHEN 3 THEN 'Débito' " +
+                   "END AS formaPagamento, " +
+                   "c.dataCompra " +
+            "FROM compra c " +
+            "JOIN formapagamento f ON c.idFormaPagamento = f.idFormaPagamento " +
+            "WHERE c.dataCompra BETWEEN ? AND ?";
+
+        if (conexao == null) {
+            JOptionPane.showMessageDialog(null, "Conexão com o banco de dados não foi inicializada.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        PreparedStatement ps = conexao.prepareStatement(sql);
+        ps.setDate(1, sqlDataInicio);
+        ps.setDate(2, sqlDataFim);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int idCompra = rs.getInt("idCompra");
+            String formaPagamento = rs.getString("formaPagamento");
+            java.sql.Date dataCompraSql = rs.getDate("dataCompra");
+
+            // Converte a data do banco (yyyy-MM-dd) para o formato dd/MM/yyyy
+            String dataCompra = formatoEntrada.format(dataCompraSql);
+
+            modelo.addRow(new Object[]{idCompra, formaPagamento, dataCompra});
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao carregar compras: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+    private void carregarVendas() {
+    DefaultTableModel modelo = (DefaultTableModel) tbVendas.getModel();
+    modelo.setRowCount(0); // Limpa a tabela
+
+    String sql = "SELECT v.idVenda, " +
+                 "CASE f.idFormaPagamento " +
+                 " WHEN 1 THEN 'Dinheiro' " +
+                 " WHEN 2 THEN 'Crédito' " +
+                 " WHEN 3 THEN 'Débito' " +
+                 "END AS formaPagamento, " +
+                 "CASE tv.idTipoVenda " +
+                 " WHEN 1 THEN 'Atacado' " +
+                 " WHEN 2 THEN 'A Prazo' " +
+                 "END AS tipoVenda, " +
+                 "c.nomeRazaoSocial AS clientes, " +
+                 "v.dataVenda " +
+                 "FROM venda v " +
+                 "JOIN formapagamento f ON v.idFormaPagamento = f.idFormaPagamento " +
+                 "JOIN tipovenda tv ON v.idTipoVenda = tv.idTipoVenda " +
+                 "JOIN clientes c ON v.idCliente = c.idCliente";
+
+    try (PreparedStatement ps = conexao.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            int idVenda = rs.getInt("idVenda");
+            String formaPagamento = rs.getString("formaPagamento");
+            String tipoVenda = rs.getString("tipoVenda");
+            String cliente = rs.getString("clientes");
+            String dataVenda = rs.getString("dataVenda");
+
+            modelo.addRow(new Object[]{idVenda, formaPagamento, tipoVenda, cliente, dataVenda});
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro ao carregar vendas: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -207,13 +380,11 @@ public class Relatorio extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField jDataInicial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JRadioButton jRadioCompras;
-    private javax.swing.JRadioButton jRadioEstoque;
-    private javax.swing.JRadioButton jRadioFornecedor;
     private javax.swing.JRadioButton jRadioVendas;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblRelatorios;
-    private javax.swing.JTextField txtProduto;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tbCompras;
+    private javax.swing.JTable tbVendas;
     // End of variables declaration//GEN-END:variables
 }
