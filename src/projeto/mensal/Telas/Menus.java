@@ -21,10 +21,8 @@ import java.util.ArrayList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.ChartPanel;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+
 
 
 
@@ -662,13 +660,13 @@ private Compras telaCompras;
     private void btnCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroActionPerformed
         
          if (tela == null || !tela.isVisible()) {
-        tela = new Cadastros(); // Cria a tela se não existir ou não estiver visível
+        tela = new Cadastros(); 
         desktop.add(tela);
         tela.setVisible(true);
-        barPanel.setVisible(false);  // Se necessário, esconda o barPanel
+        barPanel.setVisible(false);  
     } else {
         tela.setVisible(false);
-        barPanel.setVisible(true);  // Se necessário, mostre o barPanel
+        barPanel.setVisible(true);  
         desktop.remove(tela);
         desktop.repaint();
     }
@@ -676,11 +674,11 @@ private Compras telaCompras;
     private Compras tela1;
     private void jComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComprasActionPerformed
        if (tela1 == null || !tela1.isVisible()) {
-        tela1 = new Compras(); // Cria a tela se não existir ou não estiver visível
+        tela1 = new Compras(); 
         desktop.add(tela1);
         tela1.setVisible(true);
         barPanel.setVisible(false);
-        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); 
     } else {
         tela1.setVisible(false);
         barPanel.setVisible(true);
@@ -693,11 +691,11 @@ private Compras telaCompras;
       private Relatorio tela3;
     private void jRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRelatorioActionPerformed
         if (tela3 == null || !tela3.isVisible()) {
-        tela3 = new Relatorio(); // Cria a tela se não existir ou não estiver visível
+        tela3 = new Relatorio(); 
         desktop.add(tela3);
         tela3.setVisible(true);
         barPanel.setVisible(false);
-        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); 
     } else {
         tela3.setVisible(false);
         barPanel.setVisible(true);
@@ -708,12 +706,11 @@ private Compras telaCompras;
     private Vendas tela4;
     private void jVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVendasActionPerformed
          if (tela4 == null || !tela4.isVisible()) {
-        tela4 = new Vendas(); // Cria a tela se não existir ou não estiver visível
+        tela4 = new Vendas(); 
         desktop.add(tela4);
         tela4.setVisible(true);
         barPanel.setVisible(false);
-        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); // Manter a camada de barPanel se necessário
-    } else {
+        desktop.setLayer(barPanel, javax.swing.JLayeredPane.PALETTE_LAYER); 
         tela4.setVisible(false);
         barPanel.setVisible(true);
         desktop.remove(tela4);
@@ -742,15 +739,11 @@ private Compras telaCompras;
         public void run() {
             try {
                 ArrayList<Integer> listaProduto = dashboard();
-
-                // Verifica se os dados são válidos
+             
                 if (listaProduto.size() != 7) {
                     throw new Exception("Os dados retornados são inválidos.");
                 }
                 
-                
-               
-
                 System.out.println("Dados: TotalProduto = " + listaProduto.get(0) + ", TotalCompra = " + listaProduto.get(1));
                 
                 int vendasDia = buscarVendasDia();
@@ -762,20 +755,17 @@ private Compras telaCompras;
                 int quantidadeSamsung = buscarQuantidadePorMarca("SAMSUNG");
                 
                 String estadoMaisCadastrado = buscarEstadoMaisCadastrado();
-                
-                
+               
                 String marcaMaisVendida = buscarMarcaMaisVendida();
                 System.out.println("Marca mais vendida: " + marcaMaisVendida);
                 
                 String marcaMenosVendida = buscarMarcaMenosVendida();
                 System.out.println("Marca menos vendida: " + marcaMenosVendida);
 
-                // Cria o dataset do gráfico de barras
                 DefaultCategoryDataset barChartData = new DefaultCategoryDataset();
                 barChartData.addValue(listaProduto.get(0), "totalProduto", "Núm Produto");
                 barChartData.addValue(listaProduto.get(1), "TotalCompra", "Núm de Compra");
 
-                // Cria o gráfico de barras
                 JFreeChart barChart = ChartFactory.createBarChart(
                         "Ex Barras",         // Título do gráfico
                         "Dados",             // Eixo X
@@ -787,20 +777,16 @@ private Compras telaCompras;
                         false                // Não usa URL para links
                 );
 
-                // Personaliza o gráfico de barras
                 CategoryPlot barchrt = barChart.getCategoryPlot();
                 barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
 
-                // Cria o painel para exibir o gráfico de barras
                 ChartPanel barChartPanel = new ChartPanel(barChart);
 
-                // Criação do dataset para o gráfico de pizza
                 DefaultPieDataset pieDataset = new DefaultPieDataset();
-                pieDataset.setValue("Dinheiro", listaProduto.get(2));  // totalDinheiro
-                pieDataset.setValue("Crédito", listaProduto.get(3));   // totalCredito
-                pieDataset.setValue("Débito", listaProduto.get(4));    // totalDebito
+                pieDataset.setValue("Dinheiro", listaProduto.get(2));  
+                pieDataset.setValue("Crédito", listaProduto.get(3));   
+                pieDataset.setValue("Débito", listaProduto.get(4));    
 
-                // Criação do gráfico de pizza
                 JFreeChart pieChart = ChartFactory.createPieChart(
                         "Forma de Pagamento",   // Título do gráfico
                         pieDataset,             // Dados do gráfico
@@ -811,16 +797,13 @@ private Compras telaCompras;
                 ChartPanel pieChartPanel = new ChartPanel(pieChart);
                 // Personaliza o gráfico de pizza
                 PiePlot piePlot = (PiePlot) pieChart.getPlot();
-                piePlot.setSectionPaint("Dinheiro", new Color(140, 105, 204));  // Cor para "Dinheiro"
-                piePlot.setSectionPaint("Crédito", new Color(102, 205, 170));   // Cor para "Crédito"
-                piePlot.setSectionPaint("Débito", new Color(255, 165, 0));      // Cor para "Débito"
-                piePlot.setBackgroundPaint(Color.WHITE);  // Cor de fundo do gráfico
+                piePlot.setSectionPaint("Dinheiro", new Color(140, 105, 204));  
+                piePlot.setSectionPaint("Crédito", new Color(102, 205, 170));   
+                piePlot.setSectionPaint("Débito", new Color(255, 165, 0));      
+                piePlot.setBackgroundPaint(Color.WHITE);  
 
 
-
-                // Atualiza os painéis com os gráficos
                 SwingUtilities.invokeLater(() -> {
-                    // Atualiza o painel do gráfico de barras
                     barPanel.setLayout(new BorderLayout());
                     barPanel.setPreferredSize(new Dimension(500, 300));
                     barPanel.removeAll();
@@ -828,17 +811,19 @@ private Compras telaCompras;
                     barPanel.revalidate();
                     barPanel.repaint();
 
-                    // Atualiza o painel do gráfico de pizza
                     pizzaPanel.setLayout(new BorderLayout());
                     pizzaPanel.setPreferredSize(new Dimension(500, 300));
                     pizzaPanel.removeAll();
                     pizzaPanel.add(pieChartPanel, BorderLayout.CENTER);
                     pizzaPanel.revalidate();
                     pizzaPanel.repaint();
-                    jDadosValor.setText("Total de Clientes: " + listaProduto.get(5));  // Exibe o total de clientes no jDados
+                    
+                    jDadosValor.setText("Total de Clientes: " + listaProduto.get(5)); 
+                    
                     jValoresForn.setText("Total Fornecedor: " + listaProduto.get(6));
-                    jMarca.setText("Marca Mais Vendida: " + marcaMaisVendida);  // Atualiza o jLabel jMarca com a marca
-                    jMarcaMenos.setText("Marca Menos Vendida: " + marcaMenosVendida);  // Atualiza o jLabel jMarcaMenos com a marca menos vendida
+                    
+                    jMarca.setText("Marca Mais Vendida: " + marcaMaisVendida);  
+                    jMarcaMenos.setText("Marca Menos Vendida: " + marcaMenosVendida);  
                     
                     jDia.setText("Vendas no dia: " + vendasDia);
                     jMes.setText("Vendas no mês: " + vendasMes);
@@ -909,63 +894,59 @@ private Compras telaCompras;
     }
     
    public String buscarMarcaMaisVendida() {
-    String marcaMaisVendida = "";  // Variável para armazenar a marca mais vendida
+    String marcaMaisVendida = "";  
 
-    // SQL para obter a marca mais vendida
     String sql = "SELECT p.marca " +
                  "FROM produto p " +
                  "JOIN itemvenda iv ON iv.idProduto = p.idProduto " +
                  "GROUP BY p.marca " +
                  "ORDER BY SUM(iv.quantidade) DESC " +
-                 "LIMIT 1";  // A marca com a maior soma de quantidades vendidas
+                 "LIMIT 1";  
 
     try (PreparedStatement ps = conexao.prepareStatement(sql);
-         ResultSet rsProduto = ps.executeQuery()) {  // Executando a consulta SQL
+         ResultSet rsProduto = ps.executeQuery()) {  
 
-        // Verifica se o ResultSet contém dados antes de tentar acessá-los
         if (rsProduto.next()) {
-            marcaMaisVendida = rsProduto.getString("marca");  // Pega a marca mais vendida
+            marcaMaisVendida = rsProduto.getString("marca");  
         } else {
             System.out.println("Nenhuma marca foi encontrada!");
-            marcaMaisVendida = "Nenhuma marca encontrada";  // Mensagem caso não haja resultados
+            marcaMaisVendida = "Nenhuma marca encontrada";  
         }
 
     } catch (Exception e) {
-        e.printStackTrace();  // Imprime a stack trace para entender qual erro aconteceu
-        throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  // Lança uma exceção com a mensagem
+        e.printStackTrace();  
+        throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  
     }
 
-    return marcaMaisVendida;  // Retorna a marca mais vendida
+    return marcaMaisVendida;  
 }
    
             public String buscarMarcaMenosVendida() {
-             String marcaMenosVendida = "";  // Variável para armazenar a marca menos vendida
+             String marcaMenosVendida = "";  
 
-             // SQL para obter a marca menos vendida
              String sql = "SELECT p.marca " +
                           "FROM produto p " +
                           "LEFT JOIN itemvenda iv ON iv.idProduto = p.idProduto " +
                           "GROUP BY p.marca " +
-                          "ORDER BY SUM(IFNULL(iv.quantidade, 0)) ASC " +  // Ordena pela quantidade menor, tratando nulos
-                          "LIMIT 1";  // A marca com a menor soma de quantidades vendidas
+                          "ORDER BY SUM(IFNULL(iv.quantidade, 0)) ASC " +  
+                          "LIMIT 1";  
 
              try (PreparedStatement ps = conexao.prepareStatement(sql);
-                  ResultSet rsProduto = ps.executeQuery()) {  // Executando a consulta SQL
+                  ResultSet rsProduto = ps.executeQuery()) {  
 
-                 // Verifica se o ResultSet contém dados antes de tentar acessá-los
                  if (rsProduto.next()) {
-                     marcaMenosVendida = rsProduto.getString("marca");  // Pega a marca menos vendida
+                     marcaMenosVendida = rsProduto.getString("marca");  
                  } else {
                      System.out.println("Nenhuma marca foi encontrada!");
-                     marcaMenosVendida = "Nenhuma marca encontrada";  // Mensagem caso não haja resultados
+                     marcaMenosVendida = "Nenhuma marca encontrada";  
                  }
 
              } catch (Exception e) {
-                 e.printStackTrace();  // Imprime a stack trace para entender qual erro aconteceu
-                 throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  // Lança uma exceção com a mensagem
+                 e.printStackTrace();  
+                 throw new RuntimeException("Erro ao executar a consulta: " + e.getMessage(), e);  
              }
 
-             return marcaMenosVendida;  // Retorna a marca menos vendida
+             return marcaMenosVendida;  
          }
 
             public int buscarVendasDia() {
@@ -979,7 +960,7 @@ private Compras telaCompras;
                  e.printStackTrace();
                  throw new RuntimeException("Erro ao consultar vendas por dia: " + e.getMessage(), e);
              }
-             return 0;  // Retorna 0 se não houver vendas
+             return 0;  
          }
 
          public int buscarVendasMes() {
@@ -993,7 +974,7 @@ private Compras telaCompras;
                  e.printStackTrace();
                  throw new RuntimeException("Erro ao consultar vendas por mês: " + e.getMessage(), e);
              }
-             return 0;  // Retorna 0 se não houver vendas
+             return 0;  
          }
 
          public int buscarVendasAno() {
@@ -1007,31 +988,31 @@ private Compras telaCompras;
                  e.printStackTrace();
                  throw new RuntimeException("Erro ao consultar vendas por ano: " + e.getMessage(), e);
              }
-             return 0;  // Retorna 0 se não houver vendas
+             return 0;  
          }
 
          public int buscarQuantidadePorMarca(String marca) {
         String sql = "SELECT SUM(p.quantidade) AS totalProdutos " +
                  "FROM produto p " +
-                 "WHERE p.marca = ?";  // Soma as quantidades dos produtos de uma marca específica
+                 "WHERE p.marca = ?";  
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
-            ps.setString(1, marca);  // Define o parâmetro da marca na consulta
+            ps.setString(1, marca);  
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("totalProdutos");  // Retorna a soma das quantidades para a marca
+                    return rs.getInt("totalProdutos");  
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao consultar a quantidade de produtos da marca " + marca + ": " + e.getMessage(), e);
         }
-        return 0;  // Retorna 0 se não houver produtos da marca
+        return 0;  
 }
          
          public void atualizarTotaisVendas() {
     String sql = "SELECT idTipoVenda, SUM(idTipoVenda) AS totalQuantidade " +
                  "FROM venda " +
-                 "WHERE idTipoVenda IN (1, 2) " +  // Apenas "Á PRAZO" (1) e "ATACADO" (2)
+                 "WHERE idTipoVenda IN (1, 2) " +  
                  "GROUP BY idTipoVenda";
             int totalPrazo = 0;
             int totalAvista = 0;
@@ -1040,17 +1021,14 @@ private Compras telaCompras;
     try (PreparedStatement ps = conexao.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
         
-        // Itera sobre os resultados da consulta
         while (rs.next()) {
            
             int idTipoVenda = rs.getInt("idTipoVenda");
             int totalQuantidade = rs.getInt("totalQuantidade");
              
-            // Se for 'Á PRAZO' (idTipoVenda = 1)
             if (idTipoVenda == 1) {
                 totalPrazo = totalQuantidade;
             } 
-            // Se for 'À VISTA' (idTipoVenda = 2)
             else if (idTipoVenda == 2) {
                 totalAvista = totalQuantidade;
             }
@@ -1069,28 +1047,27 @@ private Compras telaCompras;
 }
          
          public String buscarEstadoMaisCadastrado() {
-    String estadoMaisCadastrado = ""; // Variável para armazenar o estado mais cadastrado
+    String estadoMaisCadastrado = ""; 
 
-    // SQL para obter o estado com o maior número de cadastros
     String sql = "SELECT estado, COUNT(*) AS total " +
                  "FROM endereco " +
                  "GROUP BY estado " +
                  "ORDER BY total DESC " +
-                 "LIMIT 1"; // Obtém o estado com a maior contagem
+                 "LIMIT 1"; 
 
     try (PreparedStatement ps = conexao.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
         if (rs.next()) {
-            estadoMaisCadastrado = rs.getString("estado"); // Pega o estado mais cadastrado
+            estadoMaisCadastrado = rs.getString("estado"); 
         } else {
-            estadoMaisCadastrado = "Nenhum estado encontrado"; // Mensagem caso não haja resultados
+            estadoMaisCadastrado = "Nenhum estado encontrado"; 
         }
     } catch (Exception e) {
-        e.printStackTrace(); // Imprime a stack trace para depuração
+        e.printStackTrace(); 
         throw new RuntimeException("Erro ao buscar o estado mais cadastrado: " + e.getMessage(), e);
     }
 
-    return estadoMaisCadastrado; // Retorna o estado com mais cadastros
+    return estadoMaisCadastrado; 
 }
     
     /**

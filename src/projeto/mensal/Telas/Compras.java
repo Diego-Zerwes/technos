@@ -428,7 +428,6 @@ public class Compras extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPrecoCompraKeyPressed
 
     private void btnCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarMouseClicked
-      // Verificar se algum campo está vazio
     if ((txtDescricao.getText().trim().isEmpty()) ||
         (txtModelo.getText().trim().isEmpty()) ||
         (txtQuantidade.getText().trim().isEmpty()) ||
@@ -441,7 +440,6 @@ public class Compras extends javax.swing.JInternalFrame {
         txtDescricao.requestFocus();
     } else {
         try {
-            // Validar se os valores de preço são numéricos
             double precoCompra = 0.0;
             double precoVenda = 0.0;
 
@@ -449,14 +447,13 @@ public class Compras extends javax.swing.JInternalFrame {
                 precoCompra = Double.parseDouble(txtPrecoCompra.getText().trim());
                 precoVenda = Double.parseDouble(txtPrecoVenda.getText().trim());
 
-                // Verifica se os preços são positivos
                 if (precoCompra <= 0 || precoVenda <= 0) {
                     JOptionPane.showMessageDialog(null, "Os preços devem ser maiores que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
-                    return;  // Encerra a execução caso os preços sejam inválidos
+                    return;  
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Preço de compra ou venda inválido. Por favor, insira um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-                return;  // Encerra a execução caso ocorra erro na conversão para número
+                return;  
             }
 
             System.out.println("Preços válidos: Preço Compra = " + precoCompra + ", Preço Venda = " + precoVenda);
@@ -465,7 +462,6 @@ public class Compras extends javax.swing.JInternalFrame {
             
             Timestamp timestampAtual2 = new Timestamp(System.currentTimeMillis());
 
-            // Preencher dados do produto
             cadastroP.setDescricao(txtDescricao.getText().trim());
             cadastroP.setModelo(txtModelo.getText().trim());
             cadastroP.setMarca(jMarca.getSelectedItem().toString().trim());
@@ -474,7 +470,6 @@ public class Compras extends javax.swing.JInternalFrame {
             cadastroP.setPrecoVenda(precoVenda);  // Atribuindo o valor de precoVenda
             cadastroP.setEstoque(Integer.parseInt(txtQuantidade.getText().trim()));
 
-            // Validar e inserir os dados de compra
             Compra comprasP = new Compra();
             String razaoSocialSelecionada = (String) jFornecedor.getSelectedItem();
             FornecedorDao fornecedorDao = new FornecedorDao();
@@ -492,7 +487,6 @@ public class Compras extends javax.swing.JInternalFrame {
                 Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            // Validar forma de pagamento
             String descricaoFormaSelecionada = (String) jFormaDePagamento.getSelectedItem();
             FormaDePagamentoDao formapagamentoDao = new FormaDePagamentoDao();
             FormaDePagamento formaPagamentoSelecionada;
@@ -508,11 +502,9 @@ public class Compras extends javax.swing.JInternalFrame {
                 Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            // Definir data de compra
             Timestamp timestampAtual = new Timestamp(System.currentTimeMillis());
             comprasP.setDataCompra(timestampAtual.toString());
 
-            // Inserir compra
             ComprasDao compraDao = new ComprasDao();
             try {
                 compraDao.inserirCompra(comprasP);
@@ -523,17 +515,16 @@ public class Compras extends javax.swing.JInternalFrame {
                 return;
             }
 
-            // Inserir produto e estoque com transação
             ProdutoDao produtoDao = new ProdutoDao();
             try {
-                produtoDao.inserirProduto(cadastroP);  // Chama o método que você criou
+                produtoDao.inserirProduto(cadastroP);  
                 JOptionPane.showMessageDialog(null, "Produto e Estoque inseridos com sucesso.");
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao inserir produto e estoque: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(Compras.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (Exception e) {
-            e.printStackTrace();  // Log de erro geral
+            e.printStackTrace();  
             JOptionPane.showMessageDialog(null, "Erro ao processar o cadastro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -754,7 +745,6 @@ private void buscarNome(ProdutoDao prodDao)
              
         }
     } else {
-        // Mensagem de erro se a conexão falhar
         JOptionPane.showMessageDialog(null, "Falha na conexão com o banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }

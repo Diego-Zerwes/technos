@@ -233,27 +233,22 @@ public class Vendas extends javax.swing.JInternalFrame {
 
     private void jTabelaVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabelaVendaMouseClicked
        if ((jTabelaVenda.getSelectedRow() != -1) && (vInsUpdate == 0) && (evt.getClickCount() == 2)) {
-        // Obtém os dados do produto selecionado
         String idProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 0).toString();
         String nomeProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 1).toString();
         String valorProduto = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 4).toString();
         String estoqueDisponivel = jTabelaVenda.getValueAt(jTabelaVenda.getSelectedRow(), 3).toString();
 
-        // Solicita a quantidade do produto
         String quantidadeCompra = JOptionPane.showInputDialog(this, "Digite a quantidade desejada:", "Quantidade", JOptionPane.PLAIN_MESSAGE);
 
-        // Verifica se a quantidade foi fornecida e valida
         if (quantidadeCompra != null && !quantidadeCompra.isEmpty()) {
             try {
                 int quantidade = Integer.parseInt(quantidadeCompra);
                 int estoque = Integer.parseInt(estoqueDisponivel);
 
-                // Verifica se a quantidade solicitada é válida
                 if (quantidade > 0 && quantidade <= estoque) {
                     double valorUnitario = Double.parseDouble(valorProduto.replace(",", "."));
                     double valorTotal = valorUnitario * quantidade;
 
-                    // Verifica se o item já está no carrinho
                     boolean itemExistente = false;
                     for (ItemCarrinho item : itensCarrinho) {
                         if (item.getIdProduto() == Integer.parseInt(idProduto)) {
@@ -263,7 +258,6 @@ public class Vendas extends javax.swing.JInternalFrame {
                     }
 
                     if (!itemExistente) {
-                        // Atualiza a tabela do carrinho com os dados do produto
                         DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel) jTabelaCarrinho.getModel();
                         modeloTabelaCarrinho.addRow(new Object[]{
                             idProduto,
@@ -272,28 +266,24 @@ public class Vendas extends javax.swing.JInternalFrame {
                             valorTotal
                         });
 
-                        // Adiciona o item ao carrinho (ArrayList)
                         itensCarrinho.add(new ItemCarrinho(Integer.parseInt(idProduto), nomeProduto, quantidade, valorUnitario));
 
-                        // Atualiza o valor total da compra
                         atualizaValorTotal();
                         ItemVendaDao itemVendaDao = new ItemVendaDao();
                         itemVendaDao.conectar();
 
                         StringBuilder idsProduto = new StringBuilder();
-                        int quantidadeTotalCarrinho = 0; // Variável para armazenar a quantidade total no carrinho
+                        int quantidadeTotalCarrinho = 0; 
 
-                        // Adiciona os IDs ao StringBuilder
                         for (ItemCarrinho item : itensCarrinho) {
                             if (idsProduto.length() > 0) {
-                                idsProduto.append(",");  // Adiciona a vírgula separadora
+                                idsProduto.append(",");  
                             }
-                            idsProduto.append(item.getIdProduto());  // Adiciona o ID do produto
-                            quantidadeTotalCarrinho += item.getQuantidade();  // Soma a quantidade total do carrinho
+                            idsProduto.append(item.getIdProduto());  
+                            quantidadeTotalCarrinho += item.getQuantidade();  
 
                         }
 
-                        // Agora, você chama o método para adicionar os itens na tabela itemvenda
                         itemVendaDao.adicionarItemVenda(idsProduto.toString(), quantidadeTotalCarrinho, atualizaValorTotal());
 
                         itemVendaDao.fecharConexao();
@@ -304,7 +294,6 @@ public class Vendas extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(this, "Este item já está no carrinho!", "Aviso", JOptionPane.WARNING_MESSAGE);
                     }
 
-                    // Decrementa o estoque do produto
                     System.out.println("Estoque após compra: " + (estoque - quantidade));
 
                 } else {
@@ -325,12 +314,10 @@ public class Vendas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
-        // Chama a função que irá atualizar o estoque, passando os itens do carrinho
     finalizarCompra();
 
    // limparCarrinho();
 
-    // Exibe uma mensagem de confirmação
     JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
     }//GEN-LAST:event_btnComprarActionPerformed
 
@@ -344,29 +331,24 @@ public class Vendas extends javax.swing.JInternalFrame {
     double total = 0.0;
     DefaultTableModel modeloTabelaCarrinho = (DefaultTableModel) jTabelaCarrinho.getModel();
 
-    // Itera sobre todas as linhas da tabela do carrinho
     for (int i = 0; i < modeloTabelaCarrinho.getRowCount(); i++) {
-        Object valorObj = modeloTabelaCarrinho.getValueAt(i, 3);  // Obtém o valor total de cada item no carrinho
+        Object valorObj = modeloTabelaCarrinho.getValueAt(i, 3);  
 
         if (valorObj instanceof String) {
             try {
-                // Caso o valor esteja como string, converte para número
                 String valorStr = ((String) valorObj).replace(",", ".");
                 total += Double.parseDouble(valorStr);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Erro ao calcular o valor total: formato inválido", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else if (valorObj instanceof Number) {
-            // Caso o valor já seja um número, adiciona diretamente
             total += ((Number) valorObj).doubleValue();
         }
     }
 
-    // Formata o valor total para o formato de moeda (R$)
     DecimalFormat df = new DecimalFormat("#,##0.00");
     String valorFormatado = df.format(total);
 
-    // Exibe o valor total na interface
     jValorTotal.setText("R$ " + valorFormatado);
     return total;
 }
@@ -416,23 +398,18 @@ public class Vendas extends javax.swing.JInternalFrame {
     
     private void atualizaTabela(ProdutoDao cadastroPDao)
     {
-        
-
                 try
                 {
-
 
                     limparTabela();
 
                     ArrayList<Produto> listaCadastros;
-                    listaCadastros = cadastroPDao.consultar(); //consulta todos os registros da tabela Escola
+                    listaCadastros = cadastroPDao.consultar(); 
 
-                    //Resgata o modelo da tabela            
                     DefaultTableModel modeloTabela = (DefaultTableModel) jTabelaVenda.getModel();
 
                     for(Produto cadastroP : listaCadastros)
                     {
-                        //adiciona em cada linha da tabela da tela o conteúdo de cada posição da listaEscolas
                         modeloTabela.addRow(new String[]{Integer.toString(cadastroP.getIdProduto()),
                                                                           cadastroP.getMarca(),
                                                                           cadastroP.getDescricao(),
@@ -481,7 +458,6 @@ public class Vendas extends javax.swing.JInternalFrame {
         if (quantidadeEmEstoque >= quantidadeComprada) {
             int novaQuantidade = quantidadeEmEstoque - quantidadeComprada;
 
-            // Atualizar a quantidade de estoque
             boolean sucesso = produtoDao.atualizarQuantidadeEstoque(idProduto, novaQuantidade);
 
             if (sucesso) {
@@ -517,11 +493,11 @@ public class Vendas extends javax.swing.JInternalFrame {
             venda.setIdTipoVenda(1);  
             venda.setIdRelatorio(1);  
 
-            boolean vendaInserida = produtoDao.inserirVenda(venda);  // Passando o objeto venda
+            boolean vendaInserida = produtoDao.inserirVenda(venda);  
 
             if (vendaInserida) {
                 JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
-                limparCarrinho();  // Limpa o carrinho após a compra
+                limparCarrinho();  
             } else {
                 JOptionPane.showMessageDialog(this, "Falha ao registrar a venda.");
             }

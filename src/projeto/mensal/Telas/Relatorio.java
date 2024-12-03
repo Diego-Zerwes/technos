@@ -43,8 +43,8 @@ public class Relatorio extends javax.swing.JInternalFrame {
 
     private void buscarRelatorios() { 
     try {
-        String dataInicio = jDataInicial.getText(); // Pega a data inicial como String
-        String dataFim = jDataFinal.getText(); // Pega a data final como String
+        String dataInicio = jDataInicial.getText(); 
+        String dataFim = jDataFinal.getText(); 
 
         if (jRadioCompras.isSelected()) { 
             DefaultTableModel modeloCompras = relatoriosDAO.buscarCompras(dataInicio, dataFim); 
@@ -246,33 +246,29 @@ public class Relatorio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-      // Primeiro, ocultar todas as tabelas
     jScrollPane1.setVisible(false);
     jScrollPane2.setVisible(false);
    
 
-    // Verifique qual JRadioButton está selecionado e exiba a tabela correspondente
     if (jRadioCompras.isSelected()) {
         System.out.println("Exibindo Tabela de Compras");
         try {
-            carregarCompras(); // Carrega as compras, se necessário
+            carregarCompras(); 
         } catch (ParseException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jScrollPane1.setVisible(true);  // Torna a tabela de compras visível
+        jScrollPane1.setVisible(true);  
     } else if (jRadioVendas.isSelected()) {
         System.out.println("Exibindo Tabela de Vendas");
         carregarVendas();
-        jScrollPane2.setVisible(true);  // Torna a tabela de vendas visível
+        jScrollPane2.setVisible(true);  
     } 
 
-    // Obter o contêiner pai correto
-    Container parent = this.getRootPane();  // Usa o RootPane como contêiner principal
+    Container parent = this.getRootPane();  
 
-    // Chama repaint() e revalidate() no contêiner pai
     if (parent != null) {
-        parent.repaint();  // Redesenha o contêiner
-        parent.revalidate();  // Recalcula o layout
+        parent.repaint();  
+        parent.revalidate();  
     } else {
         System.out.println("Erro: contêiner pai não encontrado.");
     }
@@ -280,12 +276,11 @@ public class Relatorio extends javax.swing.JInternalFrame {
  
     private void carregarCompras() throws ParseException {
    DefaultTableModel modelo = (DefaultTableModel) tbCompras.getModel();
-    modelo.setRowCount(0); // Limpa a tabela
+    modelo.setRowCount(0); 
     
-    String dataInicio = jDataInicial.getText();  // Pega a data inicial como String
-    String dataFim = jDataFinal.getText();  // Pega a data final como String
+    String dataInicio = jDataInicial.getText();  
+    String dataFim = jDataFinal.getText();  
 
-    // Converte as datas para o formato 'yyyy-MM-dd' para consulta no banco
     SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatoSaida = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -323,7 +318,6 @@ public class Relatorio extends javax.swing.JInternalFrame {
             String formaPagamento = rs.getString("formaPagamento");
             java.sql.Date dataCompraSql = rs.getDate("dataCompra");
 
-            // Converte a data do banco (yyyy-MM-dd) para o formato dd/MM/yyyy
             String dataCompra = formatoEntrada.format(dataCompraSql);
 
             modelo.addRow(new Object[]{idCompra, formaPagamento, dataCompra});
@@ -336,7 +330,7 @@ public class Relatorio extends javax.swing.JInternalFrame {
     
     private void carregarVendas() {
     DefaultTableModel modelo = (DefaultTableModel) tbVendas.getModel();
-    modelo.setRowCount(0); // Limpa a tabela
+    modelo.setRowCount(0); 
 
     String sql = "SELECT v.idVenda, " +
                  "CASE f.idFormaPagamento " +
